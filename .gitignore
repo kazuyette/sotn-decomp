@@ -37,3 +37,4 @@ objdiff*.json
 
 # rust
 target/**
+.claude/

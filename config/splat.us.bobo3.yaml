@@ -1,0 +1,89 @@
+options:
+  platform: psx
+  basename: bobo3
+  base_path: ..
+  build_path: build/us
+  target_path: disks/us/BOSS/BO3/BO3.BIN
+  asm_path: asm/us/boss/bo3
+  asset_path: assets/boss/bo3
+  src_path: src/boss/bo3
+  ld_script_path: build/us/bobo3.ld
+  compiler: GCC
+  symbol_addrs_path:
+    - config/symbols.us.txt
+    - config/symbols.us.bobo3.txt
+  undefined_funcs_auto_path: build/us/config/undefined_funcs_auto.us.bobo3.txt
+  undefined_syms_auto_path: build/us/config/undefined_syms_auto.us.bobo3.txt
+  find_file_boundaries: true
+  use_legacy_include_asm: false
+  migrate_rodata_to_functions: true
+  asm_jtbl_label_macro: jlabel
+  symbol_name_format: us_$VRAM
+  disassemble_all: true
+  section_order:
+    - .data
+    - .rodata
+    - .text
+    - .bss
+    - .sbss
+  ld_bss_is_noload: false
+  disasm_unknown: true
+  global_vram_start: 0x80010000
+segments:
+  - name: bobo3
+    type: code
+    start: 0x0
+    vram: 0x80180000
+    align: 4
+    subalign: 4
+    subsegments:
+      - [0x0, data]  # TODO: boss-specific, not yet identified
+      - [0x280, .data, e_init]  # OBJ_LAYOUT_HORIZONTAL (53 rooms)
+      - [0x354, .data, e_init]  # OBJ_LAYOUT_VERTICAL (53 rooms)
+      - [0x424, .data, e_init]
+      - [0x534, data]  # TODO: boss-specific, not yet identified
+      - [0x540, .data, e_particles]  # EInitObtainable
+      - [0x54C, data]  # TODO: boss-specific, not yet identified
+      - [0x564, .data, e_stage_name]  # g_EInitInteractable
+      - [0x570, data]  # TODO: boss-specific, not yet identified
+      - [0x57C, .data, e_lock_camera]  # g_EInitLockCamera
+      - [0x588, .data, e_room_bg]  # g_EInitCommon
+      - [0x594, .data, st_collision]  # g_EInitDamageNum
+      - [0x5A0, data]  # TODO: boss-specific, not yet identified
+      - [0x61C, .data, e_room_bg]  # BackgroundBlockInit[2]
+      - [0x644, .data, e_red_door_tiles]  # RedDoorTiles[2][8]
+      - [0x664, .data, e_lock_camera]  # hitbox/data/tilemapProps (shared statics)
+      - [0x6E4, data]  # TODO: boss-specific, not yet identified
+      - [0x14E4, .data, e_red_door]  # g_eRedDoorUV (shared static, e_red_door.h)
+      - [0x14FC, data]  # TODO: boss-specific, not yet identified
+      - [0x1C94, .data, e_init]  # room layout: common horizontal-default (empty room)
+      - [0x1CA8, .data, e_init]  # room layout: room-specific horizontal list
+      - [0x1D70, .data, e_init]  # room layout: room-specific (H+V combined)
+      - [0x1E38, .data, e_init]  # room layout: room-specific horizontal list
+      - [0x1E58, .data, e_init]  # room layout: common vertical-default (empty room)
+      - [0x1E6C, .data, e_init]  # room layout: room-specific vertical list
+      - [0x1F34, .data, e_init]  # room layout: room-specific (H+V combined)
+      - [0x1FFC, .data, e_init]  # room layout: room-specific vertical list
+      - [0x201C, data]  # TODO: boss-specific, not yet identified (continues to e_room_bg.c code)
+      - [0x1CC68, c, e_room_bg]
+      - [0x1CD30, c, e_lock_camera]
+      # Scylla-specific behavior code (confirmed via `jr $ra` scan: 54 real
+      # function returns found here, vs. 0 in the head `data` gap).
+      - [0x1CEEC, c]
+      - [0x26704, c, st_update]
+      - [0x26B38, c, st_collision]
+      - [0x282F4, c, create_entity]
+      - [0x28E6C, c, e_red_door]
+      - [0x29B1C, c, st_common]
+      # Second Scylla-specific code region (confirmed via `jr $ra` scan: 16 real
+      # function returns found here). bo3 has two separate boss-code regions.
+      - [0x2AFCC, c]
+      - [0x2D93C, c, e_misc]
+      - [0x2FCD8, c, e_stage_name]
+      - [0x30B2C, c, e_particles]
+      - [0x31370, c, e_room_fg]
+      - [0x3145C, c, popup]
+      - [0x3178C, c, prim_helpers]
+      - [0x31FBC, c, e_life_up]
+      - [0x32870, data]  # TODO: boss-specific, not yet identified (0xcc0 bytes, tail)
+  - [0x33530]

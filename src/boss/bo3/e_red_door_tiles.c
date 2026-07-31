@@ -1,0 +1,9 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+#include "bo3.h"
+
+// Transcribed byte-for-byte from asm/us/boss/bo3/data/0.data.s (D_us_80180644,
+// 0x644-0x664).
+u16 OVL_EXPORT(RedDoorTiles)[][8] = {
+    {0x0001, 0x0001, 0x0001, 0x0001, 0x0000, 0x0000, 0x0000, 0x0000},
+    {0x04FA, 0x04FA, 0x04FA, 0x04FA, 0x0000, 0x0000, 0x0000, 0x0000},
+};
