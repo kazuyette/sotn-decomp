@@ -37,4 +37,4 @@ objdiff*.json
 
 # rust
 target/**
-.claude/
+overlay_import_log.txt

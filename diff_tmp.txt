@@ -1,0 +1,1090 @@
+TARGET                                                   CURRENT (24573)                            
+2b9ec:    addiu   sp,sp,-0x68                     i      2b9ec:    addiu   sp,sp,-0x58              
+2b9f0:    sw      s1,0x4c(sp)                     s      2b9f0:    sw      s1,0x3c(sp)              
+2b9f4:    move    s1,a0                                  2b9f4:    move    s1,a0                    
+2b9f8:    sw      ra,0x60(sp)                     s      2b9f8:    sw      ra,0x50(sp)              
+2b9fc:    sw      s5,0x5c(sp)                     s      2b9fc:    sw      s5,0x4c(sp)              
+2ba00:    sw      s4,0x58(sp)                     s      2ba00:    sw      s4,0x48(sp)              
+2ba04:    sw      s3,0x54(sp)                     s      2ba04:    sw      s3,0x44(sp)              
+2ba08:    sw      s2,0x50(sp)                     s      2ba08:    sw      s2,0x40(sp)              
+2ba0c:    sw      s0,0x48(sp)                     s      2ba0c:    sw      s0,0x38(sp)              
+2ba10:    lw      v0,0(s1)                               2ba10:    lw      v0,0(s1)                 
+2ba14:    nop                                            2ba14:    nop                              
+2ba18:    lbu     v1,0x24(v0)                            2ba18:    lbu     v1,0x24(v0)              
+2ba1c:    nop                                            2ba1c:    nop                              
+2ba20:    sltiu   v0,v1,5                                2ba20:    sltiu   v0,v1,5                  
+2ba24:    beqz    v0,2bfb0 ~>                            2ba24:    beqz    v0,2bf94 ~>              
+2ba28:    sll     v0,v1,0x2                              2ba28:    sll     v0,v1,0x2                
+2ba2c:    lui     at,0x801b                              2ba2c:    lui     at,0x801b                
+2ba30:    addu    at,at,v0                               2ba30:    addu    at,at,v0                 
+2ba34:    lw      v0,-0x6d48(at)                  i      2ba34:    lw      v0,-0x6d3c(at)           
+2ba38:    nop                                            2ba38:    nop                              
+2ba3c:    jr      v0                                     2ba3c:    jr      v0                       
+2ba40:    nop                                            2ba40:    nop                              
+2ba44:    lw      v1,0(s1)                               2ba44:    lw      v1,0(s1)                 
+2ba48:    li      v0,0xf                                 2ba48:    li      v0,0xf                   
+2ba4c:    sh      v0,0x1a(s1)                            2ba4c:    sh      v0,0x1a(s1)              
+2ba50:    li      v0,0x33                                2ba50:    li      v0,0x33                  
+2ba54:    sh      v0,0xe(s1)                             2ba54:    sh      v0,0xe(s1)               
+2ba58:    lbu     v0,0x28(v1)                            2ba58:    lbu     v0,0x28(v1)              
+2ba5c:    nop                                            2ba5c:    nop                              
+2ba60:    andi    v0,v0,0x1                              2ba60:    andi    v0,v0,0x1                
+2ba64:    beqz    v0,2ba7c ~>                            2ba64:    beqz    v0,2ba7c ~>              
+2ba68:    li      v0,0xb8                                2ba68:    li      v0,0xb8                  
+2ba6c:    sb      v0,0x24(s1)                            2ba6c:    sb      v0,0x24(s1)              
+2ba70:    sb      v0,0xc(s1)                             2ba70:    sb      v0,0xc(s1)               
+2ba74:    j       1aba8c                                 2ba74:    j       1aba8c                   
+2ba78:    li      v0,0xa8                                2ba78:    li      v0,0xa8                  
+2ba7c: ~> li      v0,0xa8                                2ba7c: ~> li      v0,0xa8                  
+2ba80:    sb      v0,0x24(s1)                            2ba80:    sb      v0,0x24(s1)              
+2ba84:    sb      v0,0xc(s1)                             2ba84:    sb      v0,0xc(s1)               
+2ba88:    li      v0,0xb8                                2ba88:    li      v0,0xb8                  
+2ba8c:    sb      v0,0x30(s1)                            2ba8c:    sb      v0,0x30(s1)              
+2ba90:    sb      v0,0x18(s1)                            2ba90:    sb      v0,0x18(s1)              
+2ba94:    lw      v0,0(s1)                               2ba94:    lw      v0,0(s1)                 
+2ba98:    nop                                            2ba98:    nop                              
+2ba9c:    lbu     v0,0x28(v0)                            2ba9c:    lbu     v0,0x28(v0)              
+2baa0:    nop                                            2baa0:    nop                              
+2baa4:    andi    v0,v0,0x3                              2baa4:    andi    v0,v0,0x3                
+2baa8:    sltiu   v0,v0,2                                2baa8:    sltiu   v0,v0,2                  
+2baac:    beqz    v0,2bac4 ~>                            2baac:    beqz    v0,2bac4 ~>              
+2bab0:    li      v0,0xc8                                2bab0:    li      v0,0xc8                  
+2bab4:    sb      v0,0x19(s1)                            2bab4:    sb      v0,0x19(s1)              
+2bab8:    sb      v0,0xd(s1)                             2bab8:    sb      v0,0xd(s1)               
+2babc:    j       1abad4                                 2babc:    j       1abad4                   
+2bac0:    li      v0,0xd8                                2bac0:    li      v0,0xd8                  
+2bac4: ~> li      v0,0xd8                                2bac4: ~> li      v0,0xd8                  
+2bac8:    sb      v0,0x19(s1)                            2bac8:    sb      v0,0x19(s1)              
+2bacc:    sb      v0,0xd(s1)                             2bacc:    sb      v0,0xd(s1)               
+2bad0:    li      v0,0xc8                                2bad0:    li      v0,0xc8                  
+2bad4:    sb      v0,0x31(s1)                            2bad4:    sb      v0,0x31(s1)              
+2bad8:    sb      v0,0x25(s1)                            2bad8:    sb      v0,0x25(s1)              
+2badc:    lw      v1,0(s1)                               2badc:    lw      v1,0(s1)                 
+2bae0:    li      v0,0x68                                2bae0:    li      v0,0x68                  
+2bae4:    sh      v0,0x26(s1)                            2bae4:    sh      v0,0x26(s1)              
+2bae8:    li      v0,0x2                                 2bae8:    li      v0,0x2                   
+2baec:    sh      v0,0x32(s1)                            2baec:    sh      v0,0x32(s1)              
+2baf0:    lbu     v0,0x28(v1)                            2baf0:    lbu     v0,0x28(v1)              
+2baf4:    nop                                            2baf4:    nop                              
+2baf8:    sll     v0,v0,0x3                              2baf8:    sll     v0,v0,0x3                
+2bafc:    lui     at,0x8018                              2bafc:    lui     at,0x8018                
+2bb00:    addu    at,at,v0                               2bb00:    addu    at,at,v0                 
+2bb04:    lw      v0,0xa48(at)                           2bb04:    lw      v0,0xa48(at)             
+2bb08:    nop                                            2bb08:    nop                              
+2bb0c:    sw      v0,0xc(v1)                             2bb0c:    sw      v0,0xc(v1)               
+2bb10:    lw      v1,0(s1)                               2bb10:    lw      v1,0(s1)                 
+2bb14:    nop                                            2bb14:    nop                              
+2bb18:    lbu     v0,0x28(v1)                            2bb18:    lbu     v0,0x28(v1)              
+2bb1c:    nop                                            2bb1c:    nop                              
+2bb20:    sll     v0,v0,0x3                              2bb20:    sll     v0,v0,0x3                
+2bb24:    lui     at,0x8018                              2bb24:    lui     at,0x8018                
+2bb28:    addu    at,at,v0                               2bb28:    addu    at,at,v0                 
+2bb2c:    lw      v0,0xa4c(at)                           2bb2c:    lw      v0,0xa4c(at)             
+2bb30:    nop                                            2bb30:    nop                              
+2bb34:    sw      v0,0x10(v1)                            2bb34:    sw      v0,0x10(v1)              
+2bb38:    lw      v1,0(s1)                               2bb38:    lw      v1,0(s1)                 
+2bb3c:    li      v0,0x10                                2bb3c:    li      v0,0x10                  
+2bb40:    sh      v0,0x1e(v1)                            2bb40:    sh      v0,0x1e(v1)              
+2bb44:    sh      v0,0x1c(v1)                            2bb44:    sh      v0,0x1c(v1)              
+2bb48:    lw      v1,0(s1)                               2bb48:    lw      v1,0(s1)                 
+2bb4c:    li      v0,0x1                                 2bb4c:    li      v0,0x1                   
+2bb50:    sb      v0,0x24(v1)                            2bb50:    sb      v0,0x24(v1)              
+2bb54:    lw      v1,0(s1)                               2bb54:    lw      v1,0(s1)                 
+2bb58:    nop                                            2bb58:    nop                              
+2bb5c:    lbu     v0,0x28(v1)                            2bb5c:    lbu     v0,0x28(v1)              
+2bb60:    nop                                            2bb60:    nop                              
+2bb64:    addiu   v0,v0,-8                               2bb64:    addiu   v0,v0,-8                 
+2bb68:    sltiu   v0,v0,4                                2bb68:    sltiu   v0,v0,4                  
+2bb6c:    beqz    v0,2bfb0 ~>                            2bb6c:    beqz    v0,2bf94 ~>              
+2bb70:    li      v0,0x8                                 2bb70:    li      v0,0x8                   
+2bb74:    sh      v0,0x1e(v1)                     <                                                 
+2bb78:    j       1abe48                          i      2bb74:    j       1abf84                   
+2bb7c:    sh      v0,0x1c(v1)                     i      2bb78:    sh      v0,0x1e(v1)              
+2bb80:    lw      v0,0(s1)                        r      2bb7c:    lw      t1,0(s1)                 
+2bb84:    nop                                            2bb80:    nop                              
+2bb88:    lw      v1,0x10(v0)                     r      2bb84:    lw      a0,0x10(t1)              
+                                                  >      2bb88:    lhu     v1,0xa(t1)               
+2bb8c:    nop                                     |      2bb8c:    lhu     s4,0x14(t1)              
+2bb90:    addiu   v1,v1,0x800                     r      2bb90:    addiu   v0,a0,0x800              
+2bb94:    sw      v1,0x10(v0)                     r      2bb94:    sw      v0,0x10(t1)              
+2bb98:    lw      v1,0(s1)                        <                                                 
+2bb9c:    nop                                     <                                                 
+2bba0:    lbu     v0,0x28(v1)                     r      2bb98:    lbu     v0,0x28(t1)              
+2bba4:    nop                                            2bb9c:    nop                              
+2bba8:    sltiu   v0,v0,0xc                              2bba0:    sltiu   v0,v0,0xc                
+2bbac:    bnez    v0,2bbc4 ~>                     i      2bba4:    bnez    v0,2bbb4 ~>              
+2bbb0:    addiu   a2,sp,0x10                      |      2bba8:    addiu   s0,v1,4                  
+                                                  >      2bbac:    addiu   v0,a0,0x1800             
+                                                  >      2bbb0:    sw      v0,0x10(t1)              
+2bbb4:    lw      v0,0x10(v1)                     |      2bbb4: ~> sll     a0,s4,0x10               
+2bbb8:    nop                                     |      2bbb8:    sra     a0,a0,0x10               
+2bbbc:    addiu   v0,v0,0x1000                    |      2bbbc:    sll     a1,s0,0x10               
+2bbc0:    sw      v0,0x10(v1)                     |      2bbc0:    sra     a1,a1,0x10               
+2bbc4: ~> lw      a0,0(s1)                        |      2bbc4:    addiu   a2,sp,0x10               
+2bbc8:    nop                                     |      2bbc8:    move    a3,zero                  
+2bbcc:    lbu     v0,0x28(a0)                     r      2bbcc:    lbu     v0,0x28(t1)              
+2bbd0:    lhu     v1,0x1a(a0)                     r      2bbd0:    lhu     v1,0x1a(t1)              
+2bbd4:    sll     v0,v0,0x1                              2bbd4:    sll     v0,v0,0x1                
+2bbd8:    lui     at,0x8018                              2bbd8:    lui     at,0x8018                
+2bbdc:    addu    at,at,v0                               2bbdc:    addu    at,at,v0                 
+2bbe0:    lhu     v0,0xac8(at)                           2bbe0:    lhu     v0,0xac8(at)             
+2bbe4:    nop                                     <                                                 
+2bbe8:    addu    v1,v1,v0                        <                                                 
+2bbec:    sh      v1,0x1a(a0)                     <                                                 
+2bbf0:    lw      v0,0(s1)                        <                                                 
+2bbf4:    move    a3,zero                         <                                                 
+2bbf8:    lhu     s4,0xa(v0)                      <                                                 
+2bbfc:    lhu     s5,0x14(v0)                     <                                                 
+2bc00:    lh      a0,0x14(v0)                     <                                                 
+2bc04:    lui     v0,0x8004                       r      2bbe4:    lui     t0,0x8004                
+2bc08:    lw      v0,-0x3844(v0)                  r      2bbe8:    lw      t0,-0x3844(t0)           
+2bc0c:    addiu   s0,s4,4                         |      2bbec:    addu    v1,v1,v0                 
+2bc10:    sll     a1,s0,0x10                      <                                                 
+2bc14:    jalr    v0                              r      2bbf0:    jalr    t0                       
+2bc18:    sra     a1,a1,0x10                      |      2bbf4:    sh      v1,0x1a(t1)              
+2bc1c:    lw      v0,0x10(sp)                            2bbf8:    lw      v0,0x10(sp)              
+2bc20:    nop                                            2bbfc:    nop                              
+2bc24:    andi    v0,v0,0x1                              2bc00:    andi    v0,v0,0x1                
+2bc28:    beqz    v0,2bfb0 ~>                            2bc04:    beqz    v0,2bf94 ~>              
+2bc2c:    move    s3,zero                         |      2bc08:    andi    s3,s4,0xffff             
+2bc30:    lhu     v0,0x28(sp)                            2bc0c:    lhu     v0,0x28(sp)              
+2bc34:    move    s2,s5                           r      2bc10:    move    s2,zero                  
+2bc38:    addu    s4,v0,s0                        r      2bc14:    addu    s5,v0,s0                 
+2bc3c: ~> lui     v0,0x8007                              2bc18: ~> lui     v0,0x8007                
+2bc40:    lw      v0,-0x3c48(v0)                         2bc1c:    lw      v0,-0x3c48(v0)           
+2bc44:    nop                                            2bc20:    nop                              
+2bc48:    lw      a0,0x7c(v0)                            2bc24:    lw      a0,0x7c(v0)              
+2bc4c:    jal     1cd41c                          i      2bc28:    jal     1cd23c                   
+2bc50:    li      a1,0x2                                 2bc2c:    li      a1,0x2                   
+2bc54:    move    s0,v0                                  2bc30:    move    s0,v0                    
+2bc58:    beqz    s0,2bcc0 ~>                            2bc34:    beqz    s0,2bc9c ~>              
+2bc5c:    nop                                            2bc38:    nop                              
+2bc60:    jal     1cd600                          i      2bc3c:    jal     1cd420                   
+2bc64:    move    a0,s0                                  2bc40:    move    a0,s0                    
+2bc68:    lw      v1,0(s0)                               2bc44:    lw      v1,0(s0)                 
+2bc6c:    li      v0,0x2                                 2bc48:    li      v0,0x2                   
+2bc70:    sb      v0,0x24(v1)                            2bc4c:    sb      v0,0x24(v1)              
+2bc74:    lw      v1,0(s0)                               2bc50:    lw      v1,0(s0)                 
+2bc78:    addiu   v0,s4,-8                        r      2bc54:    addiu   v0,s5,-8                 
+2bc7c:    sh      v0,0xa(v1)                             2bc58:    sh      v0,0xa(v1)               
+2bc80:    lw      v0,0(s1)                               2bc5c:    lw      v0,0(s1)                 
+2bc84:    nop                                            2bc60:    nop                              
+2bc88:    lbu     v0,0x28(v0)                     i      2bc64:    lbu     v0,0x24(v0)              
+2bc8c:    nop                                            2bc68:    nop                              
+2bc90:    sltiu   v0,v0,0xc                              2bc6c:    sltiu   v0,v0,0xc                
+2bc94:    beqz    v0,2bca8 ~>                            2bc70:    beqz    v0,2bc84 ~>              
+2bc98:    nop                                            2bc74:    nop                              
+2bc9c:    lw      v0,0(s0)                               2bc78:    lw      v0,0(s0)                 
+2bca0:    j       1abcc0                          i      2bc7c:    j       1abc9c                   
+2bca4:    sh      s2,0x14(v0)                     r      2bc80:    sh      s3,0x14(v0)              
+2bca8: ~> lw      v0,0(s0)                               2bc84: ~> lw      v0,0(s0)                 
+2bcac:    nop                                            2bc88:    nop                              
+2bcb0:    sh      s5,0x14(v0)                     r      2bc8c:    sh      s4,0x14(v0)              
+2bcb4:    lw      v1,0(s0)                               2bc90:    lw      v1,0(s0)                 
+2bcb8:    li      v0,0x3                                 2bc94:    li      v0,0x3                   
+2bcbc:    sb      v0,0x24(v1)                            2bc98:    sb      v0,0x24(v1)              
+2bcc0: ~> addiu   s3,s3,1                         r      2bc9c: ~> addiu   s2,s2,1                  
+2bcc4:    slti    v0,s3,3                         r      2bca0:    slti    v0,s2,3                  
+2bcc8:    bnez    v0,2bc3c ~>                            2bca4:    bnez    v0,2bc18 ~>              
+2bccc:    addiu   s2,s2,4                         r      2bca8:    addiu   s3,s3,4                  
+2bcd0:    jal     1cd654                          i      2bcac:    jal     1cd474                   
+2bcd4:    move    a0,s1                                  2bcb0:    move    a0,s1                    
+2bcd8:    j       1abfb8                          i      2bcb4:    j       1abf9c                   
+2bcdc:    nop                                            2bcb8:    nop                              
+2bce0:    li      v0,0xf                                 2bcbc:    li      v0,0xf                   
+2bce4:    sh      v0,0x1a(s1)                            2bcc0:    sh      v0,0x1a(s1)              
+2bce8:    li      v0,0x33                                2bcc4:    li      v0,0x33                  
+2bcec:    sh      v0,0xe(s1)                             2bcc8:    sh      v0,0xe(s1)               
+2bcf0:    li      v0,0xb8                                2bccc:    li      v0,0xb8                  
+2bcf4:    sb      v0,0x24(s1)                            2bcd0:    sb      v0,0x24(s1)              
+2bcf8:    sb      v0,0xc(s1)                             2bcd4:    sb      v0,0xc(s1)               
+2bcfc:    li      v0,0xc8                                2bcd8:    li      v0,0xc8                  
+2bd00:    sb      v0,0x30(s1)                            2bcdc:    sb      v0,0x30(s1)              
+2bd04:    sb      v0,0x18(s1)                            2bce0:    sb      v0,0x18(s1)              
+2bd08:    sb      v0,0x19(s1)                            2bce4:    sb      v0,0x19(s1)              
+2bd0c:    sb      v0,0xd(s1)                             2bce8:    sb      v0,0xd(s1)               
+2bd10:    li      v0,0xd8                                2bcec:    li      v0,0xd8                  
+2bd14:    sb      v0,0x31(s1)                            2bcf0:    sb      v0,0x31(s1)              
+2bd18:    sb      v0,0x25(s1)                            2bcf4:    sb      v0,0x25(s1)              
+2bd1c:    li      v0,0x6a                                2bcf8:    li      v0,0x6a                  
+2bd20:    sh      v0,0x26(s1)                            2bcfc:    sh      v0,0x26(s1)              
+2bd24:    li      v0,0x2                                 2bd00:    li      v0,0x2                   
+2bd28:    jal     1bc0dc                          i      2bd04:    jal     1bbefc                   
+2bd2c:    sh      v0,0x32(s1)                            2bd08:    sh      v0,0x32(s1)              
+2bd30:    andi    v0,v0,0x7                              2bd0c:    andi    v0,v0,0x7                
+2bd34:    negu    v0,v0                           <                                                 
+2bd38:    sll     v1,v0,0x2                              2bd10:    sll     v1,v0,0x2                
+2bd3c:    addu    v1,v1,v0                               2bd14:    addu    v1,v1,v0                 
+                                                  >      2bd18:    negu    v1,v1                    
+2bd40:    lw      v0,0(s1)                               2bd1c:    lw      v0,0(s1)                 
+2bd44:    sll     v1,v1,0xb                              2bd20:    sll     v1,v1,0xb                
+2bd48:    jal     1bc0dc                          i      2bd24:    jal     1bbefc                   
+2bd4c:    sw      v1,0xc(v0)                             2bd28:    sw      v1,0xc(v0)               
+2bd50:    lui     v1,0xfffe                              2bd2c:    lui     v1,0xfffe                
+2bd54:    ori     v1,v1,0x8000                           2bd30:    ori     v1,v1,0x8000             
+2bd58:    andi    v0,v0,0x7                              2bd34:    andi    v0,v0,0x7                
+2bd5c:    sll     v0,v0,0xd                              2bd38:    sll     v0,v0,0xd                
+2bd60:    lw      a0,0(s1)                               2bd3c:    lw      a0,0(s1)                 
+2bd64:    subu    v1,v1,v0                               2bd40:    subu    v1,v1,v0                 
+2bd68:    jal     1bc0dc                          i      2bd44:    jal     1bbefc                   
+2bd6c:    sw      v1,0x10(a0)                            2bd48:    sw      v1,0x10(a0)              
+2bd70:    andi    v0,v0,0x3                              2bd4c:    andi    v0,v0,0x3                
+2bd74:    sll     v0,v0,0x1                              2bd50:    sll     v0,v0,0x1                
+2bd78:    lw      v1,0(s1)                               2bd54:    lw      v1,0(s1)                 
+2bd7c:    j       1abb74                          i      2bd58:    j       1abf80                   
+2bd80:    ori     v0,v0,0x8                              2bd5c:    ori     v0,v0,0x8                
+2bd84:    li      v0,0xf                                 2bd60:    li      v0,0xf                   
+2bd88:    sh      v0,0x1a(s1)                            2bd64:    sh      v0,0x1a(s1)              
+2bd8c:    li      v0,0x33                                2bd68:    li      v0,0x33                  
+2bd90:    sh      v0,0xe(s1)                             2bd6c:    sh      v0,0xe(s1)               
+2bd94:    li      v0,0xb8                                2bd70:    li      v0,0xb8                  
+2bd98:    sb      v0,0x24(s1)                            2bd74:    sb      v0,0x24(s1)              
+2bd9c:    sb      v0,0xc(s1)                             2bd78:    sb      v0,0xc(s1)               
+2bda0:    li      v0,0xc8                                2bd7c:    li      v0,0xc8                  
+2bda4:    sb      v0,0x30(s1)                            2bd80:    sb      v0,0x30(s1)              
+2bda8:    sb      v0,0x18(s1)                            2bd84:    sb      v0,0x18(s1)              
+2bdac:    sb      v0,0x19(s1)                            2bd88:    sb      v0,0x19(s1)              
+2bdb0:    sb      v0,0xd(s1)                             2bd8c:    sb      v0,0xd(s1)               
+2bdb4:    li      v0,0xd8                                2bd90:    li      v0,0xd8                  
+2bdb8:    sb      v0,0x31(s1)                            2bd94:    sb      v0,0x31(s1)              
+2bdbc:    sb      v0,0x25(s1)                            2bd98:    sb      v0,0x25(s1)              
+2bdc0:    li      v0,0x6a                                2bd9c:    li      v0,0x6a                  
+2bdc4:    sh      v0,0x26(s1)                            2bda0:    sh      v0,0x26(s1)              
+2bdc8:    li      v0,0x2                                 2bda4:    li      v0,0x2                   
+2bdcc:    jal     1bc0dc                          i      2bda8:    jal     1bbefc                   
+2bdd0:    sh      v0,0x32(s1)                            2bdac:    sh      v0,0x32(s1)              
+2bdd4:    andi    v0,v0,0x7                              2bdb0:    andi    v0,v0,0x7                
+2bdd8:    sll     v0,v0,0xe                              2bdb4:    sll     v0,v0,0xe                
+2bddc:    li      v1,0xe000                       i      2bdb8:    li      v1,-0x2000               
+2bde0:    lw      a0,0(s1)                               2bdbc:    lw      a0,0(s1)                 
+2bde4:    subu    v1,v1,v0                               2bdc0:    subu    v1,v1,v0                 
+2bde8:    jal     1bc0dc                          i      2bdc4:    jal     1bbefc                   
+2bdec:    sw      v1,0xc(a0)                             2bdc8:    sw      v1,0xc(a0)               
+2bdf0:    lui     v1,0xfffe                              2bdcc:    lui     v1,0xfffe                
+2bdf4:    ori     v1,v1,0x8000                           2bdd0:    ori     v1,v1,0x8000             
+2bdf8:    andi    v0,v0,0x7                              2bdd4:    andi    v0,v0,0x7                
+2bdfc:    sll     v0,v0,0xd                              2bdd8:    sll     v0,v0,0xd                
+2be00:    lw      a0,0(s1)                               2bddc:    lw      a0,0(s1)                 
+2be04:    subu    v1,v1,v0                               2bde0:    subu    v1,v1,v0                 
+2be08:    jal     1bc0dc                          i      2bde4:    jal     1bbefc                   
+2be0c:    sw      v1,0x10(a0)                            2bde8:    sw      v1,0x10(a0)              
+2be10:    andi    v0,v0,0x3                              2bdec:    andi    v0,v0,0x3                
+2be14:    sll     v0,v0,0x1                              2bdf0:    sll     v0,v0,0x1                
+2be18:    lw      v1,0(s1)                               2bdf4:    lw      v1,0(s1)                 
+2be1c:    ori     v0,v0,0x8                       r      2bdf8:    ori     a0,v0,0x8                
+2be20:    sh      v0,0x1e(v1)                     r      2bdfc:    sh      a0,0x1e(v1)              
+2be24:    sh      v0,0x1c(v1)                     r      2be00:    sh      a0,0x1c(v1)              
+2be28:    lw      v1,0(s1)                               2be04:    lw      v1,0(s1)                 
+2be2c:    nop                                            2be08:    nop                              
+2be30:    lw      v0,0xc(v1)                             2be0c:    lw      v0,0xc(v1)               
+2be34:    nop                                            2be10:    nop                              
+2be38:    bgtz    v0,2be44 ~>                     |      2be14:    blez    v0,2be20 ~>              
+2be3c:    li      v0,0x10                         r      2be18:    li      a0,0x11                  
+2be40:    li      v0,0x11                         r      2be1c:    li      a0,0x10                  
+2be44: ~> sb      v0,0x28(v1)                     <                                                 
+2be48:    lw      v1,0(s1)                        <                                                 
+2be4c:    li      v0,0x4                          <                                                 
+2be50:    j       1abfb0                          i      2be20: ~> j       1abf88                   
+2be54:    sb      v0,0x24(v1)                     r      2be24:    sb      a0,0x28(v1)              
+2be58:    lw      v1,0(s1)                        r      2be28:    lw      a1,0(s1)                 
+2be5c:    nop                                            2be2c:    nop                              
+2be60:    lw      v0,0x10(v1)                     r      2be30:    lw      v0,0x10(a1)              
+                                                  >      2be34:    lhu     s3,0x14(a1)              
+2be64:    nop                                     |      2be38:    lhu     a2,0xa(a1)               
+2be68:    addiu   v0,v0,0x2000                           2be3c:    addiu   v0,v0,0x2000             
+2be6c:    sw      v0,0x10(v1)                     r      2be40:    sw      v0,0x10(a1)              
+2be70:    lw      a0,0(s1)                        |      2be44:    lhu     v0,0x1c(a1)              
+2be74:    nop                                     |      2be48:    move    a0,s3                    
+2be78:    lbu     v0,0x28(a0)                     <                                                 
+2be7c:    nop                                     <                                                 
+2be80:    beqz    v0,2bea8 ~>                     <                                                 
+2be84:    sll     v0,v0,0x1                       i      2be4c:    sll     v0,v0,0x10               
+2be88:    lhu     v1,0x1a(a0)                     |      2be50:    sra     v1,v0,0x10               
+2be8c:    lui     at,0x8018                       |      2be54:    srl     v0,v0,0x1f               
+2be90:    addu    at,at,v0                        r      2be58:    addu    v1,v1,v0                 
+2be94:    lhu     v0,0xac8(at)                    |      2be5c:    lbu     v0,0x28(a1)              
+2be98:    nop                                            2be60:    nop                              
+2be9c:    addu    v1,v1,v0                        |      2be64:    bnez    v0,2be80 ~>              
+2bea0:    j       1abeb8                          |      2be68:    sra     a3,v1,0x1                
+2bea4:    sh      v1,0x1a(a0)                     <                                                 
+2bea8: ~> lhu     v0,0x1a(a0)                     r      2be6c:    lhu     v0,0x1a(a1)              
+2beac:    nop                                            2be70:    nop                              
+2beb0:    addiu   v0,v0,-0x40                            2be74:    addiu   v0,v0,-0x40              
+                                                  >      2be78:    j       1abea0                   
+2beb4:    sh      v0,0x1a(a0)                     r      2be7c:    sh      v0,0x1a(a1)              
+                                                  >      2be80: ~> sll     v0,v0,0x1                
+2beb8:    addiu   a2,sp,0x10                      |      2be84:    lhu     v1,0x1a(a1)              
+2bebc:    lw      v1,0(s1)                        |      2be88:    lui     at,0x8018                
+2bec0:    move    a3,zero                         |      2be8c:    addu    at,at,v0                 
+2bec4:    lhu     s4,0xa(v1)                      r      2be90:    lhu     v0,0xac8(at)             
+2bec8:    lhu     s5,0x14(v1)                     |      2be94:    nop                              
+2becc:    lhu     v0,0x1c(v1)                     |      2be98:    addu    v1,v1,v0                 
+2bed0:    lh      a0,0x14(v1)                     |      2be9c:    sh      v1,0x1a(a1)              
+2bed4:    sll     v0,v0,0x10                      r      2bea0:    sll     a0,a0,0x10               
+2bed8:    sra     a1,v0,0x10                      r      2bea4:    sra     a0,a0,0x10               
+2bedc:    srl     v0,v0,0x1f                      |      2bea8:    addu    v1,a2,a3                 
+2bee0:    addu    a1,a1,v0                        |      2beac:    sll     a1,v1,0x10               
+2bee4:    sra     a1,a1,0x1                       i      2beb0:    sra     a1,a1,0x10               
+2bee8:    addu    a1,s4,a1                        |      2beb4:    addiu   a2,sp,0x10               
+2beec:    move    s4,a1                           r      2beb8:    move    a3,zero                  
+2bef0:    sll     a1,a1,0x10                      <                                                 
+2bef4:    lui     v0,0x8004                              2bebc:    lui     v0,0x8004                
+2bef8:    lw      v0,-0x3844(v0)                         2bec0:    lw      v0,-0x3844(v0)           
+2befc:    nop                                            2bec4:    nop                              
+2bf00:    jalr    v0                                     2bec8:    jalr    v0                       
+2bf04:    sra     a1,a1,0x10                      |      2becc:    move    s2,v1                    
+2bf08:    lw      v0,0x10(sp)                            2bed0:    lw      v0,0x10(sp)              
+2bf0c:    nop                                            2bed4:    nop                              
+2bf10:    andi    v0,v0,0x1                              2bed8:    andi    v0,v0,0x1                
+2bf14:    beqz    v0,2bfb0 ~>                            2bedc:    beqz    v0,2bf94 ~>              
+2bf18:    nop                                            2bee0:    nop                              
+2bf1c:    lw      a0,0(s1)                               2bee4:    lw      a0,0(s1)                 
+2bf20:    lhu     v1,0x28(sp)                            2bee8:    lhu     v1,0x28(sp)              
+2bf24:    lhu     v0,0xa(a0)                             2beec:    lhu     v0,0xa(a0)               
+2bf28:    nop                                            2bef0:    nop                              
+2bf2c:    addu    v0,v0,v1                               2bef4:    addu    v0,v0,v1                 
+2bf30:    sh      v0,0xa(a0)                             2bef8:    sh      v0,0xa(a0)               
+2bf34:    lw      a0,0(s1)                               2befc:    lw      a0,0(s1)                 
+2bf38:    nop                                            2bf00:    nop                              
+2bf3c:    lw      v0,0x10(a0)                            2bf04:    lw      v0,0x10(a0)              
+2bf40:    nop                                            2bf08:    nop                              
+2bf44:    negu    v0,v0                                  2bf0c:    negu    v0,v0                    
+2bf48:    srl     v1,v0,0x1f                             2bf10:    srl     v1,v0,0x1f               
+2bf4c:    addu    v0,v0,v1                               2bf14:    addu    v0,v0,v1                 
+2bf50:    sra     v0,v0,0x1                              2bf18:    sra     v0,v0,0x1                
+2bf54:    sw      v0,0x10(a0)                            2bf1c:    sw      v0,0x10(a0)              
+2bf58:    lw      v0,0(s1)                               2bf20:    lw      v0,0(s1)                 
+2bf5c:    nop                                            2bf24:    nop                              
+2bf60:    lw      v0,0x10(v0)                            2bf28:    lw      v0,0x10(v0)              
+2bf64:    nop                                            2bf2c:    nop                              
+2bf68:    slti    v0,v0,-0x3fff                          2bf30:    slti    v0,v0,-0x3fff            
+2bf6c:    bnez    v0,2bfb0 ~>                            2bf34:    bnez    v0,2bf94 ~>              
+2bf70:    nop                                            2bf38:    nop                              
+2bf74:    lui     a0,0x8008                              2bf3c:    lui     a0,0x8008                
+2bf78:    addiu   a0,a0,-0x27a8                          2bf40:    addiu   a0,a0,-0x27a8            
+2bf7c:    jal     1bfd64                          i      2bf44:    jal     1bfb84                   
+2bf80:    addiu   a1,a0,0x1780                           2bf48:    addiu   a1,a0,0x1780             
+2bf84:    move    s0,v0                                  2bf4c:    move    s0,v0                    
+2bf88:    beqz    s0,2bfa8 ~>                            2bf50:    beqz    s0,2bf70 ~>              
+2bf8c:    li      a0,0x6                                 2bf54:    li      a0,0x6                   
+2bf90:    jal     1be754                          i      2bf58:    jal     1be574                   
+2bf94:    move    a1,s0                                  2bf5c:    move    a1,s0                    
+2bf98:    li      v0,0x10                                2bf60:    li      v0,0x10                  
+2bf9c:    sh      s5,2(s0)                        r      2bf64:    sh      s3,2(s0)                 
+2bfa0:    sh      s4,6(s0)                        r      2bf68:    sh      s2,6(s0)                 
+2bfa4:    sh      v0,0x30(s0)                            2bf6c:    sh      v0,0x30(s0)              
+2bfa8: ~> jal     1cd654                          i      2bf70: ~> jal     1cd474                   
+2bfac:    move    a0,s1                                  2bf74:    move    a0,s1                    
+                                                  >      2bf78:    j       1abf94                   
+                                                  >      2bf7c:    nop                              
+                                                  >      2bf80:    sh      v0,0x1e(v1)              
+                                                  >      2bf84:    sh      v0,0x1c(v1)              
+                                                  >      2bf88:    lw      v1,0(s1)                 
+                                                  >      2bf8c:    li      v0,0x4                   
+                                                  >      2bf90:    sb      v0,0x24(v1)              
+2bfb0: ~> jal     1cceb4                          i      2bf94: ~> jal     1cccd4                   
+2bfb4:    move    a0,s1                                  2bf98:    move    a0,s1                    
+2bfb8:    lw      ra,0x60(sp)                     s      2bf9c:    lw      ra,0x50(sp)              
+2bfbc:    lw      s5,0x5c(sp)                     s      2bfa0:    lw      s5,0x4c(sp)              
+2bfc0:    lw      s4,0x58(sp)                     s      2bfa4:    lw      s4,0x48(sp)              
+2bfc4:    lw      s3,0x54(sp)                     s      2bfa8:    lw      s3,0x44(sp)              
+2bfc8:    lw      s2,0x50(sp)                     s      2bfac:    lw      s2,0x40(sp)              
+2bfcc:    lw      s1,0x4c(sp)                     s      2bfb0:    lw      s1,0x3c(sp)              
+2bfd0:    lw      s0,0x48(sp)                     s      2bfb4:    lw      s0,0x38(sp)              
+2bfd4:    addiu   sp,sp,0x68                      i      2bfb8:    addiu   sp,sp,0x58               
+2bfd8:    jr      ra                                     2bfbc:    jr      ra                       
+2bfdc:    nop                                            2bfc0:    nop                              
+2bfe0:    addiu   sp,sp,-0x28                            2bfc4:    addiu   sp,sp,-0x28              
+2bfe4:    sw      s2,0x18(sp)                     r      2bfc8:    sw      s4,0x20(sp)              
+2bfe8:    move    s2,a0                           r      2bfcc:    move    s4,a0                    
+2bfec:    sw      ra,0x20(sp)                     s      2bfd0:    sw      ra,0x24(sp)              
+2bff0:    sw      s3,0x1c(sp)                            2bfd4:    sw      s3,0x1c(sp)              
+2bff4:    sw      s1,0x14(sp)                     r      2bfd8:    sw      s2,0x18(sp)              
+2bff8:    sw      s0,0x10(sp)                     r      2bfdc:    sw      s1,0x14(sp)              
+                                                  >      2bfe0:    sw      s0,0x10(sp)              
+2bffc:    lh      a1,0x80(s2)                     r      2bfe4:    lh      a1,0x80(s4)              
+2c000:    lui     a0,0x801b                              2bfe8:    lui     a0,0x801b                
+2c004:    addiu   a0,a0,-0x6d34                   i      2bfec:    addiu   a0,a0,-0x6d48            
+2c008:    jal     1195c                                  2bff0:    jal     1195c                    
+2c00c:    nop                                            2bff4:    nop                              
+2c010:    lhu     v1,0x2c(s2)                     r      2bff8:    lhu     v1,0x2c(s4)              
+2c014:    nop                                            2bffc:    nop                              
+2c018:    sltiu   v0,v1,6                                2c000:    sltiu   v0,v1,6                  
+2c01c:    beqz    v0,2c52c ~>                            2c004:    beqz    v0,2c4e4 ~>              
+2c020:    sll     v0,v1,0x2                              2c008:    sll     v0,v1,0x2                
+2c024:    lui     at,0x801b                              2c00c:    lui     at,0x801b                
+2c028:    addu    at,at,v0                               2c010:    addu    at,at,v0                 
+2c02c:    lw      v0,-0x6d28(at)                         2c014:    lw      v0,-0x6d28(at)           
+2c030:    nop                                            2c018:    nop                              
+2c034:    jr      v0                                     2c01c:    jr      v0                       
+2c038:    nop                                            2c020:    nop                              
+2c03c:    lui     a0,0x8018                              2c024:    lui     a0,0x8018                
+2c040:    addiu   a0,a0,0x678                            2c028:    addiu   a0,a0,0x678              
+2c044:    jal     1c0204                          i      2c02c:    jal     1c0024                   
+2c048:    nop                                            2c030:    nop                              
+2c04c:    sh      zero,0x56(s2)                   r      2c034:    sh      zero,0x56(s4)            
+2c050:    lui     v0,0x8004                              2c038:    lui     v0,0x8004                
+2c054:    lbu     v0,-0x41f4(v0)                         2c03c:    lbu     v0,-0x41f4(v0)           
+2c058:    nop                                            2c040:    nop                              
+2c05c:    beqz    v0,2c0ac ~>                            2c044:    beqz    v0,2c094 ~>              
+2c060:    move    s1,zero                         r      2c048:    move    a1,zero                  
+2c064:    lui     a2,0x8018                       r      2c04c:    lui     a3,0x8018                
+2c068:    addiu   a2,a2,0xb00                     r      2c050:    addiu   a3,a3,0xb00              
+2c06c:    lui     a1,0x8018                       r      2c054:    lui     a2,0x8018                
+2c070:    addiu   a1,a1,0xaec                     r      2c058:    addiu   a2,a2,0xaec              
+2c074: ~> lhu     a0,0(a2)                        r      2c05c: ~> lhu     a0,0(a3)                 
+2c078:    addiu   a2,a2,2                         r      2c060:    addiu   a3,a3,2                  
+2c07c:    lhu     v0,0(a1)                        r      2c064:    lhu     v0,0(a2)                 
+2c080:    addiu   s1,s1,1                         r      2c068:    addiu   a1,a1,1                  
+2c084:    lui     v1,0x8007                              2c06c:    lui     v1,0x8007                
+2c088:    lw      v1,0x3084(v1)                          2c070:    lw      v1,0x3084(v1)            
+2c08c:    sll     v0,v0,0x1                              2c074:    sll     v0,v0,0x1                
+2c090:    addu    v0,v0,v1                               2c078:    addu    v0,v0,v1                 
+2c094:    sh      a0,0(v0)                               2c07c:    sh      a0,0(v0)                 
+2c098:    slti    v0,s1,0xa                       r      2c080:    slti    v0,a1,0xa                
+2c09c:    bnez    v0,2c074 ~>                            2c084:    bnez    v0,2c05c ~>              
+2c0a0:    addiu   a1,a1,2                         r      2c088:    addiu   a2,a2,2                  
+2c0a4:    j       1ac524                          i      2c08c:    j       1ac4dc                   
+2c0a8:    move    a0,s2                           r      2c090:    move    a0,s4                    
+2c0ac: ~> li      v0,0xa8                                2c094: ~> li      v0,0xa8                  
+2c0b0:    sh      v0,0x24(s2)                     r      2c098:    sh      v0,0x24(s4)              
+2c0b4:    li      v0,0x2                                 2c09c:    li      v0,0x2                   
+2c0b8:    sh      v0,0x3c(s2)                     r      2c0a0:    sh      v0,0x3c(s4)              
+2c0bc:    li      v0,0x10                                2c0a4:    li      v0,0x10                  
+2c0c0:    sh      v0,0x3e(s2)                     r      2c0a8:    sh      v0,0x3e(s4)              
+2c0c4:    li      v0,0x10                                2c0ac:    li      v0,0x10                  
+2c0c8:    sb      v0,0x46(s2)                     r      2c0b0:    sb      v0,0x46(s4)              
+2c0cc:    li      v0,0x28                                2c0b4:    li      v0,0x28                  
+2c0d0:    j       1ac52c                          i      2c0b8:    j       1ac4e4                   
+2c0d4:    sb      v0,0x47(s2)                     r      2c0bc:    sb      v0,0x47(s4)              
+2c0d8:    lh      v0,0x3e(s2)                     r      2c0c0:    lh      v0,0x3e(s4)              
+2c0dc:    nop                                            2c0c4:    nop                              
+2c0e0:    slti    v0,v0,0x10                             2c0c8:    slti    v0,v0,0x10               
+2c0e4:    beqz    v0,2c0f0 ~>                            2c0cc:    beqz    v0,2c0d8 ~>              
+2c0e8:    li      v0,0xc                                 2c0d0:    li      v0,0xc                   
+2c0ec:    sh      v0,0x56(s2)                     r      2c0d4:    sh      v0,0x56(s4)              
+2c0f0: ~> lh      v0,0x3e(s2)                     r      2c0d8: ~> lh      v0,0x3e(s4)              
+2c0f4:    nop                                            2c0dc:    nop                              
+2c0f8:    slti    v0,v0,8                                2c0e0:    slti    v0,v0,8                  
+2c0fc:    beqz    v0,2c108 ~>                            2c0e4:    beqz    v0,2c0f0 ~>              
+2c100:    li      v0,0xd                                 2c0e8:    li      v0,0xd                   
+2c104:    sh      v0,0x56(s2)                     r      2c0ec:    sh      v0,0x56(s4)              
+2c108: ~> lw      v0,0x34(s2)                     r      2c0f0: ~> lw      v0,0x34(s4)              
+2c10c:    nop                                            2c0f4:    nop                              
+2c110:    andi    v0,v0,0x100                            2c0f8:    andi    v0,v0,0x100              
+2c114:    beqz    v0,2c52c ~>                            2c0fc:    beqz    v0,2c4e4 ~>              
+2c118:    nop                                            2c100:    nop                              
+2c11c:    lhu     v0,0x2c(s2)                     r      2c104:    lhu     v0,0x2c(s4)              
+2c120:    j       1ac4a8                          i      2c108:    j       1ac460                   
+2c124:    sh      zero,0x3c(s2)                   r      2c10c:    sh      zero,0x3c(s4)            
+2c128:    li      a0,0x4                                 2c110:    li      a0,0x4                   
+2c12c:    lui     v0,0x8004                              2c114:    lui     v0,0x8004                
+2c130:    lw      v0,-0x3848(v0)                         2c118:    lw      v0,-0x3848(v0)           
+2c134:    nop                                            2c11c:    nop                              
+2c138:    jalr    v0                                     2c120:    jalr    v0                       
+2c13c:    li      a1,0x20                                2c124:    li      a1,0x20                  
+2c140:    sll     v0,v0,0x10                             2c128:    sll     v0,v0,0x10               
+2c144:    sra     a0,v0,0x10                      r      2c12c:    sra     v0,v0,0x10               
+2c148:    li      v0,-1                           <                                                 
+2c14c:    beq     a0,v0,2c1ac ~>                  <                                                 
+2c150:    sll     v0,a0,0x1                       r      2c130:    sll     v1,v0,0x1                
+2c154:    addu    v0,v0,a0                        r      2c134:    addu    v1,v1,v0                 
+2c158:    sll     v0,v0,0x2                       r      2c138:    sll     v1,v1,0x2                
+2c15c:    addu    v0,v0,a0                        r      2c13c:    addu    v1,v1,v0                 
+2c160:    sll     v0,v0,0x2                       r      2c140:    sll     v1,v1,0x2                
+2c164:    lui     v1,0x8008                       r      2c144:    lui     a0,0x8008                
+2c168:    addiu   v1,v1,0x6fec                    r      2c148:    addiu   a0,a0,0x6fec             
+2c16c:    addu    s0,v0,v1                        r      2c14c:    addu    a0,v1,a0                 
+2c170:    lw      v0,0x34(s2)                     |      2c150:    li      v1,-1                    
+2c174:    lui     v1,0x80                         <                                                 
+2c178:    sw      a0,0x64(s2)                     r      2c154:    sw      v0,0x64(s4)              
+2c17c:    sw      s0,0x7c(s2)                     |      2c158:    bne     v0,v1,2c1c0 ~>           
+2c180:    or      v0,v0,v1                        <                                                 
+2c184:    beqz    s0,2c20c ~>                     <                                                 
+2c188:    sw      v0,0x34(s2)                     r      2c15c:    sw      a0,0x7c(s4)              
+2c18c:    li      v0,0x8                          <                                                 
+2c190:    sh      v0,0x32(s0)                     <                                                 
+2c194:    lw      s0,0(s0)                        <                                                 
+2c198:    nop                                     <                                                 
+2c19c:    beqz    s0,2c20c ~>                     <                                                 
+2c1a0:    nop                                     <                                                 
+2c1a4:    j       1ac194                          <                                                 
+2c1a8:    sh      v0,0x32(s0)                     <                                                 
+2c1ac: ~> move    s1,zero                         r      2c160:    move    a1,zero                  
+2c1b0:    lui     a2,0x8018                       r      2c164:    lui     a3,0x8018                
+2c1b4:    addiu   a2,a2,0xb00                     r      2c168:    addiu   a3,a3,0xb00              
+2c1b8:    lui     v1,0x8004                              2c16c:    lui     v1,0x8004                
+2c1bc:    addiu   v1,v1,-0x41f4                          2c170:    addiu   v1,v1,-0x41f4            
+2c1c0:    lbu     v0,0(v1)                               2c174:    lbu     v0,0(v1)                 
+2c1c4:    lui     a1,0x8018                       r      2c178:    lui     a2,0x8018                
+2c1c8:    addiu   a1,a1,0xaec                     r      2c17c:    addiu   a2,a2,0xaec              
+2c1cc:    ori     v0,v0,0x1                              2c180:    ori     v0,v0,0x1                
+2c1d0:    sb      v0,0(v1)                               2c184:    sb      v0,0(v1)                 
+2c1d4: ~> lhu     a0,0(a2)                        r      2c188: ~> lhu     a0,0(a3)                 
+2c1d8:    addiu   a2,a2,2                         r      2c18c:    addiu   a3,a3,2                  
+2c1dc:    lhu     v0,0(a1)                        r      2c190:    lhu     v0,0(a2)                 
+2c1e0:    addiu   s1,s1,1                         r      2c194:    addiu   a1,a1,1                  
+2c1e4:    lui     v1,0x8007                              2c198:    lui     v1,0x8007                
+2c1e8:    lw      v1,0x3084(v1)                          2c19c:    lw      v1,0x3084(v1)            
+2c1ec:    sll     v0,v0,0x1                              2c1a0:    sll     v0,v0,0x1                
+2c1f0:    addu    v0,v0,v1                               2c1a4:    addu    v0,v0,v1                 
+2c1f4:    sh      a0,0(v0)                               2c1a8:    sh      a0,0(v0)                 
+2c1f8:    slti    v0,s1,0xa                       r      2c1ac:    slti    v0,a1,0xa                
+2c1fc:    bnez    v0,2c1d4 ~>                            2c1b0:    bnez    v0,2c188 ~>              
+2c200:    addiu   a1,a1,2                         r      2c1b4:    addiu   a2,a2,2                  
+2c204:    j       1ac524                          i      2c1b8:    j       1ac4dc                   
+2c208:    move    a0,s2                           r      2c1bc:    move    a0,s4                    
+2c20c: ~> lw      s0,0x7c(s2)                     r      2c1c0: ~> lw      v0,0x34(s4)              
+                                                  >      2c1c4:    lui     v1,0x80                  
+                                                  >      2c1c8:    or      v0,v0,v1                 
+                                                  >      2c1cc:    sw      v0,0x34(s4)              
+                                                  >      2c1d0:    li      v0,0x8                   
+                                                  >      2c1d4: ~> sh      v0,0x32(a0)              
+                                                  >      2c1d8:    lw      a0,0(a0)                 
+                                                  >      2c1dc:    nop                              
+                                                  >      2c1e0:    bnez    a0,2c1d4 ~>              
+2c210:    move    s1,zero                         r      2c1e4:    move    a1,zero                  
+                                                  >      2c1e8:    lw      a0,0x7c(s4)              
+2c214:    li      t0,0xf                          r      2c1ec:    li      t3,0xf                   
+2c218:    li      a3,0x80                         r      2c1f0:    li      t2,0x21                  
+2c21c:    li      a2,0x97                         r      2c1f4:    li      t1,0x80                  
+2c220:    li      a1,0xf0                         r      2c1f8:    li      t0,0x97                  
+2c224:    li      a0,0xff                         r      2c1fc:    li      a3,0xf0                  
+2c228:    li      v0,0x21                         r      2c200:    li      a2,0xff                  
+2c22c: ~> sh      t0,0x1a(s0)                     r      2c204: ~> sh      t3,0x1a(a0)              
+2c230:    sh      v0,0xe(s0)                      r      2c208:    sh      t2,0xe(a0)               
+2c234:    sb      a3,0x24(s0)                     r      2c20c:    sb      t1,0x24(a0)              
+2c238:    sb      a3,0xc(s0)                      r      2c210:    sb      t1,0xc(a0)               
+2c23c:    sb      a2,0x30(s0)                     r      2c214:    sb      t0,0x30(a0)              
+2c240:    sb      a2,0x18(s0)                     r      2c218:    sb      t0,0x18(a0)              
+2c244:    sb      a1,0x19(s0)                     r      2c21c:    sb      a3,0x19(a0)              
+2c248:    sb      a1,0xd(s0)                      r      2c220:    sb      a3,0xd(a0)               
+2c24c:    sb      a0,0x31(s0)                     r      2c224:    sb      a2,0x31(a0)              
+2c250:    sb      a0,0x25(s0)                     r      2c228:    sb      a2,0x25(a0)              
+2c254:    lhu     v0,2(s2)                        r      2c22c:    lhu     v0,2(s4)                 
+2c258:    nop                                            2c230:    nop                              
+2c25c:    addiu   v1,v0,-0x11                            2c234:    addiu   v1,v0,-0x11              
+2c260:    addiu   v0,v0,7                                2c238:    addiu   v0,v0,7                  
+2c264:    sh      v1,0x20(s0)                     r      2c23c:    sh      v1,0x20(a0)              
+2c268:    sh      v1,8(s0)                        r      2c240:    sh      v1,8(a0)                 
+                                                  >      2c244:    bnez    a1,2c25c ~>              
+2c26c:    sh      v0,0x2c(s0)                     r      2c248:    sh      v0,0x2c(a0)              
+2c270:    beqz    s1,2c284 ~>                     <                                                 
+2c274:    sh      v0,0x14(s0)                     r      2c24c:    sh      v0,0x14(a0)              
+2c278:    lhu     v0,6(s2)                        r      2c250:    lhu     v0,6(s4)                 
+2c27c:    j       1ac290                          i      2c254:    j       1ac268                   
+2c280:    addiu   v0,v0,8                                2c258:    addiu   v0,v0,8                  
+2c284: ~> lhu     v0,6(s2)                        r      2c25c: ~> lhu     v0,6(s4)                 
+2c288:    nop                                            2c260:    nop                              
+2c28c:    addiu   v0,v0,-0x18                            2c264:    addiu   v0,v0,-0x18              
+                                                  >      2c268:    addiu   v1,v0,0x10               
+                                                  >      2c26c:    addiu   a1,a1,1                  
+2c290:    sh      v0,0x16(s0)                     r      2c270:    sh      v0,0x16(a0)              
+2c294:    sh      v0,0xa(s0)                      r      2c274:    sh      v0,0xa(a0)               
+2c298:    addiu   s1,s1,1                         <                                                 
+2c29c:    lhu     v1,0xa(s0)                      <                                                 
+2c2a0:    li      v0,0xa8                                2c278:    li      v0,0xa8                  
+2c2a4:    sh      v0,0x26(s0)                     r      2c27c:    sh      v0,0x26(a0)              
+2c2a8:    li      v0,0x2                                 2c280:    li      v0,0x2                   
+2c2ac:    sh      v0,0x32(s0)                     r      2c284:    sh      v0,0x32(a0)              
+2c2b0:    slti    v0,s1,2                         r      2c288:    slti    v0,a1,2                  
+2c2b4:    addiu   v1,v1,0x10                      <                                                 
+2c2b8:    sh      v1,0x2e(s0)                     r      2c28c:    sh      v1,0x2e(a0)              
+2c2bc:    sh      v1,0x22(s0)                     r      2c290:    sh      v1,0x22(a0)              
+2c2c0:    lw      s0,0(s0)                        r      2c294:    lw      a0,0(a0)                 
+2c2c4:    bnez    v0,2c22c ~>                            2c298:    bnez    v0,2c204 ~>              
+2c2c8:    li      v0,0x21                         r      2c29c:    li      v1,0x20                  
+2c2cc:    lhu     v0,0x2c(s2)                     r      2c2a0:    lhu     v0,0x2c(s4)              
+2c2d0:    j       1ac4a4                          i      2c2a4:    j       1ac460                   
+2c2d4:    li      v1,0x20                         |      2c2a8:    sh      v1,0x80(s4)              
+2c2d8:    lhu     v0,0x80(s2)                     r      2c2ac:    lhu     v0,0x80(s4)              
+2c2dc:    nop                                            2c2b0:    nop                              
+2c2e0:    addiu   v0,v0,-1                               2c2b4:    addiu   v0,v0,-1                 
+2c2e4:    sh      v0,0x80(s2)                     r      2c2b8:    sh      v0,0x80(s4)              
+2c2e8:    sll     v0,v0,0x10                             2c2bc:    sll     v0,v0,0x10               
+2c2ec:    bnez    v0,2c52c ~>                            2c2c0:    bnez    v0,2c4e4 ~>              
+2c2f0:    nop                                            2c2c4:    nop                              
+2c2f4:    lhu     v0,0x2c(s2)                     r      2c2c8:    lhu     v0,0x2c(s4)              
+2c2f8:    j       1ac4ac                          i      2c2cc:    j       1ac464                   
+2c2fc:    addiu   v0,v0,1                                2c2d0:    addiu   v0,v0,1                  
+2c300:    move    s1,zero                         r      2c2d4:    move    a1,zero                  
+2c304:    lui     a2,0x8018                       r      2c2d8:    lui     a3,0x8018                
+2c308:    addiu   a2,a2,0xb00                     r      2c2dc:    addiu   a3,a3,0xb00              
+2c30c:    lui     v1,0x8004                       r      2c2e0:    lui     a2,0x8018                
+2c310:    addiu   v1,v1,-0x41f4                   r      2c2e4:    addiu   a2,a2,0xaec              
+                                                  >      2c2e8:    lui     v1,0x8004                
+                                                  >      2c2ec:    addiu   v1,v1,-0x41f4            
+2c314:    sh      zero,0x56(s2)                   r      2c2f0:    sh      zero,0x56(s4)            
+2c318:    lbu     v0,0(v1)                               2c2f4:    lbu     v0,0(v1)                 
+2c31c:    lui     a1,0x8018                       |      2c2f8:    lw      t0,0x7c(s4)              
+2c320:    addiu   a1,a1,0xaec                     <                                                 
+2c324:    ori     v0,v0,0x1                              2c2fc:    ori     v0,v0,0x1                
+2c328:    sb      v0,0(v1)                               2c300:    sb      v0,0(v1)                 
+2c32c: ~> lhu     a0,0(a2)                        r      2c304: ~> lhu     a0,0(a3)                 
+2c330:    addiu   a2,a2,2                         r      2c308:    addiu   a3,a3,2                  
+2c334:    lhu     v0,0(a1)                        r      2c30c:    lhu     v0,0(a2)                 
+2c338:    addiu   s1,s1,1                         r      2c310:    addiu   a1,a1,1                  
+2c33c:    lui     v1,0x8007                              2c314:    lui     v1,0x8007                
+2c340:    lw      v1,0x3084(v1)                          2c318:    lw      v1,0x3084(v1)            
+2c344:    sll     v0,v0,0x1                              2c31c:    sll     v0,v0,0x1                
+2c348:    addu    v0,v0,v1                               2c320:    addu    v0,v0,v1                 
+2c34c:    sh      a0,0(v0)                               2c324:    sh      a0,0(v0)                 
+2c350:    slti    v0,s1,0xa                       r      2c328:    slti    v0,a1,0xa                
+2c354:    bnez    v0,2c32c ~>                            2c32c:    bnez    v0,2c304 ~>              
+2c358:    addiu   a1,a1,2                         r      2c330:    addiu   a2,a2,2                  
+2c35c:    lw      s0,0x7c(s2)                     <                                                 
+2c360:    move    s1,zero                         r      2c334:    move    s3,zero                  
+2c364: ~> jal     1cd600                          <                                                 
+2c368:    move    a0,s0                           r      2c338: ~> move    a0,t0                    
+2c36c:    srl     a0,s1,0x1f                      r      2c33c:    srl     s1,s3,0x1f               
+2c370:    addu    a0,s1,a0                        r      2c340:    addu    s1,s3,s1                 
+2c374:    sra     a0,a0,0x1                       r      2c344:    sra     s1,s1,0x1                
+2c378:    sll     v0,a0,0x1                       |      2c348:    andi    s0,s3,0x1                
+2c37c:    subu    v0,s1,v0                        <                                                 
+2c380:    sll     v0,v0,0x4                       r      2c34c:    sll     s0,s0,0x4                
+2c384:    addiu   v0,v0,-8                        r      2c350:    addiu   s0,s0,-8                 
+2c388:    sll     a0,a0,0x4                       r      2c354:    sll     s1,s1,0x4                
+2c38c:    addiu   a0,a0,-0x18                     <                                                 
+2c390:    lhu     v1,2(s2)                        <                                                 
+2c394:    lw      a1,0(s0)                        r      2c358:    lw      s2,0(a0)                 
+2c398:    addu    v1,v1,v0                        |      2c35c:    jal     1cd420                   
+2c39c:    sh      v1,0x14(a1)                     |      2c360:    addiu   s1,s1,-0x18              
+2c3a0:    lhu     v0,6(s2)                        r      2c364:    lhu     v0,2(s4)                 
+2c3a4:    lw      v1,0(s0)                        |      2c368:    nop                              
+2c3a8:    addu    v0,v0,a0                        r      2c36c:    addu    s0,s0,v0                 
+2c3ac:    sh      v0,0xa(v1)                      r      2c370:    sh      s0,0x14(s2)              
+2c3b0:    lw      v0,0(s0)                        |      2c374:    lhu     v0,6(s4)                 
+2c3b4:    nop                                     <                                                 
+2c3b8:    sb      s1,0x28(v0)                     r      2c378:    sb      s3,0x28(s2)              
+2c3bc:    addiu   s1,s1,1                         r      2c37c:    addiu   s3,s3,2                  
+2c3c0:    lw      s0,0(s0)                        r      2c380:    lw      t0,0(s2)                 
+                                                  >      2c384:    addu    s1,s1,v0                 
+2c3c4:    slti    v0,s1,8                         r      2c388:    slti    v0,s3,8                  
+2c3c8:    lw      s0,0(s0)                        <                                                 
+2c3cc:    bnez    v0,2c364 ~>                     i      2c38c:    bnez    v0,2c338 ~>              
+2c3d0:    nop                                     |      2c390:    sh      s1,0xa(s2)               
+2c3d4:    lui     s3,0x8008                       r      2c394:    lui     s1,0x8008                
+2c3d8:    addiu   s3,s3,-0x27a8                   r      2c398:    addiu   s1,s1,-0x27a8            
+2c3dc:    move    a0,s3                           r      2c39c:    move    a0,s1                    
+2c3e0:    jal     1bfd64                          i      2c3a0:    jal     1bfb84                   
+2c3e4:    addiu   a1,s3,0x1780                    r      2c3a4:    addiu   a1,s1,0x1780             
+2c3e8:    move    s0,v0                                  2c3a8:    move    s0,v0                    
+2c3ec:    beqz    s0,2c418 ~>                            2c3ac:    beqz    s0,2c3d8 ~>              
+2c3f0:    move    s1,zero                         r      2c3b0:    move    s3,zero                  
+2c3f4:    li      a0,0x2                                 2c3b4:    li      a0,0x2                   
+2c3f8:    move    a1,s2                           r      2c3b8:    move    a1,s4                    
+2c3fc:    jal     1be7c8                          i      2c3bc:    jal     1be5e8                   
+2c400:    move    a2,s0                                  2c3c0:    move    a2,s0                    
+2c404:    lhu     v0,6(s0)                               2c3c4:    lhu     v0,6(s0)                 
+2c408:    li      v1,0xaa13                              2c3c8:    li      v1,0xaa13                
+2c40c:    sh      v1,0x30(s0)                            2c3cc:    sh      v1,0x30(s0)              
+2c410:    addiu   v0,v0,0x20                             2c3d0:    addiu   v0,v0,0x20               
+2c414:    sh      v0,6(s0)                               2c3d4:    sh      v0,6(s0)                 
+2c418: ~> move    a0,s3                           r      2c3d8: ~> move    a0,s1                    
+2c41c: ~> jal     1bfd64                          i      2c3dc:    jal     1bfb84                   
+2c420:    addiu   a1,s3,0x1780                    r      2c3e0:    addiu   a1,s1,0x1780             
+2c424:    move    s0,v0                                  2c3e4:    move    s0,v0                    
+2c428:    beqz    s0,2c47c ~>                     i      2c3e8:    beqz    s0,2c440 ~>              
+2c42c:    addiu   s1,s1,1                         <                                                 
+2c430:    li      a0,0x6                                 2c3ec:    li      a0,0x6                   
+2c434:    move    a1,s2                           r      2c3f0:    move    a1,s4                    
+2c438:    jal     1be7c8                          i      2c3f4:    jal     1be5e8                   
+2c43c:    move    a2,s0                                  2c3f8:    move    a2,s0                    
+2c440:    jal     1bc0dc                          i      2c3fc:    jal     1bbefc                   
+                                                  >      2c400:    addiu   s3,s3,1                  
+2c444:    nop                                     |      2c404:    li      v1,0xaa10                
+2c448:    lhu     v1,2(s0)                        r      2c408:    lhu     a0,2(s0)                 
+2c44c:    andi    v0,v0,0x1f                             2c40c:    andi    v0,v0,0x1f               
+                                                  >      2c410:    sh      v1,0x30(s0)              
+2c450:    addiu   v1,v1,0xf                       r      2c414:    addiu   a0,a0,0xf                
+2c454:    subu    v1,v1,v0                        r      2c418:    subu    a0,a0,v0                 
+2c458:    jal     1bc0dc                          i      2c41c:    jal     1bbefc                   
+2c45c:    sh      v1,2(s0)                        r      2c420:    sh      a0,2(s0)                 
+2c460:    li      v1,0xaa10                       <                                                 
+2c464:    lhu     a0,6(s0)                        r      2c424:    lhu     v1,6(s0)                 
+2c468:    andi    v0,v0,0x1f                             2c428:    andi    v0,v0,0x1f               
+2c46c:    sh      v1,0x30(s0)                     <                                                 
+2c470:    addiu   a0,a0,0xf                       r      2c42c:    addiu   v1,v1,0xf                
+2c474:    subu    a0,a0,v0                        r      2c430:    subu    v1,v1,v0                 
+2c478:    sh      a0,6(s0)                        <                                                 
+2c47c: ~> slti    v0,s1,8                         r      2c434:    slti    v0,s3,8                  
+2c480:    bnez    v0,2c41c ~>                     i      2c438:    bnez    v0,2c3d8 ~>              
+2c484:    move    a0,s3                           |      2c43c:    sh      v1,6(s0)                 
+2c488:    lui     v0,0x8004                              2c440: ~> lui     v0,0x8004                
+2c48c:    lw      v0,-0x3824(v0)                         2c444:    lw      v0,-0x3824(v0)           
+2c490:    nop                                            2c448:    nop                              
+2c494:    jalr    v0                                     2c44c:    jalr    v0                       
+2c498:    li      a0,0x644                               2c450:    li      a0,0x644                 
+2c49c:    lhu     v0,0x2c(s2)                     r      2c454:    lhu     v0,0x2c(s4)              
+2c4a0:    li      v1,0x180                               2c458:    li      v1,0x180                 
+2c4a4:    sh      v1,0x80(s2)                     r      2c45c:    sh      v1,0x80(s4)              
+2c4a8:    addiu   v0,v0,1                                2c460:    addiu   v0,v0,1                  
+2c4ac:    j       1ac52c                          i      2c464:    j       1ac4e4                   
+2c4b0:    sh      v0,0x2c(s2)                     r      2c468:    sh      v0,0x2c(s4)              
+2c4b4:    lw      s0,0x7c(s2)                     r      2c46c:    lw      s0,0x7c(s4)              
+2c4b8:    nop                                            2c470:    nop                              
+2c4bc:    beqz    s0,2c4f0 ~>                            2c474:    beqz    s0,2c4a8 ~>              
+2c4c0:    nop                                            2c478:    nop                              
+2c4c4: ~> lbu     v0,0x2b(s0)                            2c47c: ~> lbu     v0,0x2b(s0)              
+2c4c8:    nop                                            2c480:    nop                              
+2c4cc:    andi    v0,v0,0x8                              2c484:    andi    v0,v0,0x8                
+2c4d0:    beqz    v0,2c4e0 ~>                            2c488:    beqz    v0,2c498 ~>              
+2c4d4:    nop                                            2c48c:    nop                              
+2c4d8:    jal     1ab9ec                                 2c490:    jal     1ab9ec                   
+2c4dc:    move    a0,s0                                  2c494:    move    a0,s0                    
+2c4e0: ~> lw      s0,0(s0)                               2c498: ~> lw      s0,0(s0)                 
+2c4e4:    nop                                            2c49c:    nop                              
+2c4e8:    bnez    s0,2c4c4 ~>                            2c4a0:    bnez    s0,2c47c ~>              
+2c4ec:    nop                                            2c4a4:    nop                              
+2c4f0: ~> lhu     v0,0x80(s2)                     r      2c4a8: ~> lhu     v0,0x80(s4)              
+2c4f4:    nop                                            2c4ac:    nop                              
+2c4f8:    addiu   v0,v0,-1                               2c4b0:    addiu   v0,v0,-1                 
+2c4fc:    sh      v0,0x80(s2)                     r      2c4b4:    sh      v0,0x80(s4)              
+2c500:    sll     v0,v0,0x10                             2c4b8:    sll     v0,v0,0x10               
+2c504:    bnez    v0,2c52c ~>                            2c4bc:    bnez    v0,2c4e4 ~>              
+2c508:    move    a0,s2                           r      2c4c0:    move    a0,s4                    
+2c50c:    lui     v1,0x8004                              2c4c4:    lui     v1,0x8004                
+2c510:    addiu   v1,v1,-0x41f4                          2c4c8:    addiu   v1,v1,-0x41f4            
+2c514:    lbu     v0,0(v1)                               2c4cc:    lbu     v0,0(v1)                 
+2c518:    nop                                            2c4d0:    nop                              
+2c51c:    ori     v0,v0,0x2                              2c4d4:    ori     v0,v0,0x2                
+2c520:    sb      v0,0(v1)                               2c4d8:    sb      v0,0(v1)                 
+2c524:    jal     1bf4f4                          i      2c4dc:    jal     1bf314                   
+2c528:    nop                                            2c4e0:    nop                              
+2c52c: ~> lw      ra,0x20(sp)                     s      2c4e4: ~> lw      ra,0x24(sp)              
+2c530:    lw      s3,0x1c(sp)                     r      2c4e8:    lw      s4,0x20(sp)              
+2c534:    lw      s2,0x18(sp)                     r      2c4ec:    lw      s3,0x1c(sp)              
+2c538:    lw      s1,0x14(sp)                     r      2c4f0:    lw      s2,0x18(sp)              
+2c53c:    lw      s0,0x10(sp)                     r      2c4f4:    lw      s1,0x14(sp)              
+                                                  >      2c4f8:    lw      s0,0x10(sp)              
+2c540:    addiu   sp,sp,0x28                             2c4fc:    addiu   sp,sp,0x28               
+2c544:    jr      ra                                     2c500:    jr      ra                       
+2c548:    nop                                            2c504:    nop                              
+2c54c:    addiu   sp,sp,-0x20                            2c508:    addiu   sp,sp,-0x20              
+2c550:    sw      s2,0x18(sp)                            2c50c:    sw      s2,0x18(sp)              
+2c554:    move    s2,a0                                  2c510:    move    s2,a0                    
+2c558:    sw      ra,0x1c(sp)                            2c514:    sw      ra,0x1c(sp)              
+2c55c:    sw      s1,0x14(sp)                            2c518:    sw      s1,0x14(sp)              
+2c560:    sw      s0,0x10(sp)                            2c51c:    sw      s0,0x10(sp)              
+2c564:    lhu     v1,0x2c(s2)                            2c520:    lhu     v1,0x2c(s2)              
+2c568:    li      v0,0x1                                 2c524:    li      v0,0x1                   
+2c56c:    beq     v1,v0,2c5bc ~>                         2c528:    beq     v1,v0,2c57c ~>           
+2c570:    slti    v0,v1,2                                2c52c:    slti    v0,v1,2                  
+2c574:    beqz    v0,2c58c ~>                            2c530:    beqz    v0,2c548 ~>              
+2c578:    nop                                            2c534:    nop                              
+2c57c:    beqz    v1,2c5a0 ~>                            2c538:    beqz    v1,2c55c ~>              
+2c580:    nop                                            2c53c:    nop                              
+2c584:    j       1ac720                          i      2c540:    j       1ac6cc                   
+2c588:    nop                                            2c544:    nop                              
+2c58c: ~> li      v0,0x2                                 2c548: ~> li      v0,0x2                   
+2c590:    beq     v1,v0,2c6d0 ~>                         2c54c:    beq     v1,v0,2c67c ~>           
+2c594:    nop                                            2c550:    nop                              
+2c598:    j       1ac720                          i      2c554:    j       1ac6cc                   
+2c59c:    nop                                            2c558:    nop                              
+2c5a0: ~> lui     a0,0x8018                              2c55c: ~> lui     a0,0x8018                
+2c5a4:    addiu   a0,a0,0x678                            2c560:    addiu   a0,a0,0x678              
+2c5a8:    jal     1c0204                          i      2c564:    jal     1c0024                   
+2c5ac:    nop                                            2c568:    nop                              
+                                                  >      2c56c:    lhu     v0,0x2c(s2)              
+2c5b0:    sh      zero,0x3c(s2)                          2c570:    sh      zero,0x3c(s2)            
+2c5b4:    j       1ac720                          i      2c574:    j       1ac66c                   
+2c5b8:    sh      zero,0x56(s2)                          2c578:    sh      zero,0x56(s2)            
+2c5bc: ~> lui     v1,0x8004                              2c57c: ~> lui     v1,0x8004                
+2c5c0:    addiu   v1,v1,-0x41f4                          2c580:    addiu   v1,v1,-0x41f4            
+2c5c4:    lbu     a0,0(v1)                               2c584:    lbu     a0,0(v1)                 
+2c5c8:    nop                                            2c588:    nop                              
+2c5cc:    andi    v0,a0,0x2                              2c58c:    andi    v0,a0,0x2                
+2c5d0:    bnez    v0,2c718 ~>                            2c590:    bnez    v0,2c6c4 ~>              
+2c5d4:    nop                                            2c594:    nop                              
+2c5d8:    lbu     v0,0(v1)                               2c598:    lbu     v0,0(v1)                 
+2c5dc:    nop                                            2c59c:    nop                              
+2c5e0:    beqz    v0,2c5ec ~>                            2c5a0:    beqz    v0,2c5ac ~>              
+2c5e4:    ori     v0,a0,0x2                              2c5a4:    ori     v0,a0,0x2                
+2c5e8:    sb      v0,0(v1)                               2c5a8:    sb      v0,0(v1)                 
+2c5ec: ~> li      a0,0x4                                 2c5ac: ~> li      a0,0x4                   
+2c5f0:    lui     v0,0x8004                              2c5b0:    lui     v0,0x8004                
+2c5f4:    lw      v0,-0x3848(v0)                         2c5b4:    lw      v0,-0x3848(v0)           
+2c5f8:    nop                                            2c5b8:    nop                              
+2c5fc:    jalr    v0                                     2c5bc:    jalr    v0                       
+2c600:    li      a1,0x8                                 2c5c0:    li      a1,0x8                   
+2c604:    sll     v0,v0,0x10                             2c5c4:    sll     v0,v0,0x10               
+2c608:    sra     a0,v0,0x10                      r      2c5c8:    sra     v0,v0,0x10               
+2c60c:    li      v0,-1                           <                                                 
+2c610:    beq     a0,v0,2c718 ~>                  <                                                 
+2c614:    sll     v0,a0,0x1                       r      2c5cc:    sll     v1,v0,0x1                
+2c618:    addu    v0,v0,a0                        r      2c5d0:    addu    v1,v1,v0                 
+2c61c:    sll     v0,v0,0x2                       r      2c5d4:    sll     v1,v1,0x2                
+2c620:    addu    v0,v0,a0                        r      2c5d8:    addu    v1,v1,v0                 
+2c624:    sll     v0,v0,0x2                       r      2c5dc:    sll     v1,v1,0x2                
+2c628:    lui     v1,0x8008                       r      2c5e0:    lui     a0,0x8008                
+2c62c:    addiu   v1,v1,0x6fec                    r      2c5e4:    addiu   a0,a0,0x6fec             
+2c630:    addu    s0,v0,v1                        r      2c5e8:    addu    a0,v1,a0                 
+                                                  >      2c5ec:    li      v1,-1                    
+2c634:    lw      v0,0x34(s2)                     |      2c5f0:    sw      v0,0x64(s2)              
+2c638:    lui     v1,0x80                         |      2c5f4:    beq     v0,v1,2c6c4 ~>           
+2c63c:    sw      a0,0x64(s2)                     i      2c5f8:    sw      a0,0x7c(s2)              
+                                                  >      2c5fc:    lw      v0,0x34(s2)              
+2c640:    sw      s0,0x7c(s2)                     |      2c600:    lui     v1,0x80                  
+2c644:    or      v0,v0,v1                               2c604:    or      v0,v0,v1                 
+2c648:    beqz    s0,2c668 ~>                     r      2c608:    beqz    a0,2c628 ~>              
+2c64c:    sw      v0,0x34(s2)                            2c60c:    sw      v0,0x34(s2)              
+2c650:    li      v0,0x8                                 2c610:    li      v0,0x8                   
+2c654: ~> sh      v0,0x32(s0)                     r      2c614: ~> sh      v0,0x32(a0)              
+2c658:    lw      s0,0(s0)                        r      2c618:    lw      a0,0(a0)                 
+2c65c:    nop                                            2c61c:    nop                              
+2c660:    bnez    s0,2c654 ~>                     r      2c620:    bnez    a0,2c614 ~>              
+2c664:    nop                                            2c624:    nop                              
+2c668: ~> lw      s0,0x7c(s2)                     r      2c628: ~> lw      a0,0x7c(s2)              
+2c66c:    move    s1,zero                                2c62c:    move    s1,zero                  
+2c670: ~> jal     1cd600                          <                                                 
+2c674:    move    a0,s0                           <                                                 
+2c678:    lw      v1,0(s0)                        r      2c630: ~> lw      s0,0(a0)                 
+2c67c:    lhu     v0,2(s2)                        |      2c634:    jal     1cd420                   
+2c680:    nop                                            2c638:    nop                              
+2c684:    sh      v0,0x14(v1)                     <                                                 
+2c688:    lw      v1,0(s0)                        <                                                 
+2c68c:    lhu     v0,6(s2)                        i      2c63c:    lhu     v0,2(s2)                 
+2c690:    nop                                            2c640:    nop                              
+2c694:    sh      v0,0xa(v1)                      r      2c644:    sh      v0,0x14(s0)              
+2c698:    addiu   v0,s1,8                                2c648:    addiu   v0,s1,8                  
+2c69c:    lw      v1,0(s0)                        r      2c64c:    lw      a0,0(s0)                 
+                                                  >      2c650:    lhu     v1,6(s2)                 
+2c6a0:    addiu   s1,s1,1                                2c654:    addiu   s1,s1,1                  
+2c6a4:    sb      v0,0x28(v1)                     r      2c658:    sb      v0,0x28(s0)              
+2c6a8:    lw      s0,0(s0)                        <                                                 
+2c6ac:    slti    v0,s1,4                                2c65c:    slti    v0,s1,4                  
+2c6b0:    lw      s0,0(s0)                        <                                                 
+2c6b4:    bnez    v0,2c670 ~>                     i      2c660:    bnez    v0,2c630 ~>              
+2c6b8:    nop                                     |      2c664:    sh      v1,0xa(s0)               
+2c6bc:    lhu     v0,0x2c(s2)                            2c668:    lhu     v0,0x2c(s2)              
+2c6c0:    nop                                            2c66c:    nop                              
+2c6c4:    addiu   v0,v0,1                                2c670:    addiu   v0,v0,1                  
+2c6c8:    j       1ac720                          i      2c674:    j       1ac6cc                   
+2c6cc:    sh      v0,0x2c(s2)                            2c678:    sh      v0,0x2c(s2)              
+2c6d0: ~> lw      s0,0x7c(s2)                            2c67c: ~> lw      s0,0x7c(s2)              
+2c6d4:    nop                                            2c680:    nop                              
+2c6d8:    beqz    s0,2c710 ~>                            2c684:    beqz    s0,2c6bc ~>              
+2c6dc:    li      s1,0x1                          |      2c688:    move    s1,zero                  
+2c6e0: ~> lbu     v0,0x2b(s0)                            2c68c: ~> lbu     v0,0x2b(s0)              
+2c6e4:    nop                                            2c690:    nop                              
+2c6e8:    andi    v0,v0,0x8                              2c694:    andi    v0,v0,0x8                
+2c6ec:    beqz    v0,2c700 ~>                            2c698:    beqz    v0,2c6ac ~>              
+2c6f0:    nop                                            2c69c:    nop                              
+2c6f4:    move    s1,zero                         |      2c6a0:    li      s1,0x1                   
+2c6f8:    jal     1ab9ec                                 2c6a4:    jal     1ab9ec                   
+2c6fc:    move    a0,s0                                  2c6a8:    move    a0,s0                    
+2c700: ~> lw      s0,0(s0)                               2c6ac: ~> lw      s0,0(s0)                 
+2c704:    nop                                            2c6b0:    nop                              
+2c708:    bnez    s0,2c6e0 ~>                            2c6b4:    bnez    s0,2c68c ~>              
+2c70c:    nop                                            2c6b8:    nop                              
+2c710: ~> beqz    s1,2c720 ~>                     |      2c6bc: ~> bnez    s1,2c6cc ~>              
+2c714:    nop                                            2c6c0:    nop                              
+2c718: ~> jal     1bf4f4                          i      2c6c4: ~> jal     1bf314                   
+2c71c:    move    a0,s2                                  2c6c8:    move    a0,s2                    
+2c720: ~> lw      ra,0x1c(sp)                            2c6cc: ~> lw      ra,0x1c(sp)              
+2c724:    lw      s2,0x18(sp)                            2c6d0:    lw      s2,0x18(sp)              
+2c728:    lw      s1,0x14(sp)                            2c6d4:    lw      s1,0x14(sp)              
+2c72c:    lw      s0,0x10(sp)                            2c6d8:    lw      s0,0x10(sp)              
+2c730:    addiu   sp,sp,0x20                             2c6dc:    addiu   sp,sp,0x20               
+2c734:    jr      ra                                     2c6e0:    jr      ra                       
+2c738:    nop                                            2c6e4:    nop                              
+2c73c:    addiu   sp,sp,-0x28                     i      2c6e8:    addiu   sp,sp,-0x20              
+2c740:    sw      s2,0x20(sp)                     s      2c6ec:    sw      s2,0x18(sp)              
+2c744:    move    s2,a0                                  2c6f0:    move    s2,a0                    
+2c748:    sw      ra,0x24(sp)                     s      2c6f4:    sw      ra,0x1c(sp)              
+2c74c:    sw      s1,0x1c(sp)                     s      2c6f8:    sw      s1,0x14(sp)              
+2c750:    sw      s0,0x18(sp)                     s      2c6fc:    sw      s0,0x10(sp)              
+2c754:    lbu     v0,0x29(s2)                            2c700:    lbu     v0,0x29(s2)              
+2c758:    nop                                            2c704:    nop                              
+2c75c:    bnez    v0,2c7e8 ~>                            2c708:    bnez    v0,2c794 ~>              
+2c760:    li      s1,0x1                          r      2c70c:    li      v0,0x80                  
+2c764:    li      v0,0x80                         r      2c710:    li      s1,0x1                   
+2c768:    sb      v0,4(s2)                               2c714:    sb      v0,4(s2)                 
+2c76c:    sb      v0,5(s2)                               2c718:    sb      v0,5(s2)                 
+2c770:    li      v0,0xc0                                2c71c:    li      v0,0xc0                  
+2c774:    sb      s1,0xc(s2)                             2c720:    sb      s1,0xc(s2)               
+2c778:    sb      s1,0xd(s2)                             2c724:    sb      s1,0xd(s2)               
+2c77c:    sb      v0,6(s2)                               2c728:    sb      v0,6(s2)                 
+2c780:    lui     v1,0x8007                              2c72c:    lui     v1,0x8007                
+2c784:    lw      v1,-0x3c48(v1)                         2c730:    lw      v1,-0x3c48(v1)           
+2c788:    li      v0,0x2                                 2c734:    li      v0,0x2                   
+2c78c:    sh      v0,0x32(s2)                            2c738:    sh      v0,0x32(s2)              
+2c790:    lhu     v0,2(v1)                               2c73c:    lhu     v0,2(v1)                 
+2c794:    nop                                     |      2c740:    sh      zero,0x14(s2)            
+2c798:    sh      v0,8(s2)                        r      2c744:    sh      zero,0x16(s2)            
+                                                  >      2c748:    sh      v0,8(s2)                 
+2c79c:    lhu     v0,6(v1)                               2c74c:    lhu     v0,6(v1)                 
+2c7a0:    sh      zero,0x14(s2)                   |      2c750:    nop                              
+2c7a4:    sh      zero,0x16(s2)                   <                                                 
+2c7a8:    addiu   v0,v0,8                                2c754:    addiu   v0,v0,8                  
+2c7ac:    jal     1bc0dc                          i      2c758:    jal     1bbefc                   
+2c7b0:    sh      v0,0xa(s2)                             2c75c:    sh      v0,0xa(s2)               
+2c7b4:    andi    v0,v0,0x7                              2c760:    andi    v0,v0,0x7                
+2c7b8:    sll     v0,v0,0xd                              2c764:    sll     v0,v0,0xd                
+2c7bc:    li      s0,0x7000                              2c768:    li      s0,0x7000                
+2c7c0:    subu    v0,s0,v0                               2c76c:    subu    v0,s0,v0                 
+2c7c4:    jal     1bc0dc                          i      2c770:    jal     1bbefc                   
+2c7c8:    sw      v0,0x20(s2)                            2c774:    sw      v0,0x20(s2)              
+2c7cc:    andi    v0,v0,0x7                              2c778:    andi    v0,v0,0x7                
+2c7d0:    sll     v0,v0,0xd                              2c77c:    sll     v0,v0,0xd                
+2c7d4:    subu    s0,s0,v0                               2c780:    subu    s0,s0,v0                 
+2c7d8:    li      v0,0x20                                2c784:    li      v0,0x20                  
+2c7dc:    sw      s0,0x2c(s2)                            2c788:    sw      s0,0x2c(s2)              
+2c7e0:    sb      s1,0x29(s2)                            2c78c:    sb      s1,0x29(s2)              
+2c7e4:    sb      v0,0x28(s2)                            2c790:    sb      v0,0x28(s2)              
+2c7e8: ~> lh      v0,8(s2)                        r      2c794: ~> lh      a0,8(s2)                 
+2c7ec:    lhu     a0,0x14(s2)                     r      2c798:    lhu     v0,0x14(s2)              
+2c7f0:    lh      v1,0xa(s2)                      |      2c79c:    lw      v1,0x20(s2)              
+2c7f4:    sll     v0,v0,0x10                      r      2c7a0:    sll     a0,a0,0x10               
+2c7f8:    addu    v0,v0,a0                        r      2c7a4:    addu    a0,a0,v0                 
+2c7fc:    sll     v1,v1,0x10                      |      2c7a8:    addu    a0,a0,v1                 
+2c800:    sw      v0,0x10(sp)                     |      2c7ac:    lh      v0,0xa(s2)               
+2c804:    lw      a1,0x20(s2)                     <                                                 
+2c808:    lhu     a0,0x16(s2)                     r      2c7b0:    lhu     v1,0x16(s2)              
+2c80c:    addu    v0,v0,a1                        |      2c7b4:    sll     v0,v0,0x10               
+2c810:    sw      v0,0x10(sp)                     <                                                 
+2c814:    lhu     v0,0x12(sp)                     <                                                 
+2c818:    addu    v1,v1,a0                        r      2c7b8:    addu    v0,v0,v1                 
+2c81c:    sw      v1,0x14(sp)                     <                                                 
+2c820:    lw      a1,0x2c(s2)                     r      2c7bc:    lw      v1,0x2c(s2)              
+2c824:    lhu     a0,0x10(sp)                     |      2c7c0:    lbu     a1,0x28(s2)              
+2c828:    addu    v1,v1,a1                        r      2c7c4:    addu    v0,v0,v1                 
+2c82c:    sh      v0,8(s2)                        |      2c7c8:    sra     v1,a0,0x10               
+2c830:    sh      a0,0x14(s2)                     r      2c7cc:    sh      v1,8(s2)                 
+2c834:    sw      v1,0x14(sp)                     |      2c7d0:    sra     v1,v0,0x10               
+2c838:    lhu     v1,0x16(sp)                     |      2c7d4:    sh      v0,0x16(s2)              
+2c83c:    lbu     v0,0x28(s2)                     |      2c7d8:    lw      v0,0x2c(s2)              
+2c840:    lhu     a0,0x14(sp)                     |      2c7dc:    addiu   a1,a1,-1                 
+2c844:    addiu   v0,v0,0xff                      |      2c7e0:    sh      a0,0x14(s2)              
+2c848:    sb      v0,0x28(s2)                     r      2c7e4:    sb      a1,0x28(s2)              
+2c84c:    lw      v0,0x2c(s2)                     <                                                 
+2c850:    sh      v1,0xa(s2)                             2c7e8:    sh      v1,0xa(s2)               
+2c854:    lbu     v1,0x28(s2)                            2c7ec:    lbu     v1,0x28(s2)              
+2c858:    sh      a0,0x16(s2)                     <                                                 
+2c85c:    addiu   v0,v0,0x2000                           2c7f0:    addiu   v0,v0,0x2000             
+2c860:    bnez    v1,2c878 ~>                            2c7f4:    bnez    v1,2c80c ~>              
+2c864:    sw      v0,0x2c(s2)                            2c7f8:    sw      v0,0x2c(s2)              
+2c868:    li      v0,0x8                                 2c7fc:    li      v0,0x8                   
+2c86c:    sb      zero,0x29(s2)                          2c800:    sb      zero,0x29(s2)            
+2c870:    sh      v0,0x32(s2)                            2c804:    sh      v0,0x32(s2)              
+2c874:    sb      zero,0x2b(s2)                          2c808:    sb      zero,0x2b(s2)            
+2c878: ~> lw      ra,0x24(sp)                     s      2c80c: ~> lw      ra,0x1c(sp)              
+2c87c:    lw      s2,0x20(sp)                     s      2c810:    lw      s2,0x18(sp)              
+2c880:    lw      s1,0x1c(sp)                     s      2c814:    lw      s1,0x14(sp)              
+2c884:    lw      s0,0x18(sp)                     s      2c818:    lw      s0,0x10(sp)              
+2c888:    addiu   sp,sp,0x28                      i      2c81c:    addiu   sp,sp,0x20               
+2c88c:    jr      ra                                     2c820:    jr      ra                       
+2c890:    nop                                            2c824:    nop                              
+2c894:    addiu   sp,sp,-0x28                            2c828:    addiu   sp,sp,-0x28              
+2c898:    sw      s2,0x18(sp)                     r      2c82c:    sw      s4,0x20(sp)              
+2c89c:    move    s2,a0                           r      2c830:    move    s4,a0                    
+2c8a0:    sw      ra,0x20(sp)                     s      2c834:    sw      ra,0x24(sp)              
+2c8a4:    sw      s3,0x1c(sp)                            2c838:    sw      s3,0x1c(sp)              
+2c8a8:    sw      s1,0x14(sp)                     r      2c83c:    sw      s2,0x18(sp)              
+2c8ac:    sw      s0,0x10(sp)                     r      2c840:    sw      s1,0x14(sp)              
+                                                  >      2c844:    sw      s0,0x10(sp)              
+2c8b0:    lhu     v1,0x2c(s2)                     r      2c848:    lhu     v1,0x2c(s4)              
+2c8b4:    li      v0,0x1                                 2c84c:    li      v0,0x1                   
+2c8b8:    beq     v1,v0,2ca68 ~>                  i      2c850:    beq     v1,v0,2ca14 ~>           
+2c8bc:    slti    v0,v1,2                                2c854:    slti    v0,v1,2                  
+2c8c0:    beqz    v0,2c8d8 ~>                            2c858:    beqz    v0,2c870 ~>              
+2c8c4:    nop                                            2c85c:    nop                              
+2c8c8:    beqz    v1,2c8f4 ~>                            2c860:    beqz    v1,2c88c ~>              
+2c8cc:    nop                                            2c864:    nop                              
+2c8d0:    j       1acda8                          i      2c868:    j       1acd44                   
+2c8d4:    nop                                            2c86c:    nop                              
+2c8d8: ~> li      v0,0x2                                 2c870: ~> li      v0,0x2                   
+2c8dc:    beq     v1,v0,2cb18 ~>                  i      2c874:    beq     v1,v0,2cac8 ~>           
+2c8e0:    li      v0,0x3                                 2c878:    li      v0,0x3                   
+2c8e4:    beq     v1,v0,2cd58 ~>                  i      2c87c:    beq     v1,v0,2ccf4 ~>           
+2c8e8:    nop                                            2c880:    nop                              
+2c8ec:    j       1acda8                          i      2c884:    j       1acd44                   
+2c8f0:    nop                                            2c888:    nop                              
+2c8f4: ~> lui     a0,0x8018                              2c88c: ~> lui     a0,0x8018                
+2c8f8:    addiu   a0,a0,0x678                            2c890:    addiu   a0,a0,0x678              
+2c8fc:    jal     1c0204                          i      2c894:    jal     1c0024                   
+2c900:    nop                                            2c898:    nop                              
+2c904:    lbu     v0,0x19(s2)                     r      2c89c:    lbu     v0,0x19(s4)              
+2c908:    li      v1,0xc00                               2c8a0:    li      v1,0xc00                 
+2c90c:    sh      zero,0x56(s2)                   r      2c8a4:    sh      zero,0x56(s4)            
+2c910:    sh      v1,0x1e(s2)                     r      2c8a8:    sh      v1,0x1e(s4)              
+2c914:    ori     v0,v0,0x4                              2c8ac:    ori     v0,v0,0x4                
+2c918:    sb      v0,0x19(s2)                     r      2c8b0:    sb      v0,0x19(s4)              
+2c91c:    lui     v0,0x8004                              2c8b4:    lui     v0,0x8004                
+2c920:    lbu     v0,-0x41f3(v0)                         2c8b8:    lbu     v0,-0x41f3(v0)           
+2c924:    nop                                            2c8bc:    nop                              
+2c928:    beqz    v0,2c978 ~>                            2c8c0:    beqz    v0,2c910 ~>              
+2c92c:    move    s1,zero                         r      2c8c4:    move    a1,zero                  
+2c930:    lui     a2,0x8018                       r      2c8c8:    lui     a3,0x8018                
+2c934:    addiu   a2,a2,0xb34                     r      2c8cc:    addiu   a3,a3,0xb34              
+2c938:    lui     a1,0x8018                       r      2c8d0:    lui     a2,0x8018                
+2c93c:    addiu   a1,a1,0xb14                     r      2c8d4:    addiu   a2,a2,0xb14              
+2c940: ~> lhu     a0,0(a2)                        r      2c8d8: ~> lhu     a0,0(a3)                 
+2c944:    addiu   a2,a2,2                         r      2c8dc:    addiu   a3,a3,2                  
+2c948:    lhu     v0,0(a1)                        r      2c8e0:    lhu     v0,0(a2)                 
+2c94c:    addiu   s1,s1,1                         r      2c8e4:    addiu   a1,a1,1                  
+2c950:    lui     v1,0x8007                              2c8e8:    lui     v1,0x8007                
+2c954:    lw      v1,0x3084(v1)                          2c8ec:    lw      v1,0x3084(v1)            
+2c958:    sll     v0,v0,0x1                              2c8f0:    sll     v0,v0,0x1                
+2c95c:    addu    v0,v0,v1                               2c8f4:    addu    v0,v0,v1                 
+2c960:    sh      a0,0(v0)                               2c8f8:    sh      a0,0(v0)                 
+2c964:    slti    v0,s1,8                         r      2c8fc:    slti    v0,a1,8                  
+2c968:    bnez    v0,2c940 ~>                            2c900:    bnez    v0,2c8d8 ~>              
+2c96c:    addiu   a1,a1,2                         r      2c904:    addiu   a2,a2,2                  
+2c970:    j       1acda0                          i      2c908:    j       1acd3c                   
+2c974:    nop                                            2c90c:    nop                              
+2c978: ~> lui     a2,0x8018                       r      2c910: ~> lui     a3,0x8018                
+2c97c:    addiu   a2,a2,0xb24                     r      2c914:    addiu   a3,a3,0xb24              
+2c980:    lui     a1,0x8018                       r      2c918:    lui     a2,0x8018                
+2c984:    addiu   a1,a1,0xb14                     r      2c91c:    addiu   a2,a2,0xb14              
+2c988: ~> lhu     a0,0(a2)                        r      2c920: ~> lhu     a0,0(a3)                 
+2c98c:    addiu   a2,a2,2                         r      2c924:    addiu   a3,a3,2                  
+2c990:    lhu     v0,0(a1)                        r      2c928:    lhu     v0,0(a2)                 
+2c994:    addiu   s1,s1,1                         r      2c92c:    addiu   a1,a1,1                  
+2c998:    lui     v1,0x8007                              2c930:    lui     v1,0x8007                
+2c99c:    lw      v1,0x3084(v1)                          2c934:    lw      v1,0x3084(v1)            
+2c9a0:    sll     v0,v0,0x1                              2c938:    sll     v0,v0,0x1                
+2c9a4:    addu    v0,v0,v1                               2c93c:    addu    v0,v0,v1                 
+2c9a8:    sh      a0,0(v0)                               2c940:    sh      a0,0(v0)                 
+2c9ac:    slti    v0,s1,8                         r      2c944:    slti    v0,a1,8                  
+2c9b0:    bnez    v0,2c988 ~>                            2c948:    bnez    v0,2c920 ~>              
+2c9b4:    addiu   a1,a1,2                         r      2c94c:    addiu   a2,a2,2                  
+2c9b8:    li      a0,0x11                         i      2c950:    li      a0,0x1e                  
+                                                  >      2c954:    move    a1,zero                  
+2c9bc:    li      v0,0x2                                 2c958:    li      v0,0x2                   
+2c9c0:    sh      v0,0x3c(s2)                     r      2c95c:    sh      v0,0x3c(s4)              
+2c9c4:    li      v0,0x10                                2c960:    li      v0,0x10                  
+2c9c8:    sh      v0,0x3e(s2)                     |      2c964:    sb      v0,0x46(s4)              
+2c9cc:    li      v0,0x10                         i      2c968:    li      v0,0x28                  
+2c9d0:    sb      v0,0x46(s2)                     r      2c96c:    sb      v0,0x47(s4)              
+                                                  >      2c970:    lui     v1,0x8004                
+                                                  >      2c974:    lw      v1,-0x3820(v1)           
+2c9d4:    li      v0,0x28                         i      2c978:    li      v0,0x10                  
+                                                  >      2c97c:    jalr    v1                       
+                                                  >      2c980:    sh      v0,0x3e(s4)              
+                                                  >      2c984:    sll     v0,v0,0x10               
+                                                  >      2c988:    sra     v0,v0,0x10               
+                                                  >      2c98c:    sll     v1,v0,0x1                
+                                                  >      2c990:    addu    v1,v1,v0                 
+                                                  >      2c994:    sll     v1,v1,0x2                
+                                                  >      2c998:    addu    v1,v1,v0                 
+2c9d8:    sb      v0,0x47(s2)                     |      2c99c:    sll     v1,v1,0x2                
+2c9dc:    lui     v0,0x8004                       r      2c9a0:    lui     a0,0x8008                
+                                                  >      2c9a4:    addiu   a0,a0,0x6fec             
+                                                  >      2c9a8:    addu    a0,v1,a0                 
+                                                  >      2c9ac:    li      v1,-1                    
+                                                  >      2c9b0:    sw      v0,0x64(s4)              
+                                                  >      2c9b4:    beq     v0,v1,2cd3c ~>           
+                                                  >      2c9b8:    sw      a0,0x7c(s4)              
+2c9e0:    lw      v0,-0x3820(v0)                  r      2c9bc:    lw      v0,0x34(s4)              
+                                                  >      2c9c0:    lui     v1,0x80                  
+                                                  >      2c9c4:    or      v0,v0,v1                 
+                                                  >      2c9c8:    sw      v0,0x34(s4)              
+                                                  >      2c9cc:    li      v0,0x8                   
+                                                  >      2c9d0:    beqz    a0,2cd44 ~>              
+                                                  >      2c9d4:    sh      v0,0x32(a0)              
+                                                  >      2c9d8:    li      a1,0x68                  
+                                                  >      2c9dc:    li      v1,0x8                   
+                                                  >      2c9e0:    sh      a1,0x26(a0)              
+2c9e4:    nop                                     |      2c9e4:    sw      a0,0x84(s4)              
+2c9e8:    jalr    v0                              |      2c9e8:    lw      v0,0(a0)                 

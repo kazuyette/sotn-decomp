@@ -71,20 +71,23 @@ extern PfnEntityUpdate OVL_EXPORT(EntityUpdates)[];
 // CreateEntityFromLayout does), so it needs a real extern here.
 extern PfnEntityUpdate D_us_80180410;
 
-// func_us_801A9D5C: real function still living in create_entity.c (raw
-// INCLUDE_ASM this checkpoint -- see e_init.c). Confirmed via
-// e_misc.c's func_us_801AF9D8 (calls it with entityId=2/E_EXPLOSION,
-// g_CurrentEntity, and a freshly allocated entity -- exactly
-// CreateEntityFromEntity's own signature/behavior pattern) that its real
-// signature is `(u16 entityId, Entity* source, Entity* dest)`.
-void func_us_801A9D5C(u16 entityId, Entity* source, Entity* dest);
-
-// func_us_801A9CE8: also still living in create_entity.c (raw INCLUDE_ASM).
-// Confirmed call shape via func_us_801A269C (22610.c): called as
-// func_us_801A9CE8(0x18, self + 1) i.e. (s32, void*) -- exact semantics not
-// yet resolved (task #45), but this signature is directly observable from
-// the call site and is enough to compile callers correctly.
-void func_us_801A9CE8(s32 arg0, void* arg1);
+// func_us_801A9D5C / func_us_801A9CE8: RESOLVED (task #45) -- these are not
+// separate functions at all. create_entity.c's own asm turned out to have
+// its function boundaries mis-drawn by splat in 8 places; these two raw
+// addresses are simply the true first instruction of CreateEntityFromEntity
+// and CreateEntityFromCurrentEntity respectively (each is a compiler-hoisted
+// `addiu sp,sp,-0x20` stack-frame instruction that splat sliced into its own
+// bogus "function"). create_entity.c now contains the complete, correct
+// bodies for both real functions (which naturally compile to start at these
+// exact addresses); 22610.c/337D0.c's existing call sites use the raw names
+// below, so they're aliased back onto the real functions here rather than
+// updating every call site.
+void CreateEntityFromEntity(u16 entityId, Entity* source, Entity* entity);
+void CreateEntityFromCurrentEntity(u16 entityId, Entity* entity);
+#define func_us_801A9D5C(entityId, source, dest) \
+    CreateEntityFromEntity(entityId, source, dest)
+#define func_us_801A9CE8(entityId, entity) \
+    CreateEntityFromCurrentEntity(entityId, entity)
 
 // Shared boss-AI scratch state used across 22610.c AND 337D0.c (Minotaur's
 // two overlay halves reference the same block). Being pieced together
@@ -505,6 +508,32 @@ extern u8* D_us_801A16F0[];
 // since it returns a pointer -- an implicit `int` declaration would
 // otherwise need a cast at every call site.
 Primitive* FindFirstUnkPrim2(Primitive* prim, u8 index);
+
+// create_entity.c's own private copies of the shared create_entity.h
+// scratch statics (g_LayoutObjHorizontal/g_LayoutObjVertical/
+// g_LayoutObjPosHorizontal/g_LayoutObjPosVertical) -- confirmed via
+// FindFirstEntityAbove/Below and CreateEntitiesAbove/Below/ToTheRight/
+// ToTheLeft's own asm, all cross-referencing these exact 4 addresses.
+// func_us_801B5C2C sits immediately before the already-known
+// D_us_801B683C-starting "shared boss-AI state block" above; it is the start
+// of a huge all-zero-word BSS scratch block (0x801B5C2C..0x801B6930+, pure
+// `nop` in the raw asm dump, never `jal`'d anywhere), but splat's classifier
+// defaulted its very first word to a bogus "function" name since it had no
+// data-symbol hint for that exact word (unlike the D_us_-prefixed words a
+// little further into the same block, which it classified correctly).
+// Defined as real `u16*` storage under that pre-existing splat name in
+// 337D0.c (not renamed to a D_us_ name) since create_entity.c's own real
+// disassembly already references it that way throughout -- see 337D0.c's
+// comment on the definition itself for the full BSS-vs-code writeup.
+extern u16* func_us_801B5C2C; // g_LayoutObjHorizontal equivalent
+extern u16* D_us_801B5C30; // g_LayoutObjVertical equivalent
+extern u8 D_us_801B5C34;   // g_LayoutObjPosHorizontal equivalent
+extern u8 D_us_801B5C38;   // g_LayoutObjPosVertical equivalent
+
+// Room layout tables (horizontal 53 entries, vertical 52 -- see e_init.c's
+// own comment on the asymmetry), used by InitRoomEntities.
+extern LayoutEntity* D_us_8018026C[53];
+extern LayoutEntity* D_us_80180340[52];
 
 // func_us_801B385C -- the second boss "conductor" (E_UNK_1B), this overlay
 // half's own mirror of func_us_801A269C (22610.c): a large self->step state

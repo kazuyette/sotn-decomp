@@ -1,0 +1,1027 @@
+TARGET                                                   CURRENT (755)                              
+2092c:    addiu   sp,sp,-0x20                            2092c:    addiu   sp,sp,-0x20              
+20930:    sw      s0,0x10(sp)                            20930:    sw      s0,0x10(sp)              
+20934:    move    s0,a0                                  20934:    move    s0,a0                    
+20938:    sw      ra,0x18(sp)                            20938:    sw      ra,0x18(sp)              
+2093c:    sw      s1,0x14(sp)                            2093c:    sw      s1,0x14(sp)              
+20940:    lhu     s1,0x30(s0)                            20940:    lhu     s1,0x30(s0)              
+20944:    lhu     v0,0x2c(s0)                            20944:    lhu     v0,0x2c(s0)              
+20948:    nop                                            20948:    nop                              
+2094c:    beqz    v0,20a6c ~>                            2094c:    beqz    v0,20a6c ~>              
+20950:    sb      zero,0x6d(s0)                          20950:    sb      zero,0x6d(s0)            
+20954:    andi    v1,s1,0xffff                           20954:    andi    v1,s1,0xffff             
+20958:    slti    v0,v1,4                                20958:    slti    v0,v1,4                  
+2095c:    bnez    v0,209d4 ~>                            2095c:    bnez    v0,209d4 ~>              
+20960:    slti    v0,v1,6                                20960:    slti    v0,v1,6                  
+20964:    bnez    v0,2097c ~>                            20964:    bnez    v0,2097c ~>              
+20968:    li      v0,0x6                                 20968:    li      v0,0x6                   
+2096c:    beq     v1,v0,20998 ~>                         2096c:    beq     v1,v0,20998 ~>           
+20970:    nop                                            20970:    nop                              
+20974:    j       1a09d4                                 20974:    j       1a09d4                   
+20978:    nop                                            20978:    nop                              
+2097c: ~> lui     v0,0x8007                              2097c: ~> lui     v0,0x8007                
+20980:    lw      v0,0x30c0(v0)                          20980:    lw      v0,0x30c0(v0)            
+20984:    nop                                            20984:    nop                              
+20988:    beqz    v0,209d4 ~>                            20988:    beqz    v0,209d4 ~>              
+2098c:    nop                                            2098c:    nop                              
+20990:    j       1a0ad0                          i      20990:    j       1a0acc                   
+20994:    nop                                            20994:    nop                              
+20998: ~> lui     v0,0x8009                              20998: ~> lui     v0,0x8009                
+2099c:    lhu     v0,0x7490(v0)                          2099c:    lhu     v0,0x7490(v0)            
+209a0:    nop                                            209a0:    nop                              
+209a4:    andi    v0,v0,0x10                             209a4:    andi    v0,v0,0x10               
+209a8:    beqz    v0,209d4 ~>                            209a8:    beqz    v0,209d4 ~>              
+209ac:    li      v0,0x500                               209ac:    li      v0,0x500                 
+209b0:    lui     at,0x8007                              209b0:    lui     at,0x8007                
+209b4:    sw      zero,0x30c0(at)                        209b4:    sw      zero,0x30c0(at)          
+209b8:    lui     at,0x8007                              209b8:    lui     at,0x8007                
+209bc:    sw      v0,0x30c8(at)                          209bc:    sw      v0,0x30c8(at)            
+209c0:    lhu     v0,0x2c(s0)                            209c0:    lhu     v0,0x2c(s0)              
+209c4:    nop                                            209c4:    nop                              
+209c8:    addiu   v0,v0,1                                209c8:    addiu   v0,v0,1                  
+209cc:    j       1a0ad0                          i      209cc:    j       1a0acc                   
+209d0:    sh      v0,0x2c(s0)                            209d0:    sh      v0,0x2c(s0)              
+209d4: ~> lhu     v0,0x44(s0)                            209d4: ~> lhu     v0,0x44(s0)              
+209d8:    nop                                            209d8:    nop                              
+209dc:    beqz    v0,20ad0 ~>                            209dc:    beqz    v0,20acc ~>              
+209e0:    nop                                            209e0:    nop                              
+209e4:    jal     1a62e8                          i      209e4:    jal     1a62e4                   
+209e8:    nop                                            209e8:    nop                              
+209ec:    lhu     v1,0x7c(s0)                            209ec:    lhu     v1,0x7c(s0)              
+209f0:    nop                                            209f0:    nop                              
+209f4:    beqz    v1,20a08 ~>                            209f4:    beqz    v1,20a08 ~>              
+209f8:    nop                                            209f8:    nop                              
+209fc:    andi    v0,v0,0x2                              209fc:    andi    v0,v0,0x2                
+20a00:    j       1a0a10                                 20a00:    j       1a0a10                   
+20a04:    sll     v1,v0,0x1                              20a04:    sll     v1,v0,0x1                
+20a08: ~> andi    v0,v0,0x1                              20a08: ~> andi    v0,v0,0x1                
+20a0c:    sll     v1,v0,0x2                              20a0c:    sll     v1,v0,0x2                
+20a10:    sll     v0,s1,0x3                              20a10:    sll     v0,s1,0x3                
+20a14:    addu    s1,v1,v0                               20a14:    addu    s1,v1,v0                 
+20a18:    andi    v0,s1,0xffff                           20a18:    andi    v0,s1,0xffff             
+20a1c:    sll     v0,v0,0x1                              20a1c:    sll     v0,v0,0x1                
+20a20:    lui     v1,0x8018                              20a20:    lui     v1,0x8018                
+20a24:    addiu   v1,v1,0x7b4                            20a24:    addiu   v1,v1,0x7b4              
+20a28:    addu    v0,v0,v1                               20a28:    addu    v0,v0,v1                 
+20a2c:    lhu     v1,0(v0)                               20a2c:    lhu     v1,0(v0)                 
+20a30:    addiu   v0,v0,2                                20a30:    addiu   v0,v0,2                  
+20a34:    lui     at,0x8007                              20a34:    lui     at,0x8007                
+20a38:    sw      v1,0x30c0(at)                          20a38:    sw      v1,0x30c0(at)            
+20a3c:    lhu     v1,0(v0)                               20a3c:    lhu     v1,0(v0)                 
+20a40:    addiu   v0,v0,2                                20a40:    addiu   v0,v0,2                  
+20a44:    lui     at,0x8007                              20a44:    lui     at,0x8007                
+20a48:    sw      v1,0x30c4(at)                          20a48:    sw      v1,0x30c4(at)            
+20a4c:    lhu     v1,0(v0)                               20a4c:    lhu     v1,0(v0)                 
+20a50:    lui     at,0x8007                              20a50:    lui     at,0x8007                
+20a54:    sw      v1,0x30c8(at)                          20a54:    sw      v1,0x30c8(at)            
+20a58:    lhu     v0,2(v0)                               20a58:    lhu     v0,2(v0)                 
+20a5c:    lui     at,0x8007                              20a5c:    lui     at,0x8007                
+20a60:    sw      v0,0x30cc(at)                          20a60:    sw      v0,0x30cc(at)            
+20a64:    j       1a0ad0                          i      20a64:    j       1a0acc                   
+20a68:    nop                                            20a68:    nop                              
+20a6c: ~> lui     a0,0x8018                              20a6c: ~> lui     a0,0x8018                
+20a70:    addiu   a0,a0,0x61c                            20a70:    addiu   a0,a0,0x61c              
+20a74:    jal     1a6c88                          i      20a74:    jal     1a6c84                   
+20a78:    nop                                            20a78:    nop                              
+20a7c:    andi    v1,s1,0xffff                           20a7c:    andi    v1,s1,0xffff             
+20a80:    lui     at,0x8018                              20a80:    lui     at,0x8018                
+20a84:    addu    at,at,v1                               20a84:    addu    at,at,v1                 
+20a88:    lbu     v0,0x7ac(at)                           20a88:    lbu     v0,0x7ac(at)             
+20a8c:    nop                                            20a8c:    nop                              
+20a90:    beqz    v0,20ab4 ~>                     i      20a90:    beqz    v0,20ab4 ~>              
+20a94:    sh      v0,0x7c(s0)                            20a94:    sh      v0,0x7c(s0)              
+20a98:    lui     at,0x8018                              20a98:    lui     at,0x8018                
+20a9c:    addu    at,at,v1                               20a9c:    addu    at,at,v1                 
+20aa0:    lbu     v1,0x7a4(at)                           20aa0:    lbu     v1,0x7a4(at)             
+20aa4:    li      v0,0x10                                20aa4:    li      v0,0x10                  
+20aa8:    sb      v0,0x47(s0)                            20aa8:    sb      v0,0x47(s0)              
+20aac:    j       1a0ad0                          i      20aac:    j       1a0acc                   
+20ab0:    sb      v1,0x46(s0)                            20ab0:    sb      v1,0x46(s0)              
+20ab4: ~> li      v0,0x10                         <                                                 
+20ab8:    sb      v0,0x46(s0)                     <                                                 
+20abc:    lui     at,0x8018                              20ab4: ~> lui     at,0x8018                
+20ac0:    addu    at,at,v1                               20ab8:    addu    at,at,v1                 
+20ac4:    lbu     v0,0x7a4(at)                    r      20abc:    lbu     v1,0x7a4(at)             
+20ac8:    nop                                     |      20ac0:    li      v0,0x10                  
+20acc:    sb      v0,0x47(s0)                     i      20ac4:    sb      v0,0x46(s0)              
+                                                  >      20ac8:    sb      v1,0x47(s0)              
+20ad0: ~> lw      ra,0x18(sp)                            20acc: ~> lw      ra,0x18(sp)              
+20ad4:    lw      s1,0x14(sp)                            20ad0:    lw      s1,0x14(sp)              
+20ad8:    lw      s0,0x10(sp)                            20ad4:    lw      s0,0x10(sp)              
+20adc:    addiu   sp,sp,0x20                             20ad8:    addiu   sp,sp,0x20               
+20ae0:    jr      ra                                     20adc:    jr      ra                       
+20ae4:    nop                                            20ae0:    nop                              
+20ae8:    addiu   sp,sp,-0x28                            20ae4:    addiu   sp,sp,-0x28              
+20aec:    sw      s1,0x14(sp)                            20ae8:    sw      s1,0x14(sp)              
+20af0:    move    s1,a0                                  20aec:    move    s1,a0                    
+20af4:    sw      ra,0x20(sp)                            20af0:    sw      ra,0x20(sp)              
+20af8:    sw      s3,0x1c(sp)                            20af4:    sw      s3,0x1c(sp)              
+20afc:    sw      s2,0x18(sp)                            20af8:    sw      s2,0x18(sp)              
+20b00:    sw      s0,0x10(sp)                            20afc:    sw      s0,0x10(sp)              
+20b04:    lhu     v0,0x30(s1)                            20b00:    lhu     v0,0x30(s1)              
+20b08:    lhu     v1,0x2c(s1)                            20b04:    lhu     v1,0x2c(s1)              
+20b0c:    nop                                            20b08:    nop                              
+20b10:    bnez    v1,20bd8 ~>                            20b0c:    bnez    v1,20bd4 ~>              
+20b14:    srl     s2,v0,0xc                              20b10:    srl     s2,v0,0xc                
+20b18:    lui     a0,0x8018                              20b14:    lui     a0,0x8018                
+20b1c:    addiu   a0,a0,0x5d4                            20b18:    addiu   a0,a0,0x5d4              
+20b20:    jal     1a6c88                          i      20b1c:    jal     1a6c84                   
+20b24:    andi    s0,s2,0xffff                           20b20:    andi    s0,s2,0xffff             
+20b28:    lui     v0,0x8009                              20b24:    lui     v0,0x8009                
+20b2c:    lhu     v0,0x7408(v0)                          20b28:    lhu     v0,0x7408(v0)            
+20b30:    nop                                            20b2c:    nop                              
+20b34:    addiu   v0,v0,-0x14                            20b30:    addiu   v0,v0,-0x14              
+20b38:    sh      v0,0x24(s1)                            20b34:    sh      v0,0x24(s1)              
+20b3c:    sltiu   v0,s0,5                                20b38:    sltiu   v0,s0,5                  
+20b40:    beqz    v0,20b60 ~>                            20b3c:    beqz    v0,20b5c ~>              
+20b44:    li      a0,0x1b                                20b40:    li      a0,0x1b                  
+20b48:    move    a1,s1                                  20b44:    move    a1,s1                    
+20b4c:    jal     1a524c                          i      20b48:    jal     1a5248                   
+20b50:    addiu   a2,s1,0xbc                             20b4c:    addiu   a2,s1,0xbc               
+20b54:    lhu     v0,0x24(s1)                            20b50:    lhu     v0,0x24(s1)              
+20b58:    sh      s2,0xec(s1)                            20b54:    sh      s2,0xec(s1)              
+20b5c:    sh      v0,0xe0(s1)                            20b58:    sh      v0,0xe0(s1)              
+20b60: ~> lui     at,0x8018                              20b5c: ~> lui     at,0x8018                
+20b64:    addu    at,at,s0                               20b60:    addu    at,at,s0                 
+20b68:    lbu     v0,0x8dc(at)                           20b64:    lbu     v0,0x8dc(at)             
+20b6c:    nop                                            20b68:    nop                              
+20b70:    sb      v0,0x18(s1)                            20b6c:    sb      v0,0x18(s1)              
+20b74:    lui     at,0x8018                              20b70:    lui     at,0x8018                
+20b78:    addu    at,at,s0                               20b74:    addu    at,at,s0                 
+20b7c:    lbu     v0,0x89c(at)                           20b78:    lbu     v0,0x89c(at)             
+20b80:    sll     v1,s0,0x1                              20b7c:    sll     v1,s0,0x1                
+20b84:    sb      v0,0x47(s1)                            20b80:    sb      v0,0x47(s1)              
+20b88:    lui     at,0x8018                              20b84:    lui     at,0x8018                
+20b8c:    addu    at,at,v1                               20b88:    addu    at,at,v1                 
+20b90:    lhu     v0,0x8c8(at)                           20b8c:    lhu     v0,0x8c8(at)             
+20b94:    nop                                            20b90:    nop                              
+20b98:    sh      v0,0x54(s1)                            20b94:    sh      v0,0x54(s1)              
+20b9c:    lui     at,0x8018                              20b98:    lui     at,0x8018                
+20ba0:    addu    at,at,v1                               20b9c:    addu    at,at,v1                 
+20ba4:    lhu     v0,0x8e8(at)                           20ba0:    lhu     v0,0x8e8(at)             
+20ba8:    nop                                            20ba4:    nop                              
+20bac:    sh      v0,0x5a(s1)                            20ba8:    sh      v0,0x5a(s1)              
+20bb0:    lui     at,0x8018                              20bac:    lui     at,0x8018                
+20bb4:    addu    at,at,v1                               20bb0:    addu    at,at,v1                 
+20bb8:    lhu     v0,0x8b4(at)                           20bb4:    lhu     v0,0x8b4(at)             
+20bbc:    nop                                            20bb8:    nop                              
+20bc0:    sh      v0,0x16(s1)                            20bbc:    sh      v0,0x16(s1)              
+20bc4:    lui     at,0x8018                              20bc0:    lui     at,0x8018                
+20bc8:    addu    at,at,v1                               20bc4:    addu    at,at,v1                 
+20bcc:    lhu     v0,0x8fc(at)                           20bc8:    lhu     v0,0x8fc(at)             
+20bd0:    nop                                            20bcc:    nop                              
+20bd4:    sh      v0,0x12(s1)                            20bd0:    sh      v0,0x12(s1)              
+20bd8: ~> andi    s2,s2,0xffff                           20bd4: ~> andi    s2,s2,0xffff             
+20bdc:    sll     v0,s2,0x2                              20bd8:    sll     v0,s2,0x2                
+20be0:    lui     at,0x8018                              20bdc:    lui     at,0x8018                
+20be4:    addu    at,at,v0                               20be0:    addu    at,at,v0                 
+20be8:    lw      a0,0x874(at)                           20be4:    lw      a0,0x874(at)             
+20bec:    jal     1a60a8                          i      20be8:    jal     1a60a4                   
+20bf0:    move    a1,s1                                  20bec:    move    a1,s1                    
+20bf4:    lhu     v0,0x44(s1)                            20bf0:    lhu     v0,0x44(s1)              
+20bf8:    nop                                            20bf4:    nop                              
+20bfc:    beqz    v0,20dac ~>                            20bf8:    beqz    v0,20da8 ~>              
+20c00:    nop                                            20bfc:    nop                              
+20c04:    lui     a0,0x8008                              20c00:    lui     a0,0x8008                
+20c08:    addiu   a0,a0,-0x27a8                          20c04:    addiu   a0,a0,-0x27a8            
+20c0c:    jal     1a67e8                          i      20c08:    jal     1a67e4                   
+20c10:    addiu   a1,a0,0x1780                           20c0c:    addiu   a1,a0,0x1780             
+20c14:    move    s0,v0                                  20c10:    move    s0,v0                    
+20c18:    beqz    s0,20c3c ~>                            20c14:    beqz    s0,20c38 ~>              
+20c1c:    li      a0,0x2                                 20c18:    li      a0,0x2                   
+20c20:    jal     1a51d8                          i      20c1c:    jal     1a51d4                   
+20c24:    move    a1,s0                                  20c20:    move    a1,s0                    
+20c28:    lui     at,0x8018                              20c24:    lui     at,0x8018                
+20c2c:    addu    at,at,s2                               20c28:    addu    at,at,s2                 
+20c30:    lbu     v0,0x8a8(at)                           20c2c:    lbu     v0,0x8a8(at)             
+20c34:    nop                                            20c30:    nop                              
+20c38:    sh      v0,0x30(s0)                            20c34:    sh      v0,0x30(s0)              
+20c3c: ~> addiu   v1,s2,-2                               20c38: ~> addiu   v1,s2,-2                 
+20c40:    sltiu   v0,v1,8                                20c3c:    sltiu   v0,v1,8                  
+20c44:    beqz    v0,20d90 ~>                            20c40:    beqz    v0,20d8c ~>              
+20c48:    sll     v0,v1,0x2                              20c44:    sll     v0,v1,0x2                
+20c4c:    lui     at,0x801a                              20c48:    lui     at,0x801a                
+20c50:    addu    at,at,v0                               20c4c:    addu    at,at,v0                 
+20c54:    lw      v0,0x6d4(at)                           20c50:    lw      v0,0x6d4(at)             
+20c58:    nop                                            20c54:    nop                              
+20c5c:    jr      v0                                     20c58:    jr      v0                       
+20c60:    nop                                            20c5c:    nop                              
+20c64:    jal     1ac03c                          i      20c60:    jal     1ac038                   
+20c68:    li      a0,0x61d                               20c64:    li      a0,0x61d                 
+20c6c:    j       1a0da4                          i      20c68:    j       1a0da0                   
+20c70:    nop                                            20c6c:    nop                              
+20c74:    lui     s2,0x8008                              20c70:    lui     s2,0x8008                
+20c78:    addiu   s2,s2,-0x56a8                          20c74:    addiu   s2,s2,-0x56a8            
+20c7c:    move    a0,s2                                  20c78:    move    a0,s2                    
+20c80:    addiu   s3,s2,0x1780                           20c7c:    addiu   s3,s2,0x1780             
+20c84:    jal     1a67e8                          i      20c80:    jal     1a67e4                   
+20c88:    move    a1,s3                                  20c84:    move    a1,s3                    
+20c8c:    move    s0,v0                                  20c88:    move    s0,v0                    
+20c90:    beqz    s0,20ca8 ~>                            20c8c:    beqz    s0,20ca4 ~>              
+20c94:    li      a0,0x28                                20c90:    li      a0,0x28                  
+20c98:    jal     1a51d8                          i      20c94:    jal     1a51d4                   
+20c9c:    move    a1,s0                                  20c98:    move    a1,s0                    
+20ca0:    li      v0,0x100                               20c9c:    li      v0,0x100                 
+20ca4:    sh      v0,0x30(s0)                            20ca0:    sh      v0,0x30(s0)              
+20ca8: ~> lui     v0,0x8004                              20ca4: ~> lui     v0,0x8004                
+20cac:    lw      v0,-0x3824(v0)                         20ca8:    lw      v0,-0x3824(v0)           
+20cb0:    nop                                            20cac:    nop                              
+20cb4:    jalr    v0                                     20cb0:    jalr    v0                       
+20cb8:    li      a0,0x61d                               20cb4:    li      a0,0x61d                 
+20cbc:    move    a0,s2                                  20cb8:    move    a0,s2                    
+20cc0:    jal     1a67e8                          i      20cbc:    jal     1a67e4                   
+20cc4:    move    a1,s3                                  20cc0:    move    a1,s3                    
+20cc8:    move    s0,v0                                  20cc4:    move    s0,v0                    
+20ccc:    beqz    s0,20d78 ~>                            20cc8:    beqz    s0,20d74 ~>              
+20cd0:    li      a0,0xc                                 20ccc:    li      a0,0xc                   
+20cd4:    move    a1,s1                                  20cd0:    move    a1,s1                    
+20cd8:    jal     1a524c                          i      20cd4:    jal     1a5248                   
+20cdc:    move    a2,s0                                  20cd8:    move    a2,s0                    
+20ce0:    lhu     v0,0x30(s1)                            20cdc:    lhu     v0,0x30(s1)              
+20ce4:    j       1a0d74                          i      20ce0:    j       1a0d70                   
+20ce8:    andi    v0,v0,0x1ff                            20ce4:    andi    v0,v0,0x1ff              
+20cec:    lui     v0,0x8004                              20ce8:    lui     v0,0x8004                
+20cf0:    lw      v0,-0x3824(v0)                         20cec:    lw      v0,-0x3824(v0)           
+20cf4:    nop                                            20cf0:    nop                              
+20cf8:    jalr    v0                                     20cf4:    jalr    v0                       
+20cfc:    li      a0,0x61d                               20cf8:    li      a0,0x61d                 
+20d00:    lui     a0,0x8008                              20cfc:    lui     a0,0x8008                
+20d04:    addiu   a0,a0,-0x56a8                          20d00:    addiu   a0,a0,-0x56a8            
+20d08:    jal     1a67e8                          i      20d04:    jal     1a67e4                   
+20d0c:    addiu   a1,a0,0x1780                           20d08:    addiu   a1,a0,0x1780             
+20d10:    move    s0,v0                                  20d0c:    move    s0,v0                    
+20d14:    beqz    s0,20d78 ~>                            20d10:    beqz    s0,20d74 ~>              
+20d18:    li      a0,0xc                                 20d14:    li      a0,0xc                   
+20d1c:    move    a1,s1                                  20d18:    move    a1,s1                    
+20d20:    jal     1a524c                          i      20d1c:    jal     1a5248                   
+20d24:    move    a2,s0                                  20d20:    move    a2,s0                    
+20d28:    lhu     v0,0x30(s1)                            20d24:    lhu     v0,0x30(s1)              
+20d2c:    j       1a0d74                          i      20d28:    j       1a0d70                   
+20d30:    andi    v0,v0,0x1ff                            20d2c:    andi    v0,v0,0x1ff              
+20d34:    lui     v0,0x8004                              20d30:    lui     v0,0x8004                
+20d38:    lw      v0,-0x3824(v0)                         20d34:    lw      v0,-0x3824(v0)           
+20d3c:    nop                                            20d38:    nop                              
+20d40:    jalr    v0                                     20d3c:    jalr    v0                       
+20d44:    li      a0,0x61d                               20d40:    li      a0,0x61d                 
+20d48:    lui     a0,0x8008                              20d44:    lui     a0,0x8008                
+20d4c:    addiu   a0,a0,-0x56a8                          20d48:    addiu   a0,a0,-0x56a8            
+20d50:    jal     1a67e8                          i      20d4c:    jal     1a67e4                   
+20d54:    addiu   a1,a0,0x1780                           20d50:    addiu   a1,a0,0x1780             
+20d58:    move    s0,v0                                  20d54:    move    s0,v0                    
+20d5c:    beqz    s0,20d78 ~>                            20d58:    beqz    s0,20d74 ~>              
+20d60:    li      a0,0xc                                 20d5c:    li      a0,0xc                   
+20d64:    move    a1,s1                                  20d60:    move    a1,s1                    
+20d68:    jal     1a524c                          i      20d64:    jal     1a5248                   
+20d6c:    move    a2,s0                                  20d68:    move    a2,s0                    
+20d70:    li      v0,0x3                                 20d6c:    li      v0,0x3                   
+20d74:    sh      v0,0x30(s0)                            20d70:    sh      v0,0x30(s0)              
+20d78: ~> jal     1a6060                          i      20d74: ~> jal     1a605c                   
+20d7c:    move    a0,s1                                  20d78:    move    a0,s1                    
+20d80:    jal     1a5f78                          i      20d7c:    jal     1a5f74                   
+20d84:    move    a0,s1                                  20d80:    move    a0,s1                    
+20d88:    j       1a0dac                          i      20d84:    j       1a0da8                   
+20d8c:    nop                                            20d88:    nop                              
+20d90: ~> lui     v0,0x8004                              20d8c: ~> lui     v0,0x8004                
+20d94:    lw      v0,-0x3824(v0)                         20d90:    lw      v0,-0x3824(v0)           
+20d98:    nop                                            20d94:    nop                              
+20d9c:    jalr    v0                                     20d98:    jalr    v0                       
+20da0:    li      a0,0x61b                               20d9c:    li      a0,0x61b                 
+20da4:    jal     1a7370                          i      20da0:    jal     1a736c                   
+20da8:    move    a0,s1                                  20da4:    move    a0,s1                    
+20dac: ~> lw      ra,0x20(sp)                            20da8: ~> lw      ra,0x20(sp)              
+20db0:    lw      s3,0x1c(sp)                            20dac:    lw      s3,0x1c(sp)              
+20db4:    lw      s2,0x18(sp)                            20db0:    lw      s2,0x18(sp)              
+20db8:    lw      s1,0x14(sp)                            20db4:    lw      s1,0x14(sp)              
+20dbc:    lw      s0,0x10(sp)                            20db8:    lw      s0,0x10(sp)              
+20dc0:    addiu   sp,sp,0x28                             20dbc:    addiu   sp,sp,0x28               
+20dc4:    jr      ra                                     20dc0:    jr      ra                       
+20dc8:    nop                                            20dc4:    nop                              
+20dcc:    addiu   sp,sp,-0x18                            20dc8:    addiu   sp,sp,-0x18              
+20dd0:    sw      s0,0x10(sp)                            20dcc:    sw      s0,0x10(sp)              
+20dd4:    move    s0,a0                                  20dd0:    move    s0,a0                    
+20dd8:    sw      ra,0x14(sp)                            20dd4:    sw      ra,0x14(sp)              
+20ddc:    lhu     v0,0x2c(s0)                            20dd8:    lhu     v0,0x2c(s0)              
+20de0:    nop                                            20ddc:    nop                              
+20de4:    bnez    v0,20e0c ~>                            20de0:    bnez    v0,20e08 ~>              
+20de8:    nop                                            20de4:    nop                              
+20dec:    lui     a0,0x8018                              20de8:    lui     a0,0x8018                
+20df0:    addiu   a0,a0,0x604                            20dec:    addiu   a0,a0,0x604              
+20df4:    jal     1a6c88                          i      20df0:    jal     1a6c84                   
+20df8:    nop                                            20df4:    nop                              
+20dfc:    li      v0,0x30                                20df8:    li      v0,0x30                  
+20e00:    sb      v0,0x18(s0)                            20dfc:    sb      v0,0x18(s0)              
+20e04:    li      v0,-0x7ffe                             20e00:    li      v0,-0x7ffe               
+20e08:    sh      v0,0x54(s0)                            20e04:    sh      v0,0x54(s0)              
+20e0c: ~> lhu     v0,0x30(s0)                            20e08: ~> lhu     v0,0x30(s0)              
+20e10:    lui     a0,0x8018                              20e0c:    lui     a0,0x8018                
+20e14:    addiu   a0,a0,0x82c                            20e10:    addiu   a0,a0,0x82c              
+20e18:    bnez    v0,20e28 ~>                            20e14:    bnez    v0,20e24 ~>              
+20e1c:    nop                                            20e18:    nop                              
+20e20:    lui     a0,0x8018                              20e1c:    lui     a0,0x8018                
+20e24:    addiu   a0,a0,0x824                            20e20:    addiu   a0,a0,0x824              
+20e28: ~> jal     1a60a8                          i      20e24: ~> jal     1a60a4                   
+20e2c:    move    a1,s0                                  20e28:    move    a1,s0                    
+20e30:    lhu     v1,-0x96(s0)                           20e2c:    lhu     v1,-0x96(s0)             
+20e34:    li      v0,0x1                                 20e30:    li      v0,0x1                   
+20e38:    beq     v1,v0,20e58 ~>                         20e34:    beq     v1,v0,20e54 ~>           
+20e3c:    nop                                            20e38:    nop                              
+20e40:    lhu     v0,0x30(s0)                            20e3c:    lhu     v0,0x30(s0)              
+20e44:    nop                                            20e40:    nop                              
+20e48:    bnez    v0,20e54 ~>                            20e44:    bnez    v0,20e50 ~>              
+20e4c:    li      v0,0xe                                 20e48:    li      v0,0xe                   
+20e50:    li      v0,0xd                                 20e4c:    li      v0,0xd                   
+20e54: ~> sh      v0,0x56(s0)                            20e50: ~> sh      v0,0x56(s0)              
+20e58: ~> lw      ra,0x14(sp)                            20e54: ~> lw      ra,0x14(sp)              
+20e5c:    lw      s0,0x10(sp)                            20e58:    lw      s0,0x10(sp)              
+20e60:    addiu   sp,sp,0x18                             20e5c:    addiu   sp,sp,0x18               
+20e64:    jr      ra                                     20e60:    jr      ra                       
+20e68:    nop                                            20e64:    nop                              
+20e6c:    addiu   sp,sp,-0x40                            20e68:    addiu   sp,sp,-0x40              
+20e70:    sw      s0,0x38(sp)                            20e6c:    sw      s0,0x38(sp)              
+20e74:    move    s0,a0                                  20e70:    move    s0,a0                    
+20e78:    sw      ra,0x3c(sp)                            20e74:    sw      ra,0x3c(sp)              
+20e7c:    lhu     v0,0x2c(s0)                            20e78:    lhu     v0,0x2c(s0)              
+20e80:    nop                                            20e7c:    nop                              
+20e84:    bnez    v0,20ef4 ~>                            20e80:    bnez    v0,20ef0 ~>              
+20e88:    nop                                            20e84:    nop                              
+20e8c:    lhu     v0,0x30(s0)                            20e88:    lhu     v0,0x30(s0)              
+20e90:    nop                                            20e8c:    nop                              
+20e94:    andi    v0,v0,0x100                            20e90:    andi    v0,v0,0x100              
+20e98:    beqz    v0,20ee4 ~>                            20e94:    beqz    v0,20ee0 ~>              
+20e9c:    nop                                            20e98:    nop                              
+20ea0:    lui     a0,0x8018                              20e9c:    lui     a0,0x8018                
+20ea4:    addiu   a0,a0,0x604                            20ea0:    addiu   a0,a0,0x604              
+20ea8:    jal     1a6c88                          i      20ea4:    jal     1a6c84                   
+20eac:    nop                                            20ea8:    nop                              
+20eb0:    li      v0,-0x7ff9                             20eac:    li      v0,-0x7ff9               
+20eb4:    sh      v0,0x54(s0)                            20eb0:    sh      v0,0x54(s0)              
+20eb8:    li      v0,0x5b                                20eb4:    li      v0,0x5b                  
+20ebc:    sh      v0,0x5a(s0)                            20eb8:    sh      v0,0x5a(s0)              
+20ec0:    li      v0,0x213                               20ebc:    li      v0,0x213                 
+20ec4:    sh      v0,0x16(s0)                            20ec0:    sh      v0,0x16(s0)              
+20ec8:    li      v0,0x15                                20ec4:    li      v0,0x15                  
+20ecc:    sh      v0,0x56(s0)                            20ec8:    sh      v0,0x56(s0)              
+20ed0:    li      v0,0x6a                                20ecc:    li      v0,0x6a                  
+20ed4:    sh      v0,0x24(s0)                            20ed0:    sh      v0,0x24(s0)              
+20ed8:    li      v0,0x100                               20ed4:    li      v0,0x100                 
+20edc:    j       1a0ef4                          i      20ed8:    j       1a0ef0                   
+20ee0:    sh      v0,0x2c(s0)                            20edc:    sh      v0,0x2c(s0)              
+20ee4: ~> lui     a0,0x8018                              20ee0: ~> lui     a0,0x8018                
+20ee8:    addiu   a0,a0,0x5ec                            20ee4:    addiu   a0,a0,0x5ec              
+20eec:    jal     1a6c88                          i      20ee8:    jal     1a6c84                   
+20ef0:    nop                                            20eec:    nop                              
+20ef4: ~> lw      ra,0x3c(sp)                            20ef0: ~> lw      ra,0x3c(sp)              
+20ef8:    lw      s0,0x38(sp)                            20ef4:    lw      s0,0x38(sp)              
+20efc:    addiu   sp,sp,0x40                             20ef8:    addiu   sp,sp,0x40               
+20f00:    jr      ra                                     20efc:    jr      ra                       
+20f04:    nop                                            20f00:    nop                              
+20f08:    addiu   sp,sp,-0x70                            20f04:    addiu   sp,sp,-0x70              
+20f0c:    sw      s1,0x64(sp)                            20f08:    sw      s1,0x64(sp)              
+20f10:    move    s1,a0                                  20f0c:    move    s1,a0                    
+20f14:    sw      ra,0x68(sp)                            20f10:    sw      ra,0x68(sp)              
+20f18:    sw      s0,0x60(sp)                            20f14:    sw      s0,0x60(sp)              
+20f1c:    lhu     v1,0x2c(s1)                            20f18:    lhu     v1,0x2c(s1)              
+20f20:    nop                                            20f1c:    nop                              
+20f24:    beqz    v1,20f3c ~>                            20f20:    beqz    v1,20f38 ~>              
+20f28:    li      v0,0x1                                 20f24:    li      v0,0x1                   
+20f2c:    beq     v1,v0,2105c ~>                         20f28:    beq     v1,v0,21058 ~>           
+20f30:    nop                                            20f2c:    nop                              
+20f34:    j       1a11a8                          i      20f30:    j       1a11a4                   
+20f38:    nop                                            20f34:    nop                              
+20f3c: ~> lui     a0,0x8018                              20f38: ~> lui     a0,0x8018                
+20f40:    addiu   a0,a0,0x604                            20f3c:    addiu   a0,a0,0x604              
+20f44:    jal     1a6c88                          i      20f40:    jal     1a6c84                   
+20f48:    nop                                            20f44:    nop                              
+20f4c:    li      a0,0x4                                 20f48:    li      a0,0x4                   
+20f50:    lui     v0,0x8004                              20f4c:    lui     v0,0x8004                
+20f54:    lw      v0,-0x3848(v0)                         20f50:    lw      v0,-0x3848(v0)           
+20f58:    nop                                            20f54:    nop                              
+20f5c:    jalr    v0                                     20f58:    jalr    v0                       
+20f60:    li      a1,0x4                                 20f5c:    li      a1,0x4                   
+20f64:    sll     v0,v0,0x10                             20f60:    sll     v0,v0,0x10               
+20f68:    sra     a1,v0,0x10                             20f64:    sra     a1,v0,0x10               
+20f6c:    li      v0,-1                                  20f68:    li      v0,-1                    
+20f70:    beq     a1,v0,21018 ~>                         20f6c:    beq     a1,v0,21014 ~>           
+20f74:    sll     v0,a1,0x1                              20f70:    sll     v0,a1,0x1                
+20f78:    addu    v0,v0,a1                               20f74:    addu    v0,v0,a1                 
+20f7c:    sll     v0,v0,0x2                              20f78:    sll     v0,v0,0x2                
+20f80:    addu    v0,v0,a1                               20f7c:    addu    v0,v0,a1                 
+20f84:    sll     v0,v0,0x2                              20f80:    sll     v0,v0,0x2                
+20f88:    lui     v1,0x8008                              20f84:    lui     v1,0x8008                
+20f8c:    addiu   v1,v1,0x6fec                           20f88:    addiu   v1,v1,0x6fec             
+20f90:    addu    a0,v0,v1                               20f8c:    addu    a0,v0,v1                 
+20f94:    lw      v0,0x34(s1)                            20f90:    lw      v0,0x34(s1)              
+20f98:    lui     v1,0x80                                20f94:    lui     v1,0x80                  
+20f9c:    sw      a1,0x64(s1)                            20f98:    sw      a1,0x64(s1)              
+20fa0:    sw      a0,0x7c(s1)                            20f9c:    sw      a0,0x7c(s1)              
+20fa4:    or      v0,v0,v1                               20fa0:    or      v0,v0,v1                 
+20fa8:    beqz    a0,21028 ~>                            20fa4:    beqz    a0,21024 ~>              
+20fac:    sw      v0,0x34(s1)                            20fa8:    sw      v0,0x34(s1)              
+20fb0:    li      t2,0xf                                 20fac:    li      t2,0xf                   
+20fb4:    li      t1,0x35                                20fb0:    li      t1,0x35                  
+20fb8:    li      a2,0x82                                20fb4:    li      a2,0x82                  
+20fbc:    li      a1,0xfd                                20fb8:    li      a1,0xfd                  
+20fc0:    li      v1,0x32                                20fbc:    li      v1,0x32                  
+20fc4:    li      v0,0x7d                                20fc0:    li      v0,0x7d                  
+20fc8:    li      t0,0x40                                20fc4:    li      t0,0x40                  
+20fcc:    li      a3,0x2                                 20fc8:    li      a3,0x2                   
+20fd0: ~> sh      t2,0x1a(a0)                            20fcc: ~> sh      t2,0x1a(a0)              
+20fd4:    sh      t1,0xe(a0)                             20fd0:    sh      t1,0xe(a0)               
+20fd8:    sb      a2,0x24(a0)                            20fd4:    sb      a2,0x24(a0)              
+20fdc:    sb      a2,0xc(a0)                             20fd8:    sb      a2,0xc(a0)               
+20fe0:    sb      a1,0x30(a0)                            20fdc:    sb      a1,0x30(a0)              
+20fe4:    sb      a1,0x18(a0)                            20fe0:    sb      a1,0x18(a0)              
+20fe8:    sb      v1,0x19(a0)                            20fe4:    sb      v1,0x19(a0)              
+20fec:    sb      v1,0xd(a0)                             20fe8:    sb      v1,0xd(a0)               
+20ff0:    sb      v0,0x31(a0)                            20fec:    sb      v0,0x31(a0)              
+20ff4:    sb      v0,0x25(a0)                            20ff0:    sb      v0,0x25(a0)              
+20ff8:    sh      t0,0x26(a0)                            20ff4:    sh      t0,0x26(a0)              
+20ffc:    sh      a3,0x32(a0)                            20ff8:    sh      a3,0x32(a0)              
+21000:    lw      a0,0(a0)                               20ffc:    lw      a0,0(a0)                 
+21004:    nop                                            21000:    nop                              
+21008:    bnez    a0,20fd0 ~>                            21004:    bnez    a0,20fcc ~>              
+2100c:    nop                                            21008:    nop                              
+21010:    j       1a102c                          i      2100c:    j       1a1028                   
+21014:    li      v0,0x10                                21010:    li      v0,0x10                  
+21018: ~> jal     1a5f78                          i      21014: ~> jal     1a5f74                   
+2101c:    move    a0,s1                                  21018:    move    a0,s1                    
+21020:    j       1a11a8                          i      2101c:    j       1a11a4                   
+21024:    nop                                            21020:    nop                              
+21028: ~> li      v0,0x10                                21024: ~> li      v0,0x10                  
+2102c:    lui     at,0x8004                              21028:    lui     at,0x8004                
+21030:    sb      v0,-0x34db(at)                         2102c:    sb      v0,-0x34db(at)           
+21034:    lui     at,0x8004                              21030:    lui     at,0x8004                
+21038:    sb      v0,-0x34da(at)                         21034:    sb      v0,-0x34da(at)           
+2103c:    lui     at,0x8004                              21038:    lui     at,0x8004                
+21040:    sb      v0,-0x34d9(at)                         2103c:    sb      v0,-0x34d9(at)           
+21044:    lui     at,0x8005                              21040:    lui     at,0x8005                
+21048:    sb      v0,0x4319(at)                          21044:    sb      v0,0x4319(at)            
+2104c:    lui     at,0x8005                              21048:    lui     at,0x8005                
+21050:    sb      v0,0x431a(at)                          2104c:    sb      v0,0x431a(at)            
+21054:    lui     at,0x8005                              21050:    lui     at,0x8005                
+21058:    sb      v0,0x431b(at)                          21054:    sb      v0,0x431b(at)            
+2105c: ~> jal     1805c                                  21058: ~> jal     1805c                    
+21060:    li      a0,0x400                               2105c:    li      a0,0x400                 
+21064:    lh      a1,6(s1)                               21060:    lh      a1,6(s1)                 
+21068:    jal     1803c                                  21064:    jal     1803c                    
+2106c:    li      a0,0x80                                21068:    li      a0,0x80                  
+21070:    lui     a0,0x8018                              2106c:    lui     a0,0x8018                
+21074:    addiu   a0,a0,0x91c                            21070:    addiu   a0,a0,0x91c              
+21078:    addiu   s0,sp,0x28                             21074:    addiu   s0,sp,0x28               
+2107c:    jal     186ac                                  21078:    jal     186ac                    
+21080:    move    a1,s0                                  2107c:    move    a1,s0                    
+21084:    move    a0,s0                                  21080:    move    a0,s0                    
+21088:    addiu   a1,sp,0x18                             21084:    addiu   a1,sp,0x18               
+2108c:    lh      v1,2(s1)                               21088:    lh      v1,2(s1)                 
+21090:    li      v0,0x400                               2108c:    li      v0,0x400                 
+21094:    sw      zero,0x1c(sp)                          21090:    sw      zero,0x1c(sp)            
+21098:    sw      v0,0x20(sp)                            21094:    sw      v0,0x20(sp)              
+2109c:    addiu   v1,v1,-0x80                            21098:    addiu   v1,v1,-0x80              
+210a0:    jal     17cdc                                  2109c:    jal     17cdc                    
+210a4:    sw      v1,0x18(sp)                            210a0:    sw      v1,0x18(sp)              
+210a8:    jal     17e3c                                  210a4:    jal     17e3c                    
+210ac:    move    a0,s0                                  210a8:    move    a0,s0                    
+210b0:    jal     17ecc                                  210ac:    jal     17ecc                    
+210b4:    move    a0,s0                                  210b0:    move    a0,s0                    
+210b8:    lui     a0,0x8018                              210b4:    lui     a0,0x8018                
+210bc:    addiu   a0,a0,0x914                            210b8:    addiu   a0,a0,0x914              
+210c0:    addiu   a1,sp,0x48                             210bc:    addiu   a1,sp,0x48               
+210c4:    addiu   a2,sp,0x4c                             210c0:    addiu   a2,sp,0x4c               
+210c8:    jal     1824c                                  210c4:    jal     1824c                    
+210cc:    addiu   a3,sp,0x50                             210c8:    addiu   a3,sp,0x50               
+210d0:    lh      v0,0x48(sp)                            210cc:    lh      v0,0x48(sp)              
+210d4:    nop                                            210d0:    nop                              
+210d8:    blez    v0,21118 ~>                            210d4:    blez    v0,21114 ~>              
+210dc:    move    a1,v0                                  210d8:    move    a1,v0                    
+210e0:    slti    v0,v0,-0x3f                            210dc:    slti    v0,v0,-0x3f              
+210e4:    bnez    v0,21124 ~>                            210e0:    bnez    v0,21120 ~>              
+210e8:    addiu   v0,a1,-0x7c                            210e4:    addiu   v0,a1,-0x7c              
+210ec: ~> move    a1,v0                                  210e8: ~> move    a1,v0                    
+210f0:    sll     v0,v0,0x10                             210ec:    sll     v0,v0,0x10               
+210f4:    sra     v0,v0,0x10                             210f0:    sra     v0,v0,0x10               
+210f8:    slti    v0,v0,-0x3f                            210f4:    slti    v0,v0,-0x3f              
+210fc:    beqz    v0,210ec ~>                            210f8:    beqz    v0,210e8 ~>              
+21100:    addiu   v0,a1,-0x7c                            210fc:    addiu   v0,a1,-0x7c              
+21104:    j       1a1124                          i      21100:    j       1a1120                   
+21108:    nop                                            21104:    nop                              
+2110c: ~> move    a1,v0                                  21108: ~> move    a1,v0                    
+21110:    sll     v0,v0,0x10                             2110c:    sll     v0,v0,0x10               
+21114:    sra     v0,v0,0x10                             21110:    sra     v0,v0,0x10               
+21118: ~> slti    v0,v0,-0x80                            21114: ~> slti    v0,v0,-0x80              
+2111c:    bnez    v0,2110c ~>                            21118:    bnez    v0,21108 ~>              
+21120:    addiu   v0,a1,0x7c                             2111c:    addiu   v0,a1,0x7c               
+21124: ~> lw      a0,0x7c(s1)                            21120: ~> lw      a0,0x7c(s1)              
+21128:    nop                                            21124:    nop                              
+2112c:    beqz    a0,211a8 ~>                            21128:    beqz    a0,211a4 ~>              
+21130:    li      a2,0x2                                 2112c:    li      a2,0x2                   
+21134:    addiu   v0,a1,0x7c                             21130:    addiu   v0,a1,0x7c               
+21138: ~> sh      a1,0x20(a0)                            21134: ~> sh      a1,0x20(a0)              
+2113c:    sh      a1,8(a0)                               21138:    sh      a1,8(a0)                 
+21140:    move    a1,v0                                  2113c:    move    a1,v0                    
+21144:    sll     v0,v0,0x10                             21140:    sll     v0,v0,0x10               
+21148:    sh      a1,0x2c(a0)                            21144:    sh      a1,0x2c(a0)              
+2114c:    sh      a1,0x14(a0)                            21148:    sh      a1,0x14(a0)              
+21150:    lhu     v1,6(s1)                               2114c:    lhu     v1,6(s1)                 
+21154:    sra     v0,v0,0x10                             21150:    sra     v0,v0,0x10               
+21158:    addiu   v1,v1,0x4c                             21154:    addiu   v1,v1,0x4c               
+2115c:    sh      v1,0x16(a0)                            21158:    sh      v1,0x16(a0)              
+21160:    sh      v1,0xa(a0)                             2115c:    sh      v1,0xa(a0)               
+21164:    lhu     v1,6(s1)                               21160:    lhu     v1,6(s1)                 
+21168:    slti    v0,v0,0x101                            21164:    slti    v0,v0,0x101              
+2116c:    sh      a2,0x32(a0)                            21168:    sh      a2,0x32(a0)              
+21170:    sh      v1,0x2e(a0)                            2116c:    sh      v1,0x2e(a0)              
+21174:    sh      v1,0x22(a0)                            21170:    sh      v1,0x22(a0)              
+21178:    lw      a0,0(a0)                               21174:    lw      a0,0(a0)                 
+2117c:    beqz    v0,2118c ~>                            21178:    beqz    v0,21188 ~>              
+21180:    nop                                            2117c:    nop                              
+21184:    bnez    a0,21138 ~>                            21180:    bnez    a0,21134 ~>              
+21188:    addiu   v0,a1,0x7c                             21184:    addiu   v0,a1,0x7c               
+2118c: ~> beqz    a0,211a8 ~>                            21188: ~> beqz    a0,211a4 ~>              
+21190:    li      v0,0x8                                 2118c:    li      v0,0x8                   
+21194: ~> sh      v0,0x32(a0)                            21190: ~> sh      v0,0x32(a0)              
+21198:    lw      a0,0(a0)                               21194:    lw      a0,0(a0)                 
+2119c:    nop                                            21198:    nop                              
+211a0:    bnez    a0,21194 ~>                            2119c:    bnez    a0,21190 ~>              
+211a4:    nop                                            211a0:    nop                              
+211a8: ~> lw      ra,0x68(sp)                            211a4: ~> lw      ra,0x68(sp)              
+211ac:    lw      s1,0x64(sp)                            211a8:    lw      s1,0x64(sp)              
+211b0:    lw      s0,0x60(sp)                            211ac:    lw      s0,0x60(sp)              
+211b4:    addiu   sp,sp,0x70                             211b0:    addiu   sp,sp,0x70               
+211b8:    jr      ra                                     211b4:    jr      ra                       
+211bc:    nop                                            211b8:    nop                              
+211c0:    addiu   sp,sp,-0x70                            211bc:    addiu   sp,sp,-0x70              
+211c4:    sw      s1,0x64(sp)                            211c0:    sw      s1,0x64(sp)              
+211c8:    move    s1,a0                                  211c4:    move    s1,a0                    
+211cc:    sw      ra,0x68(sp)                            211c8:    sw      ra,0x68(sp)              
+211d0:    sw      s0,0x60(sp)                            211cc:    sw      s0,0x60(sp)              
+211d4:    lhu     v1,0x2c(s1)                            211d0:    lhu     v1,0x2c(s1)              
+211d8:    nop                                            211d4:    nop                              
+211dc:    beqz    v1,211f4 ~>                            211d8:    beqz    v1,211f0 ~>              
+211e0:    li      v0,0x1                                 211dc:    li      v0,0x1                   
+211e4:    beq     v1,v0,212dc ~>                         211e0:    beq     v1,v0,212d8 ~>           
+211e8:    nop                                            211e4:    nop                              
+211ec:    j       1a1428                          i      211e8:    j       1a1424                   
+211f0:    nop                                            211ec:    nop                              
+211f4: ~> lui     a0,0x8018                              211f0: ~> lui     a0,0x8018                
+211f8:    addiu   a0,a0,0x604                            211f4:    addiu   a0,a0,0x604              
+211fc:    jal     1a6c88                          i      211f8:    jal     1a6c84                   
+21200:    nop                                            211fc:    nop                              
+21204:    li      a0,0x4                                 21200:    li      a0,0x4                   
+21208:    lui     v0,0x8004                              21204:    lui     v0,0x8004                
+2120c:    lw      v0,-0x3848(v0)                         21208:    lw      v0,-0x3848(v0)           
+21210:    nop                                            2120c:    nop                              
+21214:    jalr    v0                                     21210:    jalr    v0                       
+21218:    li      a1,0x4                                 21214:    li      a1,0x4                   
+2121c:    sll     v0,v0,0x10                             21218:    sll     v0,v0,0x10               
+21220:    sra     a1,v0,0x10                             2121c:    sra     a1,v0,0x10               
+21224:    li      v0,-1                                  21220:    li      v0,-1                    
+21228:    beq     a1,v0,212cc ~>                         21224:    beq     a1,v0,212c8 ~>           
+2122c:    sll     v0,a1,0x1                              21228:    sll     v0,a1,0x1                
+21230:    addu    v0,v0,a1                               2122c:    addu    v0,v0,a1                 
+21234:    sll     v0,v0,0x2                              21230:    sll     v0,v0,0x2                
+21238:    addu    v0,v0,a1                               21234:    addu    v0,v0,a1                 
+2123c:    sll     v0,v0,0x2                              21238:    sll     v0,v0,0x2                
+21240:    lui     v1,0x8008                              2123c:    lui     v1,0x8008                
+21244:    addiu   v1,v1,0x6fec                           21240:    addiu   v1,v1,0x6fec             
+21248:    addu    a0,v0,v1                               21244:    addu    a0,v0,v1                 
+2124c:    lw      v0,0x34(s1)                            21248:    lw      v0,0x34(s1)              
+21250:    lui     v1,0x80                                2124c:    lui     v1,0x80                  
+21254:    sw      a1,0x64(s1)                            21250:    sw      a1,0x64(s1)              
+21258:    sw      a0,0x7c(s1)                            21254:    sw      a0,0x7c(s1)              
+2125c:    or      v0,v0,v1                               21258:    or      v0,v0,v1                 
+21260:    beqz    a0,212dc ~>                            2125c:    beqz    a0,212d8 ~>              
+21264:    sw      v0,0x34(s1)                            21260:    sw      v0,0x34(s1)              
+21268:    li      t1,0xf                                 21264:    li      t1,0xf                   
+2126c:    li      t0,0x34                                21268:    li      t0,0x34                  
+21270:    li      a1,0x80                                2126c:    li      a1,0x80                  
+21274:    li      v1,0xf8                                21270:    li      v1,0xf8                  
+21278:    li      v0,0x1c                                21274:    li      v0,0x1c                  
+2127c:    li      a3,0x50                                21278:    li      a3,0x50                  
+21280:    li      a2,0x2                                 2127c:    li      a2,0x2                   
+21284:    sh      t1,0x1a(a0)                            21280:    sh      t1,0x1a(a0)              
+21288:    sh      t0,0xe(a0)                             21284:    sh      t0,0xe(a0)               
+2128c:    sb      a1,0x24(a0)                            21288:    sb      a1,0x24(a0)              
+21290:    sb      a1,0xc(a0)                             2128c:    sb      a1,0xc(a0)               
+21294:    sb      v1,0x30(a0)                            21290:    sb      v1,0x30(a0)              
+21298:    sb      v1,0x18(a0)                            21294:    sb      v1,0x18(a0)              
+2129c:    sb      zero,0x19(a0)                          21298:    sb      zero,0x19(a0)            
+212a0:    sb      zero,0xd(a0)                           2129c:    sb      zero,0xd(a0)             
+212a4:    sb      v0,0x31(a0)                            212a0:    sb      v0,0x31(a0)              
+212a8:    sb      v0,0x25(a0)                            212a4:    sb      v0,0x25(a0)              
+212ac:    sh      a3,0x26(a0)                            212a8:    sh      a3,0x26(a0)              
+212b0:    sh      a2,0x32(a0)                            212ac:    sh      a2,0x32(a0)              
+212b4:    lw      a0,0(a0)                               212b0:    lw      a0,0(a0)                 
+212b8:    nop                                            212b4:    nop                              
+212bc:    beqz    a0,212dc ~>                            212b8:    beqz    a0,212d8 ~>              
+212c0:    nop                                            212bc:    nop                              
+212c4:    j       1a1288                          i      212c0:    j       1a1284                   
+212c8:    sh      t1,0x1a(a0)                            212c4:    sh      t1,0x1a(a0)              
+212cc: ~> jal     1a5f78                          i      212c8: ~> jal     1a5f74                   
+212d0:    move    a0,s1                                  212cc:    move    a0,s1                    
+212d4:    j       1a1428                          i      212d0:    j       1a1424                   
+212d8:    nop                                            212d4:    nop                              
+212dc: ~> jal     1805c                                  212d8: ~> jal     1805c                    
+212e0:    li      a0,0x400                               212dc:    li      a0,0x400                 
+212e4:    lh      a1,6(s1)                               212e0:    lh      a1,6(s1)                 
+212e8:    jal     1803c                                  212e4:    jal     1803c                    
+212ec:    li      a0,0x80                                212e8:    li      a0,0x80                  
+212f0:    lui     a0,0x8018                              212ec:    lui     a0,0x8018                
+212f4:    addiu   a0,a0,0x92c                            212f0:    addiu   a0,a0,0x92c              
+212f8:    addiu   s0,sp,0x28                             212f4:    addiu   s0,sp,0x28               
+212fc:    jal     186ac                                  212f8:    jal     186ac                    
+21300:    move    a1,s0                                  212fc:    move    a1,s0                    
+21304:    move    a0,s0                                  21300:    move    a0,s0                    
+21308:    addiu   a1,sp,0x18                             21304:    addiu   a1,sp,0x18               
+2130c:    lh      v1,2(s1)                               21308:    lh      v1,2(s1)                 
+21310:    li      v0,0x400                               2130c:    li      v0,0x400                 
+21314:    sw      zero,0x1c(sp)                          21310:    sw      zero,0x1c(sp)            
+21318:    sw      v0,0x20(sp)                            21314:    sw      v0,0x20(sp)              
+2131c:    addiu   v1,v1,-0x80                            21318:    addiu   v1,v1,-0x80              
+21320:    jal     17cdc                                  2131c:    jal     17cdc                    
+21324:    sw      v1,0x18(sp)                            21320:    sw      v1,0x18(sp)              
+21328:    jal     17e3c                                  21324:    jal     17e3c                    
+2132c:    move    a0,s0                                  21328:    move    a0,s0                    
+21330:    jal     17ecc                                  2132c:    jal     17ecc                    
+21334:    move    a0,s0                                  21330:    move    a0,s0                    
+21338:    lui     a0,0x8018                              21334:    lui     a0,0x8018                
+2133c:    addiu   a0,a0,0x924                            21338:    addiu   a0,a0,0x924              
+21340:    addiu   a1,sp,0x48                             2133c:    addiu   a1,sp,0x48               
+21344:    addiu   a2,sp,0x4c                             21340:    addiu   a2,sp,0x4c               
+21348:    jal     1824c                                  21344:    jal     1824c                    
+2134c:    addiu   a3,sp,0x50                             21348:    addiu   a3,sp,0x50               
+21350:    lh      v0,0x48(sp)                            2134c:    lh      v0,0x48(sp)              
+21354:    nop                                            21350:    nop                              
+21358:    blez    v0,21398 ~>                            21354:    blez    v0,21394 ~>              
+2135c:    move    a1,v0                                  21358:    move    a1,v0                    
+21360:    slti    v0,v0,-0x3f                            2135c:    slti    v0,v0,-0x3f              
+21364:    bnez    v0,213a4 ~>                            21360:    bnez    v0,213a0 ~>              
+21368:    addiu   v0,a1,-0x78                            21364:    addiu   v0,a1,-0x78              
+2136c: ~> move    a1,v0                                  21368: ~> move    a1,v0                    
+21370:    sll     v0,v0,0x10                             2136c:    sll     v0,v0,0x10               
+21374:    sra     v0,v0,0x10                             21370:    sra     v0,v0,0x10               
+21378:    slti    v0,v0,-0x3f                            21374:    slti    v0,v0,-0x3f              
+2137c:    beqz    v0,2136c ~>                            21378:    beqz    v0,21368 ~>              
+21380:    addiu   v0,a1,-0x78                            2137c:    addiu   v0,a1,-0x78              
+21384:    j       1a13a4                          i      21380:    j       1a13a0                   
+21388:    nop                                            21384:    nop                              
+2138c: ~> move    a1,v0                                  21388: ~> move    a1,v0                    
+21390:    sll     v0,v0,0x10                             2138c:    sll     v0,v0,0x10               
+21394:    sra     v0,v0,0x10                             21390:    sra     v0,v0,0x10               
+21398: ~> slti    v0,v0,-0x80                            21394: ~> slti    v0,v0,-0x80              
+2139c:    bnez    v0,2138c ~>                            21398:    bnez    v0,21388 ~>              
+213a0:    addiu   v0,a1,0x78                             2139c:    addiu   v0,a1,0x78               
+213a4: ~> lw      a0,0x7c(s1)                            213a0: ~> lw      a0,0x7c(s1)              
+213a8:    nop                                            213a4:    nop                              
+213ac:    beqz    a0,21428 ~>                            213a8:    beqz    a0,21424 ~>              
+213b0:    li      a2,0x2                                 213ac:    li      a2,0x2                   
+213b4:    addiu   v0,a1,0x78                             213b0:    addiu   v0,a1,0x78               
+213b8: ~> sh      a1,0x20(a0)                            213b4: ~> sh      a1,0x20(a0)              
+213bc:    sh      a1,8(a0)                               213b8:    sh      a1,8(a0)                 
+213c0:    move    a1,v0                                  213bc:    move    a1,v0                    
+213c4:    sll     v0,v0,0x10                             213c0:    sll     v0,v0,0x10               
+213c8:    sh      a1,0x2c(a0)                            213c4:    sh      a1,0x2c(a0)              
+213cc:    sh      a1,0x14(a0)                            213c8:    sh      a1,0x14(a0)              
+213d0:    lhu     v1,6(s1)                               213cc:    lhu     v1,6(s1)                 
+213d4:    sra     v0,v0,0x10                             213d0:    sra     v0,v0,0x10               
+213d8:    addiu   v1,v1,0x1c                             213d4:    addiu   v1,v1,0x1c               
+213dc:    sh      v1,0x16(a0)                            213d8:    sh      v1,0x16(a0)              
+213e0:    sh      v1,0xa(a0)                             213dc:    sh      v1,0xa(a0)               
+213e4:    lhu     v1,6(s1)                               213e0:    lhu     v1,6(s1)                 
+213e8:    slti    v0,v0,0x101                            213e4:    slti    v0,v0,0x101              
+213ec:    sh      a2,0x32(a0)                            213e8:    sh      a2,0x32(a0)              
+213f0:    sh      v1,0x2e(a0)                            213ec:    sh      v1,0x2e(a0)              
+213f4:    sh      v1,0x22(a0)                            213f0:    sh      v1,0x22(a0)              
+213f8:    lw      a0,0(a0)                               213f4:    lw      a0,0(a0)                 
+213fc:    beqz    v0,2140c ~>                            213f8:    beqz    v0,21408 ~>              
+21400:    nop                                            213fc:    nop                              
+21404:    bnez    a0,213b8 ~>                            21400:    bnez    a0,213b4 ~>              
+21408:    addiu   v0,a1,0x78                             21404:    addiu   v0,a1,0x78               
+2140c: ~> beqz    a0,21428 ~>                            21408: ~> beqz    a0,21424 ~>              
+21410:    li      v0,0x8                                 2140c:    li      v0,0x8                   
+21414: ~> sh      v0,0x32(a0)                            21410: ~> sh      v0,0x32(a0)              
+21418:    lw      a0,0(a0)                               21414:    lw      a0,0(a0)                 
+2141c:    nop                                            21418:    nop                              
+21420:    bnez    a0,21414 ~>                            2141c:    bnez    a0,21410 ~>              
+21424:    nop                                            21420:    nop                              
+21428: ~> lw      ra,0x68(sp)                            21424: ~> lw      ra,0x68(sp)              
+2142c:    lw      s1,0x64(sp)                            21428:    lw      s1,0x64(sp)              
+21430:    lw      s0,0x60(sp)                            2142c:    lw      s0,0x60(sp)              
+21434:    addiu   sp,sp,0x70                             21430:    addiu   sp,sp,0x70               
+21438:    jr      ra                                     21434:    jr      ra                       
+2143c:    nop                                            21438:    nop                              
+21440:    addiu   sp,sp,-0x70                            2143c:    addiu   sp,sp,-0x70              
+21444:    sw      s1,0x64(sp)                            21440:    sw      s1,0x64(sp)              
+21448:    move    s1,a0                                  21444:    move    s1,a0                    
+2144c:    sw      ra,0x68(sp)                            21448:    sw      ra,0x68(sp)              
+21450:    sw      s0,0x60(sp)                            2144c:    sw      s0,0x60(sp)              
+21454:    lhu     v1,0x2c(s1)                            21450:    lhu     v1,0x2c(s1)              
+21458:    nop                                            21454:    nop                              
+2145c:    beqz    v1,21474 ~>                            21458:    beqz    v1,21470 ~>              
+21460:    li      v0,0x1                                 2145c:    li      v0,0x1                   
+21464:    beq     v1,v0,21580 ~>                         21460:    beq     v1,v0,2157c ~>           
+21468:    nop                                            21464:    nop                              
+2146c:    j       1a16ec                          i      21468:    j       1a16e8                   
+21470:    nop                                            2146c:    nop                              
+21474: ~> lui     a0,0x8018                              21470: ~> lui     a0,0x8018                
+21478:    addiu   a0,a0,0x604                            21474:    addiu   a0,a0,0x604              
+2147c:    jal     1a6c88                          i      21478:    jal     1a6c84                   
+21480:    nop                                            2147c:    nop                              
+21484:    li      a0,0x11                                21480:    li      a0,0x11                  
+21488:    lui     v0,0x8004                              21484:    lui     v0,0x8004                
+2148c:    lw      v0,-0x3820(v0)                         21488:    lw      v0,-0x3820(v0)           
+21490:    nop                                            2148c:    nop                              
+21494:    jalr    v0                                     21490:    jalr    v0                       
+21498:    li      a1,0xa                                 21494:    li      a1,0xa                   
+2149c:    sll     v0,v0,0x10                             21498:    sll     v0,v0,0x10               
+214a0:    sra     a1,v0,0x10                             2149c:    sra     a1,v0,0x10               
+214a4:    li      v0,-1                                  214a0:    li      v0,-1                    
+214a8:    beq     a1,v0,21570 ~>                         214a4:    beq     a1,v0,2156c ~>           
+214ac:    sll     v0,a1,0x1                              214a8:    sll     v0,a1,0x1                
+214b0:    addu    v0,v0,a1                               214ac:    addu    v0,v0,a1                 
+214b4:    sll     v0,v0,0x2                              214b0:    sll     v0,v0,0x2                
+214b8:    addu    v0,v0,a1                               214b4:    addu    v0,v0,a1                 
+214bc:    sll     v0,v0,0x2                              214b8:    sll     v0,v0,0x2                
+214c0:    lui     v1,0x8008                              214bc:    lui     v1,0x8008                
+214c4:    addiu   v1,v1,0x6fec                           214c0:    addiu   v1,v1,0x6fec             
+214c8:    addu    a0,v0,v1                               214c4:    addu    a0,v0,v1                 
+214cc:    lw      v0,0x34(s1)                            214c8:    lw      v0,0x34(s1)              
+214d0:    lui     v1,0x80                                214cc:    lui     v1,0x80                  
+214d4:    sw      a1,0x64(s1)                            214d0:    sw      a1,0x64(s1)              
+214d8:    sw      a0,0x7c(s1)                            214d4:    sw      a0,0x7c(s1)              
+214dc:    or      v0,v0,v1                               214d8:    or      v0,v0,v1                 
+214e0:    beqz    a0,21528 ~>                            214dc:    beqz    a0,21524 ~>              
+214e4:    sw      v0,0x34(s1)                            214e0:    sw      v0,0x34(s1)              
+214e8:    li      a2,0x18                                214e4:    li      a2,0x18                  
+214ec:    li      a1,0x40                                214e8:    li      a1,0x40                  
+214f0:    li      v1,0x60                                214ec:    li      v1,0x60                  
+214f4:    li      v0,0x13                                214f0:    li      v0,0x13                  
+214f8: ~> move    s0,a0                                  214f4: ~> move    s0,a0                    
+214fc:    sb      a2,0xc(a0)                             214f8:    sb      a2,0xc(a0)               
+21500:    sb      a1,0xd(a0)                             214fc:    sb      a1,0xd(a0)               
+21504:    sb      zero,6(a0)                             21500:    sb      zero,6(a0)               
+21508:    sb      zero,5(a0)                             21504:    sb      zero,5(a0)               
+2150c:    sb      zero,4(a0)                             21508:    sb      zero,4(a0)               
+21510:    sh      v1,0x26(a0)                            2150c:    sh      v1,0x26(a0)              
+21514:    sh      v0,0x32(a0)                            21510:    sh      v0,0x32(a0)              
+21518:    lw      a0,0(a0)                               21514:    lw      a0,0(a0)                 
+2151c:    nop                                            21518:    nop                              
+21520:    bnez    a0,214f8 ~>                            2151c:    bnez    a0,214f4 ~>              
+21524:    nop                                            21520:    nop                              
+21528: ~> move    a0,s0                                  21524: ~> move    a0,s0                    
+2152c:    li      v0,0xff                                21528:    li      v0,0xff                  
+21530:    sw      a0,0x80(s1)                            2152c:    sw      a0,0x80(s1)              
+21534:    sb      v0,0xc(a0)                             21530:    sb      v0,0xc(a0)               
+21538:    li      v0,0x30                                21534:    li      v0,0x30                  
+2153c:    sb      v0,0xd(a0)                             21538:    sb      v0,0xd(a0)               
+21540:    sh      zero,8(a0)                             2153c:    sh      zero,8(a0)               
+21544:    lhu     v1,6(s1)                               21540:    lhu     v1,6(s1)                 
+21548:    li      v0,0x60                                21544:    li      v0,0x60                  
+2154c:    sh      v0,0x26(a0)                            21548:    sh      v0,0x26(a0)              
+21550:    li      v0,0x13                                2154c:    li      v0,0x13                  
+21554:    sb      zero,6(a0)                             21550:    sb      zero,6(a0)               
+21558:    sb      zero,5(a0)                             21554:    sb      zero,5(a0)               
+2155c:    sb      zero,4(a0)                             21558:    sb      zero,4(a0)               
+21560:    sh      v0,0x32(a0)                            2155c:    sh      v0,0x32(a0)              
+21564:    addiu   v1,v1,0x70                             21560:    addiu   v1,v1,0x70               
+21568:    j       1a1580                          i      21564:    j       1a157c                   
+2156c:    sh      v1,0xa(a0)                             21568:    sh      v1,0xa(a0)               
+21570: ~> jal     1a5f78                          i      2156c: ~> jal     1a5f74                   
+21574:    move    a0,s1                                  21570:    move    a0,s1                    
+21578:    j       1a16ec                          i      21574:    j       1a16e8                   
+2157c:    nop                                            21578:    nop                              
+21580: ~> jal     1805c                                  2157c: ~> jal     1805c                    
+21584:    li      a0,0x400                               21580:    li      a0,0x400                 
+21588:    lh      a1,6(s1)                               21584:    lh      a1,6(s1)                 
+2158c:    jal     1803c                                  21588:    jal     1803c                    
+21590:    li      a0,0x80                                2158c:    li      a0,0x80                  
+21594:    lui     a0,0x8018                              21590:    lui     a0,0x8018                
+21598:    addiu   a0,a0,0x93c                            21594:    addiu   a0,a0,0x93c              
+2159c:    addiu   s0,sp,0x28                             21598:    addiu   s0,sp,0x28               
+215a0:    jal     186ac                                  2159c:    jal     186ac                    
+215a4:    move    a1,s0                                  215a0:    move    a1,s0                    
+215a8:    move    a0,s0                                  215a4:    move    a0,s0                    
+215ac:    addiu   a1,sp,0x18                             215a8:    addiu   a1,sp,0x18               
+215b0:    lh      v1,2(s1)                               215ac:    lh      v1,2(s1)                 
+215b4:    li      v0,0x400                               215b0:    li      v0,0x400                 
+215b8:    sw      zero,0x1c(sp)                          215b4:    sw      zero,0x1c(sp)            
+215bc:    sw      v0,0x20(sp)                            215b8:    sw      v0,0x20(sp)              
+215c0:    addiu   v1,v1,-0x80                            215bc:    addiu   v1,v1,-0x80              
+215c4:    jal     17cdc                                  215c0:    jal     17cdc                    
+215c8:    sw      v1,0x18(sp)                            215c4:    sw      v1,0x18(sp)              
+215cc:    jal     17e3c                                  215c8:    jal     17e3c                    
+215d0:    move    a0,s0                                  215cc:    move    a0,s0                    
+215d4:    jal     17ecc                                  215d0:    jal     17ecc                    
+215d8:    move    a0,s0                                  215d4:    move    a0,s0                    
+215dc:    lui     a0,0x8018                              215d8:    lui     a0,0x8018                
+215e0:    addiu   a0,a0,0x934                            215dc:    addiu   a0,a0,0x934              
+215e4:    addiu   a1,sp,0x48                             215e0:    addiu   a1,sp,0x48               
+215e8:    addiu   a2,sp,0x4c                             215e4:    addiu   a2,sp,0x4c               
+215ec:    jal     1824c                                  215e8:    jal     1824c                    
+215f0:    addiu   a3,sp,0x50                             215ec:    addiu   a3,sp,0x50               
+215f4:    lh      v0,0x48(sp)                            215f0:    lh      v0,0x48(sp)              
+215f8:    nop                                            215f4:    nop                              
+215fc:    blez    v0,2163c ~>                            215f8:    blez    v0,21638 ~>              
+21600:    move    a1,v0                                  215fc:    move    a1,v0                    
+21604:    slti    v0,v0,-0x3f                            21600:    slti    v0,v0,-0x3f              
+21608:    bnez    v0,21648 ~>                            21604:    bnez    v0,21644 ~>              
+2160c:    addiu   v0,a1,-0x38                            21608:    addiu   v0,a1,-0x38              
+21610: ~> move    a1,v0                                  2160c: ~> move    a1,v0                    
+21614:    sll     v0,v0,0x10                             21610:    sll     v0,v0,0x10               
+21618:    sra     v0,v0,0x10                             21614:    sra     v0,v0,0x10               
+2161c:    slti    v0,v0,-0x3f                            21618:    slti    v0,v0,-0x3f              
+21620:    beqz    v0,21610 ~>                            2161c:    beqz    v0,2160c ~>              
+21624:    addiu   v0,a1,-0x38                            21620:    addiu   v0,a1,-0x38              
+21628:    j       1a1648                          i      21624:    j       1a1644                   
+2162c:    nop                                            21628:    nop                              
+21630: ~> move    a1,v0                                  2162c: ~> move    a1,v0                    
+21634:    sll     v0,v0,0x10                             21630:    sll     v0,v0,0x10               
+21638:    sra     v0,v0,0x10                             21634:    sra     v0,v0,0x10               
+2163c: ~> slti    v0,v0,-0x80                            21638: ~> slti    v0,v0,-0x80              
+21640:    bnez    v0,21630 ~>                            2163c:    bnez    v0,2162c ~>              
+21644:    addiu   v0,a1,0x38                             21640:    addiu   v0,a1,0x38               
+21648: ~> lw      a0,0x7c(s1)                            21644: ~> lw      a0,0x7c(s1)              
+2164c:    nop                                            21648:    nop                              
+21650:    beqz    a0,216ac ~>                            2164c:    beqz    a0,216a8 ~>              
+21654:    addiu   v0,a1,0x38                             21650:    addiu   v0,a1,0x38               
+21658:    li      a2,0x13                                21654:    li      a2,0x13                  
+2165c: ~> sh      a1,8(a0)                               21658: ~> sh      a1,8(a0)                 
+21660:    move    a1,v0                                  2165c:    move    a1,v0                    
+21664:    sll     v0,v0,0x10                             21660:    sll     v0,v0,0x10               
+21668:    sra     v0,v0,0x10                             21664:    sra     v0,v0,0x10               
+2166c:    lhu     v1,6(s1)                               21668:    lhu     v1,6(s1)                 
+21670:    slti    v0,v0,0x101                            2166c:    slti    v0,v0,0x101              
+21674:    sh      a2,0x32(a0)                            21670:    sh      a2,0x32(a0)              
+21678:    sh      v1,0xa(a0)                             21674:    sh      v1,0xa(a0)               
+2167c:    lw      a0,0(a0)                               21678:    lw      a0,0(a0)                 
+21680:    beqz    v0,21690 ~>                            2167c:    beqz    v0,2168c ~>              
+21684:    nop                                            21680:    nop                              
+21688:    bnez    a0,2165c ~>                            21684:    bnez    a0,21658 ~>              
+2168c:    addiu   v0,a1,0x38                             21688:    addiu   v0,a1,0x38               
+21690: ~> beqz    a0,216ac ~>                            2168c: ~> beqz    a0,216a8 ~>              
+21694:    li      v0,0x8                                 21690:    li      v0,0x8                   
+21698: ~> sh      v0,0x32(a0)                            21694: ~> sh      v0,0x32(a0)              
+2169c:    lw      a0,0(a0)                               21698:    lw      a0,0(a0)                 
+216a0:    nop                                            2169c:    nop                              
+216a4:    bnez    a0,21698 ~>                            216a0:    bnez    a0,21694 ~>              
+216a8:    nop                                            216a4:    nop                              
+216ac: ~> lw      a0,0x80(s1)                            216a8: ~> lw      a0,0x80(s1)              
+216b0:    li      v0,0xff                                216ac:    li      v0,0xff                  
+216b4:    sb      v0,0xc(a0)                             216b0:    sb      v0,0xc(a0)               
+216b8:    li      v0,0x30                                216b4:    li      v0,0x30                  
+216bc:    sb      v0,0xd(a0)                             216b8:    sb      v0,0xd(a0)               
+216c0:    sh      zero,8(a0)                             216bc:    sh      zero,8(a0)               
+216c4:    lhu     v1,6(s1)                               216c0:    lhu     v1,6(s1)                 
+216c8:    li      v0,0x60                                216c4:    li      v0,0x60                  
+216cc:    sh      v0,0x26(a0)                            216c8:    sh      v0,0x26(a0)              
+216d0:    li      v0,0x13                                216cc:    li      v0,0x13                  
+216d4:    sb      zero,6(a0)                             216d0:    sb      zero,6(a0)               
+216d8:    sb      zero,5(a0)                             216d4:    sb      zero,5(a0)               
+216dc:    sb      zero,4(a0)                             216d8:    sb      zero,4(a0)               
+216e0:    sh      v0,0x32(a0)                            216dc:    sh      v0,0x32(a0)              
+216e4:    addiu   v1,v1,0x40                             216e0:    addiu   v1,v1,0x40               
+216e8:    sh      v1,0xa(a0)                             216e4:    sh      v1,0xa(a0)               
+216ec:    lw      ra,0x68(sp)                            216e8:    lw      ra,0x68(sp)              
+216f0:    lw      s1,0x64(sp)                            216ec:    lw      s1,0x64(sp)              
+216f4:    lw      s0,0x60(sp)                            216f0:    lw      s0,0x60(sp)              
+216f8:    addiu   sp,sp,0x70                             216f4:    addiu   sp,sp,0x70               
+216fc:    jr      ra                                     216f8:    jr      ra                       
+21700:    nop                                            216fc:    nop                              
+21704:    addiu   sp,sp,-0x68                            21700:    addiu   sp,sp,-0x68              
+21708:    sw      s1,0x5c(sp)                            21704:    sw      s1,0x5c(sp)              
+2170c:    move    s1,a0                                  21708:    move    s1,a0                    
+21710:    sw      ra,0x60(sp)                            2170c:    sw      ra,0x60(sp)              
+21714:    sw      s0,0x58(sp)                            21710:    sw      s0,0x58(sp)              
+21718:    lhu     v1,0x2c(s1)                            21714:    lhu     v1,0x2c(s1)              
+2171c:    nop                                            21718:    nop                              
+21720:    beqz    v1,21738 ~>                            2171c:    beqz    v1,21734 ~>              
+21724:    li      v0,0x1                                 21720:    li      v0,0x1                   
+21728:    beq     v1,v0,218c4 ~>                         21724:    beq     v1,v0,218c0 ~>           
+2172c:    nop                                            21728:    nop                              
+21730:    j       1a1a74                          i      2172c:    j       1a1a70                   
+21734:    nop                                            21730:    nop                              
+21738: ~> lui     a0,0x8018                              21734: ~> lui     a0,0x8018                
+2173c:    addiu   a0,a0,0x604                            21738:    addiu   a0,a0,0x604              
+21740:    jal     1a6c88                          i      2173c:    jal     1a6c84                   
+21744:    nop                                            21740:    nop                              
+21748:    lhu     v0,0x30(s1)                            21744:    lhu     v0,0x30(s1)              
+2174c:    lui     a0,0x8007                              21748:    lui     a0,0x8007                
+21750:    lhu     a0,0x308e(a0)                          2174c:    lhu     a0,0x308e(a0)            
+21754:    lhu     v1,0x30(s1)                            21750:    lhu     v1,0x30(s1)              
+21758:    sll     v0,v0,0x2                              21754:    sll     v0,v0,0x2                
+2175c:    lui     at,0x8018                              21758:    lui     at,0x8018                
+21760:    addu    at,at,v0                               2175c:    addu    at,at,v0                 
+21764:    lhu     v0,0x9cc(at)                           21760:    lhu     v0,0x9cc(at)             
+21768:    sll     v1,v1,0x2                              21764:    sll     v1,v1,0x2                
+2176c:    subu    v0,v0,a0                               21768:    subu    v0,v0,a0                 
+21770:    sh      v0,2(s1)                               2176c:    sh      v0,2(s1)                 
+21774:    lui     at,0x8018                              21770:    lui     at,0x8018                
+21778:    addu    at,at,v1                               21774:    addu    at,at,v1                 
+2177c:    lhu     v0,0x9ce(at)                           21778:    lhu     v0,0x9ce(at)             
+21780:    lui     v1,0x8007                              2177c:    lui     v1,0x8007                
+21784:    lhu     v1,0x3092(v1)                          21780:    lhu     v1,0x3092(v1)            
+21788:    li      a1,0x10                                21784:    li      a1,0x10                  
+2178c:    subu    v0,v0,v1                               21788:    subu    v0,v0,v1                 
+21790:    sh      v0,6(s1)                               2178c:    sh      v0,6(s1)                 
+21794:    lui     v0,0x8004                              21790:    lui     v0,0x8004                
+21798:    lw      v0,-0x3820(v0)                         21794:    lw      v0,-0x3820(v0)           
+2179c:    nop                                            21798:    nop                              
+217a0:    jalr    v0                                     2179c:    jalr    v0                       
+217a4:    li      a0,0x4                                 217a0:    li      a0,0x4                   
+217a8:    sll     v0,v0,0x10                             217a4:    sll     v0,v0,0x10               
+217ac:    sra     a1,v0,0x10                             217a8:    sra     a1,v0,0x10               
+217b0:    li      v0,-1                                  217ac:    li      v0,-1                    
+217b4:    beq     a1,v0,21878 ~>                         217b0:    beq     a1,v0,21874 ~>           
+217b8:    sll     v0,a1,0x1                              217b4:    sll     v0,a1,0x1                
+217bc:    addu    v0,v0,a1                               217b8:    addu    v0,v0,a1                 
+217c0:    sll     v0,v0,0x2                              217bc:    sll     v0,v0,0x2                
+217c4:    addu    v0,v0,a1                               217c0:    addu    v0,v0,a1                 
+217c8:    sll     v0,v0,0x2                              217c4:    sll     v0,v0,0x2                
+217cc:    lui     v1,0x8008                              217c8:    lui     v1,0x8008                
+217d0:    addiu   v1,v1,0x6fec                           217cc:    addiu   v1,v1,0x6fec             
+217d4:    addu    a0,v0,v1                               217d0:    addu    a0,v0,v1                 
+217d8:    move    t2,zero                                217d4:    move    t2,zero                  
+217dc:    lw      v0,0x34(s1)                            217d8:    lw      v0,0x34(s1)              
+217e0:    lui     v1,0x80                                217dc:    lui     v1,0x80                  
+217e4:    sw      a1,0x64(s1)                            217e0:    sw      a1,0x64(s1)              
+217e8:    sw      a0,0x7c(s1)                            217e4:    sw      a0,0x7c(s1)              
+217ec:    or      v0,v0,v1                               217e8:    or      v0,v0,v1                 
+217f0:    beqz    a0,21888 ~>                            217ec:    beqz    a0,21884 ~>              
+217f4:    sw      v0,0x34(s1)                            217f0:    sw      v0,0x34(s1)              
+217f8:    li      t3,0xf                                 217f4:    li      t3,0xf                   
+217fc:    li      t1,0x2f                                217f8:    li      t1,0x2f                  
+21800:    li      a1,0x88                                217fc:    li      a1,0x88                  
+21804:    li      v1,0xfe                                21800:    li      v1,0xfe                  
+21808:    li      a2,0x80                                21804:    li      a2,0x80                  
+2180c:    li      t0,0x20                                21808:    li      t0,0x20                  
+21810:    li      a3,0x2                                 2180c:    li      a3,0x2                   
+21814: ~> andi    v0,t2,0x1                              21810: ~> andi    v0,t2,0x1                
+21818:    sh      t3,0x1a(a0)                            21814:    sh      t3,0x1a(a0)              
+2181c:    beqz    v0,21838 ~>                            21818:    beqz    v0,21834 ~>              
+21820:    sh      t1,0xe(a0)                             2181c:    sh      t1,0xe(a0)               
+21824:    sb      a1,0x24(a0)                            21820:    sb      a1,0x24(a0)              
+21828:    sb      a1,0xc(a0)                             21824:    sb      a1,0xc(a0)               
+2182c:    sb      v1,0x30(a0)                            21828:    sb      v1,0x30(a0)              
+21830:    j       1a1848                          i      2182c:    j       1a1844                   
+21834:    sb      v1,0x18(a0)                            21830:    sb      v1,0x18(a0)              
+21838: ~> sb      v1,0x24(a0)                            21834: ~> sb      v1,0x24(a0)              
+2183c:    sb      v1,0xc(a0)                             21838:    sb      v1,0xc(a0)               
+21840:    sb      a1,0x30(a0)                            2183c:    sb      a1,0x30(a0)              
+21844:    sb      a1,0x18(a0)                            21840:    sb      a1,0x18(a0)              
+21848:    sb      v1,0x19(a0)                            21844:    sb      v1,0x19(a0)              
+2184c:    sb      v1,0xd(a0)                             21848:    sb      v1,0xd(a0)               
+21850:    sb      a2,0x31(a0)                            2184c:    sb      a2,0x31(a0)              
+21854:    sb      a2,0x25(a0)                            21850:    sb      a2,0x25(a0)              
+21858:    sh      t0,0x26(a0)                            21854:    sh      t0,0x26(a0)              
+2185c:    sh      a3,0x32(a0)                            21858:    sh      a3,0x32(a0)              
+21860:    lw      a0,0(a0)                               2185c:    lw      a0,0(a0)                 
+21864:    nop                                            21860:    nop                              
+21868:    bnez    a0,21814 ~>                            21864:    bnez    a0,21810 ~>              
+2186c:    addiu   t2,t2,1                                21868:    addiu   t2,t2,1                  
+21870:    j       1a188c                          i      2186c:    j       1a1888                   
+21874:    li      a0,0x40                                21870:    li      a0,0x40                  
+21878: ~> jal     1a5f78                          i      21874: ~> jal     1a5f74                   
+2187c:    move    a0,s1                                  21878:    move    a0,s1                    
+21880:    j       1a1a74                          i      2187c:    j       1a1a70                   
+21884:    nop                                            21880:    nop                              
+21888: ~> li      a0,0x40                                21884: ~> li      a0,0x40                  
+2188c:    li      v1,0x38                                21888:    li      v1,0x38                  
+21890:    li      v0,0x28                                2188c:    li      v0,0x28                  
+21894:    lui     at,0x8004                              21890:    lui     at,0x8004                
+21898:    sb      a0,-0x34db(at)                         21894:    sb      a0,-0x34db(at)           
+2189c:    lui     at,0x8004                              21898:    lui     at,0x8004                
+218a0:    sb      v1,-0x34da(at)                         2189c:    sb      v1,-0x34da(at)           
+218a4:    lui     at,0x8004                              218a0:    lui     at,0x8004                
+218a8:    sb      v0,-0x34d9(at)                         218a4:    sb      v0,-0x34d9(at)           
+218ac:    lui     at,0x8005                              218a8:    lui     at,0x8005                
+218b0:    sb      a0,0x4319(at)                          218ac:    sb      a0,0x4319(at)            
+218b4:    lui     at,0x8005                              218b0:    lui     at,0x8005                
+218b8:    sb      v1,0x431a(at)                          218b4:    sb      v1,0x431a(at)            
+218bc:    lui     at,0x8005                              218b8:    lui     at,0x8005                
+218c0:    sb      v0,0x431b(at)                          218bc:    sb      v0,0x431b(at)            
+218c4: ~> jal     1805c                                  218c0: ~> jal     1805c                    
+218c8:    li      a0,0x400                               218c4:    li      a0,0x400                 
+218cc:    li      a0,0x80                                218c8:    li      a0,0x80                  
+218d0:    jal     1803c                                  218cc:    jal     1803c                    
+218d4:    li      a1,0x80                                218d0:    li      a1,0x80                  
+218d8:    lui     a0,0x8018                              218d4:    lui     a0,0x8018                
+218dc:    addiu   a0,a0,0x9dc                            218d8:    addiu   a0,a0,0x9dc              
+218e0:    addiu   s0,sp,0x28                             218dc:    addiu   s0,sp,0x28               
+218e4:    jal     186ac                                  218e0:    jal     186ac                    
+218e8:    move    a1,s0                                  218e4:    move    a1,s0                    
+218ec:    move    a0,s0                                  218e8:    move    a0,s0                    
+218f0:    lh      v0,2(s1)                               218ec:    lh      v0,2(s1)                 
+218f4:    addiu   a1,sp,0x18                             218f0:    addiu   a1,sp,0x18               
+218f8:    addiu   v0,v0,-0x80                            218f4:    addiu   v0,v0,-0x80              
+218fc:    sw      v0,0x18(sp)                            218f8:    sw      v0,0x18(sp)              
+21900:    lh      v0,6(s1)                               218fc:    lh      v0,6(s1)                 
+21904:    li      v1,0x400                               21900:    li      v1,0x400                 
+21908:    sw      v1,0x20(sp)                            21904:    sw      v1,0x20(sp)              
+2190c:    addiu   v0,v0,-0x80                            21908:    addiu   v0,v0,-0x80              
+21910:    jal     17cdc                                  2190c:    jal     17cdc                    
+21914:    sw      v0,0x1c(sp)                            21910:    sw      v0,0x1c(sp)              
+21918:    jal     17e3c                                  21914:    jal     17e3c                    
+2191c:    move    a0,s0                                  21918:    move    a0,s0                    
+21920:    jal     17ecc                                  2191c:    jal     17ecc                    
+21924:    move    a0,s0                                  21920:    move    a0,s0                    
+21928:    lui     a0,0x8018                              21924:    lui     a0,0x8018                
+                                                  >      21928:    addiu   a0,a0,0x944              

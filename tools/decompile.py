@@ -90,7 +90,9 @@ class SotnFunction(object):
     @property
     def asm_differ_command(self) -> str:
         """Constructs the command string the user can enter to run asm-differ against the overlay this function resides in"""
-        return f"{Path(sys.executable).name} {self.root.joinpath("tools/asm-differ/diff.py").relative_to(Path.cwd())} -mwo --overlay {self.overlay.replace("_psp", "")} {self.name}"
+        diff_path = self.root.joinpath("tools/asm-differ/diff.py").relative_to(Path.cwd())
+        overlay_name = self.overlay.replace("_psp", "")
+        return f"{Path(sys.executable).name} {diff_path} -mwo --overlay {overlay_name} {self.name}"
 
     @property
     def context(self):
@@ -130,21 +132,24 @@ class SotnFunction(object):
             response = requests.post("https://decomp.me/api/scratch", data=payload)
             response_json = response.json()
             if "slug" in response_json:
+                slug = response_json["slug"]
                 self.scratch_link = (
-                    f"https://decomp.me/scratch/{response_json["slug"]}/"
+                    f"https://decomp.me/scratch/{slug}/"
                 )
                 claim_token = response_json.get("claim_token")
                 if claim_token:
                     self.scratch_link += f"claim?token={claim_token}"
+                action_word = "claimed" if "claim" in self.scratch_link else "accessed"
                 print(
-                    f"{self.name} successfully uploaded to decomp.me and can be {"claimed" if "claim" in self.scratch_link else "accessed"} at {self.scratch_link}"
+                    f"{self.name} successfully uploaded to decomp.me and can be {action_word} at {self.scratch_link}"
                 )
                 print(
                     "If this function had been previously decompiled, the decompiled code may need to be moved manually from the context tab to the source tab in decomp.me"
                 )
             else:
+                error_msg = response_json.get("error", response.text)
                 print(
-                    f"Received an error when attempting to upload to decomp.me: {response_json.get("error", response.text)}"
+                    f"Received an error when attempting to upload to decomp.me: {error_msg}"
                 )
         except Exception as e:
             print(
@@ -187,7 +192,8 @@ class SotnFunction(object):
         )
 
     def _infer_src_path(self) -> Optional[Path]:
-        inferred_c_name = f"{self.abspath.parent.parent.name if self.version == "saturn" else self.abspath.parent.name}.c"
+        parent_name = self.abspath.parent.parent.name if self.version == "saturn" else self.abspath.parent.name
+        inferred_c_name = f"{parent_name}.c"
         inferred_c_files = (
             file
             for file in self.src_dir.rglob(inferred_c_name)
@@ -208,7 +214,8 @@ def get_repo_root(current_dir: Path = Path(__file__).resolve().parent) -> Path:
 
 def get_function_path(asm_dir: Path, args: argparse.Namespace) -> Optional[Path]:
     """Uses the version asm directory and the passed args to find any files matching the function name."""
-    file_name = f"{args.function.replace("func_0", "f") if args.version == "saturn" else args.function}.s"
+    _fname = args.function.replace("func_0", "f") if args.version == "saturn" else args.function
+    file_name = f"{_fname}.s"
     matchings_dir = "f_match" if args.version == "saturn" else "matchings"
     nonmatchings_dir = "f_nonmat" if args.version == "saturn" else "nonmatchings"
 
@@ -233,7 +240,8 @@ def get_function_path(asm_dir: Path, args: argparse.Namespace) -> Optional[Path]
 
     if len(nonmatching) > 1:
         message = f"{len(nonmatching)} possible files found for {args.function} in the following locations:\n"
-        message += f"{"\n".join(f"\t{path.relative_to(asm_dir.parent)}" for path in nonmatching)}"
+        _paths_joined = "\n".join(f"\t{path.relative_to(asm_dir.parent)}" for path in nonmatching)
+        message += _paths_joined
         message += "Invoke this tool again using the -o/--overlay argument to specify the appropriate overlay."
         print(message)
         return None
