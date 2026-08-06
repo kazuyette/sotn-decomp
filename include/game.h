@@ -419,6 +419,25 @@ typedef enum {
     FLAG_DESTROY_IF_OUT_OF_CAMERA = 0x80000000,
 } EntityFlag;
 
+// Values for entity->hitboxState (see src/st/collision.h for the main
+// consumer). The low values behave like a small state, not independent
+// bits (never seen OR'd together); the high bits are independent flags
+// layered on top (e.g. weapon\w_020.c sets 0x82 = HITBOX_NO_AUTO_OFFSET |
+// HITBOX_STATE_UNK_2).
+typedef enum {
+    HITBOX_STATE_OFF = 0x00, // hitbox disabled; checked as `== 0` throughout
+    HITBOX_STATE_UNK_1 = 0x01,
+    HITBOX_STATE_UNK_2 = 0x02,
+    HITBOX_STATE_UNK_3 = 0x03,
+    HITBOX_STATE_NO_DAMAGE = 0x04, // collision.h: DealDamage result forced to
+                                   // 0 even though attack is set
+    HITBOX_ATTACKING = 0x08,  // this entity has an active attack hitbox this
+                               // frame (checked on both sides in collision.h)
+    HITBOX_BLEEDS = 0x10,     // spawns E_ENEMY_BLOOD on a cut-element hit
+    HITBOX_NO_AUTO_OFFSET = 0x80, // skip the default hitbox x/y centering
+                                   // adjustment (custom hitbox already set)
+} EntityHitboxState;
+
 // document g_Player.status
 typedef enum {
     PLAYER_STATUS_BAT_FORM = 0x1,
@@ -914,7 +933,7 @@ typedef struct Entity {
     /* 0x34 */ s32 flags;
     /* 0x38 */ s16 : 16;
     /* 0x3A */ u16 enemyId; // also used as a Alucard weapon entity slot index
-    /* 0x3C */ u16 hitboxState;
+    /* 0x3C */ u16 hitboxState; // refer to enum EntityHitboxState
     /* 0x3E */ s16 hitPoints;
     /* 0x40 */ s16 attack;
     /* 0x42 */ u16 attackElement;
