@@ -482,11 +482,19 @@ def get_splat_config(
     build_path = f"build/{ver}"
     bss_is_no_load = False
     section_order = [".data", ".rodata", ".text", ".bss", ".sbss"]
+    src_path = f"src/{path_stuff}"
     if is_psp(ver):
         platform = "psp"
         asm_path += "_psp"
         bss_is_no_load = True
         section_order = [".text", ".data", ".rodata", ".bss"]
+        # PSP-specific code is a sibling '<ovl>_psp' directory next to the
+        # shared overlay directory (e.g. src/st/lib_psp next to src/st/lib),
+        # not nested inside it. See issue #2942.
+        src_path = os.path.join(
+            os.path.dirname(src_path),
+            f"{os.path.basename(path_stuff)}_psp",
+        )
 
     return {
         "options": {
@@ -497,7 +505,7 @@ def get_splat_config(
             "target_path": input,
             "asm_path": asm_path,
             "asset_path": f"assets/{path_stuff}",
-            "src_path": f"src/{path_stuff}",
+            "src_path": src_path,
             "ld_script_path": f"{build_path}/{file_stuff}.ld",
             "compiler": "GCC",
             "symbol_addrs_path": [
@@ -743,10 +751,11 @@ def make_config_psp(ovl_path: str, version: str):
     if rodata_start == -1:
         rodata_start = data_start + data_len
 
+    # src_path (in the generated config) is already the '<ovl>_psp' sibling
+    # directory, so segments don't need an extra '<ovl>_psp/' prefix here -
+    # that would double-nest them (see issue #2942).
     text_segments = []
-    append_segments(
-        text_segments, 0x80, 8, data_start, f"{ovl_name}_psp/", "80", known_segments
-    )
+    append_segments(text_segments, 0x80, 8, data_start, "", "80", known_segments)
 
     # set global vram address to allow mapping of global symbols
     config["options"]["global_vram_start"] = HexInt(0x08000000)
