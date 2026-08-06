@@ -149,7 +149,10 @@ void EntitySpikeRoomDarkness(Entity* self) {
         // test if player has bat echoed
         for (entity = &g_Entities[0], i = 0; i < STAGE_ENTITY_START; i++,
             entity++) {
-            // dra.h AluEntities -> E_BAT_ECHO
+            // dra.h AluEntities -> E_BAT_ECHO (0x34). Can't use the enum
+            // directly here: cat.h's own `enum EntityIDs` also defines
+            // E_NONE/NUM_ENTITIES, so alucard.h and cat.h can't coexist
+            // in the same translation unit without a collision.
             if (entity->entityId == 0x34 && !entity->ext.spikes.echoCooldown) {
                 // If user has initiated the echo and we're not on cooldown,
                 // spawn the bounce entity func_us_801BACF4
