@@ -397,7 +397,7 @@ typedef struct PACKED {
 #endif
     /* 0xAC */ u8 anim;
     /* 0xAD */ u8 padAD;
-    /* 0xAE */ s16 unkAE;
+    /* 0xAE */ s16 equipId; // was unkAE; see issue #1737
 } ET_Shield;
 
 typedef struct PACKED {
@@ -423,7 +423,7 @@ typedef struct PACKED {
     /* 0x9E */ byte pad[14];
     /* 0xAC */ u8 anim;
     /* 0xAD */ u8 padAD;
-    /* 0xAE */ s16 unkAE;
+    /* 0xAE */ s16 equipId; // was unkAE; see issue #1737
 } ET_DarkShield;
 
 typedef struct {
@@ -453,7 +453,7 @@ typedef struct {
 #endif
     /* 0xAC */ u8 anim;
     /* 0xAD */ u8 unkAD;
-    /* 0xAE */ s16 unkAE;
+    /* 0xAE */ s16 equipId; // was unkAE; see issue #1737
 } ET_MedusaShieldLaser;
 
 typedef struct PACKED {
@@ -506,7 +506,7 @@ typedef struct PACKED {
     s32 _align_anim[2];
 #endif
     /* 0xAC */ u8 anim;
-    /* 0xAE */ s16 unkAE;
+    /* 0xAE */ s16 equipId; // was unkAE; see issue #1737
 } ET_HeraldShieldSwirlEffect;
 
 typedef struct {
@@ -4488,6 +4488,19 @@ SYNC_FIELD(ET_Player, ET_DarkShield, anim);
 SYNC_FIELD(ET_Player, ET_MedusaShieldLaser, anim);
 SYNC_FIELD(ET_Player, ET_ShamanShieldStar, anim);
 SYNC_FIELD(ET_Player, ET_HeraldShieldSwirlEffect, anim);
+
+// issue #1737: DRA CheckChainLimit reads entity->ext.weapon.equipId for any
+// entity in slots 16-63 regardless of its real ext union member. Confirmed
+// these 4 shield variants keep equipId at the same offset as ET_Weapon (was
+// named unkAE before this issue). The other weapon-family structs synced on
+// `anim` above (WeaponUnk006/012/014/016/030/046/047, KarmaCoin, Sword,
+// HeavenSword, HeavenSword2, ShamanShieldStar) have no field defined at that
+// offset at all yet, so it's still unclear whether equipId is meaningful for
+// those - needs a closer look before extending this list.
+SYNC_FIELD(ET_Weapon, ET_Shield, equipId);
+SYNC_FIELD(ET_Weapon, ET_DarkShield, equipId);
+SYNC_FIELD(ET_Weapon, ET_MedusaShieldLaser, equipId);
+SYNC_FIELD(ET_Weapon, ET_HeraldShieldSwirlEffect, equipId);
 
 SYNC_FIELD(ET_EntFactory, ET_Subweapon, parent);
 SYNC_FIELD(ET_EntFactory, ET_CrossBoomerang, parent);
