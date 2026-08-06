@@ -1,0 +1,45 @@
+options:
+  platform: psx
+  basename: stnz0
+  base_path: ..
+  build_path: build/hd
+  target_path: disks/pspeu/PSP_GAME/USRDIR/res/ps/hdbin/nz0.bin
+  asm_path: asm/hd/st/nz0
+  asset_path: assets/st/nz0
+  src_path: src/st/nz0
+  ld_script_path: build/hd/stnz0.ld
+  compiler: GCC
+  symbol_addrs_path:
+    - config/symbols.hd.txt
+    - config/symbols.hd.stnz0.txt
+  undefined_funcs_auto_path: build/hd/config/undefined_funcs_auto.hd.stnz0.txt
+  undefined_syms_auto_path: build/hd/config/undefined_syms_auto.hd.stnz0.txt
+  find_file_boundaries: true
+  use_legacy_include_asm: false
+  migrate_rodata_to_functions: true
+  asm_jtbl_label_macro: jlabel
+  symbol_name_format: hd_$VRAM
+  section_order:
+    - .data
+    - .rodata
+    - .text
+    - .bss
+    - .sbss
+  ld_bss_is_noload: false
+  disasm_unknown: true
+  disassemble_all: true
+  global_vram_start: 0x80010000
+sha1: 8975dfb26648a49445fe9c6ba47041ec8f92cd86
+segments:
+  - name: stnz0
+    type: code
+    start: 0
+    vram:  0x80180000
+    align: 4
+    subalign: 4
+    subsegments:
+      - [0x0, data]
+      - [0x30068, .rodata, hd]
+      - [0x303F4, c, hd]
+      - [0x49E90, sbss]
+  - [0x4ABF8]
