@@ -4,6 +4,7 @@
 
 #include <game.h>
 #include <servant.h>
+#include <weapon.h>
 
 #if defined(_WIN32)
 #define OVL_API __declspec(dllexport)
@@ -11,18 +12,13 @@
 #define OVL_API
 #endif
 
-// public function necessary to register an overlay
-#define OVL_STAGE_ENTRYPOINT_NAME "InitStage"
-#define OVL_SERVANT_ENTRYPOINT_NAME "InitServant"
-
 // public signature for the overlay entrypoint
 typedef void (*PfnInitStage)(Overlay* o);
 typedef void (*PfnInitServant)(ServantDesc* o);
+typedef void (*PfnInitWeapon)(Weapon* o);
 
-// DLL/shared library name to load, writes public to struct
 bool LoadStageOverlay(const char* name, Overlay* o);
-
-// DLL/shared library name to load, writes public to struct
 bool LoadServantOverlay(const char* name, ServantDesc* o);
+bool LoadWeaponOverlay(const char* name, unsigned handId, Weapon* o);
 
 #endif

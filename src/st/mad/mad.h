@@ -4,10 +4,12 @@
 
 // MAD was compiled earlier than the very first retail release, the JP 1.0 ver.
 // Since MAD is compiled with the US version, we need first to undefine it
+#ifndef VERSION_PC
 #undef _internal_version_us
 #define _internal_version_beta
 #define VERSION_BETA
 #define INCLUDE_ASM_OLD
+#endif
 
 #include "stage.h"
 
@@ -37,12 +39,8 @@ typedef enum {
     E_DUMMY_10,
     E_EXPLOSION_VARIANTS = 0x14,
     E_GREY_PUFF
-} EntityIDs;
+} EntityID;
 
-void CreateEntitiesToTheRight(s16);
-void CreateEntitiesToTheLeft(s16);
-void CreateEntitiesAbove(s16);
-void CreateEntitiesBelow(s16);
 void CreateEntityFromCurrentEntity(u16, Entity*);
 u8 func_80192914(s16 arg0, s16 arg1);
 void CreateEntityFromEntity(u16 entityId, Entity* ent1, Entity* ent2);
@@ -55,21 +53,18 @@ extern s32 D_80096ED0_mad;
 
 // ST/MAD
 extern EInit g_EInitLockCamera;
-extern EInit OVL_EXPORT(EInitObtainable);
+extern EInit g_EInitObtainable;
 extern EInit g_EInitCommon;
 extern u16 D_80180538[];
 extern ObjInit D_8018056C[];
 extern u8 D_801805B4[];
 extern u8 D_801805BC[];
 extern u16 D_801805C4[];
-extern u16 aluric_subweapons_idx[];
-extern u16 aluric_subweapons_id[];
 extern u16 D_80180E10[];
 extern s32 D_80180E18[];
 extern s32 D_80180EC4[];
 extern u16 D_80180FBC[];
 extern s32 D_80180FCC[];
-extern ObjInit D_801810F4[];
 extern EInit g_EInitParticle;
 extern u8 g_UnkEntityAnimData[];
 // extern u16 g_testCollEnemyLookup[];
@@ -82,8 +77,7 @@ extern u8 g_UnkEntityAnimData[];
 // extern u16 g_jewelSwordDropTable;
 extern RoomHeader g_rooms[];
 
-extern EInit OVL_EXPORT(EInitBreakable);
-extern u8 blend_modes[];
+extern EInit g_EInitBreakable;
 
 extern s16 D_80199DE8;
 

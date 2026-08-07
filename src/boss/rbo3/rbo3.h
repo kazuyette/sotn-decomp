@@ -6,7 +6,6 @@
 #include <stage.h>
 
 #define STAGE_IS_RBO3
-#define OVL_EXPORT(x) RBO3_##x
 
 typedef enum {
     /* 0x00 */ E_NONE,
@@ -27,7 +26,7 @@ typedef enum {
     /* 0x1C */ UNK_ENTITY_28,
     /* 0x1D */ UNK_ENTITY_29,
     /* 0x1E */ UNK_ENTITY_30,
-} EntityIDs;
+} EntityID;
 
 extern EInit g_EInitInteractable;
 extern EInit g_EInitCommon;

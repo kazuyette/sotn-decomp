@@ -4,7 +4,6 @@
 
 extern LayoutEntity* D_8D2DE7C;
 extern LayoutEntity* D_8D2DF50;
-
 extern Overlay OVL_EXPORT(Overlay);
 
 static s32 E_ID(ID_11);
@@ -27,7 +26,7 @@ void InitEntityIds(void) {
 
 void OVL_EXPORT(Load)(void) {
     InitEntityIds();
-    PfnEntityUpdates = OVL_EXPORT(EntityUpdates);
+    PfnEntityUpdates = EntityUpdates;
     g_pStObjLayoutHorizontal = &D_8D2DE7C;
     g_pStObjLayoutVertical = &D_8D2DF50;
     func_psp_0892A018();

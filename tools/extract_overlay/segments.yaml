@@ -115,7 +115,7 @@ e_bone_archer:
   - EntityBoneArcher
   - EntityBoneArcherArrow
 e_bone_musket:
-  functions: 
+  functions:
   - EntityBoneMusket
   - func_us_801CF298
 e_bone_scimitar:
@@ -130,9 +130,9 @@ e_bossfight:
   - EntityBossRoomBlock
 e_breakable:
   functions:
-  - ${prefix}_EntityBreakable
+  - EntityBreakable
   - EntityBreakableHelper
-  - ${prefix}_EntityBreakableDebris
+  - EntityBreakableDebris
   - EntityBreakableDebris
   - func_us_801C123C
 e_breakable_wall:
@@ -241,8 +241,8 @@ e_cutscene_dialogue:
   - CutsceneUnk3
   - CutsceneUnk4
   - DrawCutsceneActorName
-  - SetCutsceneEnd
-  - CutsceneRun
+  - SetCutsceneEvents
+  - RunCutsceneEvents
   - CutsceneSkip
   - ScaleCutsceneAvatar
   - ${prefix}_EntityCutscene
@@ -520,7 +520,7 @@ e_particles:
   start:
   - EntitySoulStealOrb
   - func_us_0923AD68
-  functions: 
+  functions:
   - EntitySoulStealOrb
   - func_us_0923AD68
   - EntityEnemyBlood
@@ -543,7 +543,7 @@ e_plate_lord:
 e_red_door:
   functions:
   - EntityIsNearPlayer
-  - ${prefix}_EntityRedDoor
+  - EntityRedDoor
 e_richter:
   functions:
   - func_us_801B4BD0
@@ -577,7 +577,7 @@ e_richter:
   - ${prefix}_RicStepHighJump
 e_richter_fight_trigger:
   functions:
-  - func_us_801A9250
+  - EntityRichterFightTrigger
 e_room_bg:
   functions:
   - ${prefix}_EntityBackgroundBlock
@@ -630,7 +630,7 @@ e_skull_lord:
   functions:
   - EntitySkullLord
   - EntitySkullLordOutline
-  - EntitySkullLordFlames
+  - EntitySkullLordEye
   - EntitySkullLordPieces
 e_sky_entities:
   functions:

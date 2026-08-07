@@ -4,9 +4,7 @@
 
 #include <stage.h>
 
-#define OVL_EXPORT(x) BO6_##x
-
-typedef enum EntityIDs {
+typedef enum EntityID {
     /* 0x00 */ E_NONE,
     /* 0x01 */ E_FACTORY,
     /* 0x02 */ E_EXPLOSION,
@@ -37,10 +35,11 @@ typedef enum EntityIDs {
     /* 0x43 */ E_ID_43,
     /* 0x44 */ E_ID_44,
     /* 0x90 */ E_ID_90 = 0x90,
-} EntityIDs;
+} EntityID;
 
 #ifdef VERSION_PSP
 extern s32 D_pspeu_0927BAF8;
+#undef E_ID
 #define E_ID(ID_17) D_pspeu_0927BAF8
 #endif
 
@@ -85,7 +84,7 @@ typedef enum RicSteps {
     /* 0x60 */ PL_S_ENDING_3 = 0x60,
     /* 0x70 */ PL_S_ENDING_4 = 0x70,
     /* 0xF0 */ PL_S_DEBUG = 0xF0,
-} OVL_EXPORT(RicSteps);
+} BO6_RicSteps;
 
 #include "../../ric/ric_shared.h"
 

@@ -1,277 +1,165 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 #include <libgte.h>
-#include "clock_tower.h"
 #include <scratchpad.h>
+#include "clock_tower.h"
 
 extern EInit g_EInitInteractable;
-extern EInit g_EInitSpawner;
 
-extern s16 D_us_80181BFC[];
-
-extern SVECTOR cloudVectorOne;
-extern SVECTOR cloudVectorTwo;
-extern SVECTOR cloudVectorThree;
-extern SVECTOR cloudVectorFour;
-
-extern cloudData data[];
-extern SVECTOR empty;
-
-// very simliar to ST0's EntityClouds, however,
-// TOP & RTOP are much taller so many dimensional constants
-// differ.
-void EntityClouds(Entity* self) {
-#ifdef VERSION_PC
-    u8 sp[SP_LEN];
+#if !defined(INVERTED_STAGE)
+#define UP +
+#define DOWN -
+#define POSX_3D 0x700
+#define POSY_3D 0x3C0
+#define ROTZ_3D 0
+#else
+#define UP -
+#define DOWN +
+#define POSX_3D 0x100
+#define POSY_3D 0x440
+#define ROTZ_3D 0x800
 #endif
-    Primitive* prim;
-    s16* var_s1;
-    s32 var_s2;
-    u8* var_s3;
-    s32 i;
-    s32 j;
-    Primitive* primTwo;
-    s32* var_s7;
 
-    s32 sp5C;
-    s32 sp58;
-    s32 priority;
-    s32 primIndex;
-    s32 sp4C;
-    s32 posX;
-    s32 sp44;
-    long sp40;
-    MATRIX* matrix;
-    u8* sp38;
-    cloudStructUnk* cloudStruct;
-    cloudData* cloudData;
-    SVECTOR* vector;
+static ClockTowerData s_RoofTextureData[] = {
+    {0x10, 0x29, 0x02, 0x44, 0x1E, 0x44, 0x40},
+    {0x30, 0x29, 0x22, 0x44, 0x3E, 0x44, 0x40},
+    {0x15, 0x4C, 0x03, 0x6F, 0x26, 0x6F, 0x3E},
+};
 
-    if (!self->step) {
-        InitializeEntity(g_EInitSpawner);
-        primIndex = g_api.func_800EDB58(PRIM_GT4, 0x70);
-        if (primIndex == -1) {
-            DestroyEntity(self);
-            return;
-        }
-        self->flags |= FLAG_HAS_PRIMS;
-        self->primIndex = primIndex;
-        prim = &g_PrimBuf[primIndex];
-        self->ext.clouds.prim = prim;
-        prim->tpage = 0xF;
-        prim->clut = 0x46;
-        prim->u0 = prim->u2 = 0;
-        prim->u1 = prim->u3 = 0x65;
-        prim->v0 = prim->v1 = 0x80;
-        prim->v2 = prim->v3 = 0xFB;
-        prim->x0 = prim->x2 = 0x4B;
-        prim->x1 = prim->x3 = 0xB0;
-        prim->y0 = prim->y1 = 0;
-        prim->y2 = prim->y3 = 0x7B;
+static ClockTowerData2 s_TowerTextureData[] = {
+    {0x02, 0x02, 0x3C, 0x24, 0x3E}, {0x41, 0x01, 0x3D, 0x75, 0x44},
+    {0x81, 0x01, 0x3D, 0x75, 0x44}, {0x01, 0x71, 0x3D, 0x0D, 0x44},
+    {0x01, 0x71, 0x3D, 0x0D, 0x45}, {0xC1, 0x01, 0x25, 0x3D, 0x44},
+    {0xC1, 0x41, 0x25, 0x3D, 0x44},
+};
 
-#ifdef STAGE_IS_TOP
-        self->ext.clouds.unk9C.i.hi = 0x4B;
-        self->ext.clouds.unkA0.i.hi = 0;
-#else // STAGE_IS_RTOP
-        self->ext.clouds.unk9C.i.hi = 0xB5;
-        self->ext.clouds.unkA0.i.hi = 0x100;
-#endif
-        prim->priority = 4;
-        prim->drawMode = DRAW_DEFAULT;
-        prim = prim->next;
-        while (prim != NULL) {
-            prim->tpage = 0xF;
-            prim->clut = 0x200;
-            prim->drawMode = DRAW_HIDE;
-            prim = prim->next;
-        }
-    }
+// these are unique sets of vertexes which are used to build
+// the clock tower. each contains all of the points needed to
+// build one "feature" of the clock tower (one of 5 roof sections,
+// clock section, tower, etc.)
+static SVECTOR D_801821C8[] = {
+    {0, -182, 65},  {0, -182, -65}, {-65, -99, -65},
+    {-65, -99, 65}, {65, -99, 65},  {65, -99, -65},
+};
+static SVECTOR D_801821F8[] = {
+    {83, -163, -82}, {65, -99, -99}, {65, -99, -65},
+    {99, -99, -99},  {99, -99, -65},
+};
+static SVECTOR D_80182220[] = {
+    {83, -163, 82}, {65, -99, 66}, {65, -99, 99}, {99, -99, 66}, {99, -99, 99},
+};
+static SVECTOR D_80182248[] = {
+    {-83, -163, -82}, {-99, -99, -99}, {-99, -99, -65},
+    {-65, -99, -99},  {-65, -99, -65},
+};
+static SVECTOR D_80182270[] = {
+    {-82, -163, 82}, {-99, -99, 65}, {-99, -99, 99},
+    {-65, -99, 65},  {-65, -99, 99},
+};
+static SVECTOR D_80182298[] = {
+    {-99, 83, 99},   {-99, -100, 99}, {-99, -100, -99}, {-99, 83, -99},
+    {99, -100, -99}, {99, 83, -99},   {99, -100, 99},   {99, 83, 99},
+};
+static SVECTOR D_801822D8[] = {
+    {-99, 83, 99},  {-99, 83, -99},  {99, 83, -99},  {99, 83, 99},
+    {-65, 116, 65}, {-65, 116, -65}, {65, 116, -65}, {65, 116, 65},
+};
+static SVECTOR D_80182318[] = {
+    {-65, 283, 65}, {-65, 116, 65}, {-65, 116, -65}, {-65, 283, -65},
+    {65, 116, -65}, {65, 283, -65}, {65, 116, 65},   {65, 283, 65},
+};
+static SVECTOR D_80182358[] = {
+    {-65, 450, 65}, {-65, 283, 65}, {-65, 283, -65}, {-65, 450, -65},
+    {65, 283, -65}, {65, 450, -65}, {65, 283, 65},   {65, 450, 65},
+};
 
-    self->ext.clouds.unk84.val += FIX(3);
-    self->ext.clouds.unk8C += FIX(8);
-    self->ext.clouds.unk88 += FIX(8);
-    self->ext.clouds.unk90 += FIX(4);
+static SVECTOR D_801818C8[] = {
+    {-65, 616, 65}, {-65, 450, 65}, {-65, 450, -65}, {-65, 616, -65},
+    {65, 450, -65}, {65, 616, -65}, {65, 450, 65},   {65, 616, 65}};
 
-    g_GpuBuffers[0].draw.r0 = 24;
-    g_GpuBuffers[0].draw.g0 = 0;
-    g_GpuBuffers[0].draw.b0 = 40;
-    g_GpuBuffers[1].draw.r0 = 24;
-    g_GpuBuffers[1].draw.g0 = 0;
-    g_GpuBuffers[1].draw.b0 = 40;
+static SVECTOR D_80181908[] = {
+    {-65, 783, 65}, {-65, 616, 65}, {-65, 616, -65}, {-65, 783, -65},
+    {65, 616, -65}, {65, 783, -65}, {65, 616, 65},   {65, 783, 65}};
 
-    matrix = (MATRIX*)SP(0);
-    primTwo = (Primitive*)SP(0x20);
-    vector = (SVECTOR*)SP(0x60);
-    vector[0] = cloudVectorOne;
-    vector[1] = cloudVectorTwo;
-    vector[2] = cloudVectorThree;
-    vector[3] = cloudVectorFour;
+static SVECTOR D_80181948[] = {
+    {-65, 983, 65}, {-65, 783, 65}, {-65, 783, -65}, {-65, 983, -65},
+    {65, 783, -65}, {65, 983, -65}, {65, 783, 65},   {65, 983, 65}};
 
-    var_s7 = (s32*)SP(0x80);
-    var_s1 = D_us_80181BFC;
-    for (i = 0; i < 0x24; i++, var_s7++, var_s1++) {
-        *var_s7 = *var_s1;
-    }
+// clocktower roof
+static u8 s_ClockRoofScript[] = {
+    // clang-format off
+    VINDEX(1),
+    DRAW_TRIANGLE(1, 0, 3, 1, 1),
+    DRAW_TRIANGLE(0, 0, 4, 3, 0),
+    VINDEX(2),
+    DRAW_TRIANGLE(1, 0, 3, 1, 1),
+    DRAW_TRIANGLE(0, 0, 4, 3, 0),
+    VINDEX(3),
+    DRAW_TRIANGLE(1, 0, 3, 1, 4),
+    DRAW_TRIANGLE(0, 0, 1, 2, 3),
+    VINDEX(4),
+    DRAW_TRIANGLE(1, 0, 3, 1, 0),
+    DRAW_TRIANGLE(0, 0, 1, 2, 0),
+    VINDEX(0),
+    DRAW_TRIANGLE(2, 1, 5, 2, 2),
+    OBJ_END,
+    // clang-format on
+};
 
-    var_s3 = (u8*)SP(0x200);
-    var_s3[3] = 4;
-    var_s3[7] = 4;
+// clocktower clock and base
+static u8 s_ClockTowerScript[] = {
+    // clang-format off
+    VINDEX(0),
+    DRAW_QUAD(0, 0, 1, 3, 2, 2),
+    VINDEX(5),
+    DRAW_QUAD(2, 2, 4, 3, 5, 5),
+    DRAW_QUAD(1, 1, 2, 0, 3, 5),
+    DRAW_QUAD(2, 1, 6, 2, 4, 0),
+    VINDEX(6),
+    DRAW_QUAD(3, 0, 1, 4, 5, 5),
+    DRAW_QUAD(4, 1, 2, 5, 6, 5),
+    VINDEX(7),
+    DRAW_QUAD(6, 2, 4, 3, 5, 5),
+    DRAW_QUAD(5, 1, 2, 0, 3, 5),
+    VINDEX(8),
+    DRAW_QUAD(6, 2, 4, 3, 5, 5),
+    DRAW_QUAD(5, 1, 2, 0, 3, 5),
+    VINDEX(9),
+    DRAW_QUAD(6, 2, 4, 3, 5, 5),
+    DRAW_QUAD(5, 1, 2, 0, 3, 5),
+    VINDEX(10),
+    DRAW_QUAD(6, 2, 4, 3, 5, 5),
+    DRAW_QUAD(5, 1, 2, 0, 3, 5),
+    VINDEX(11),
+    DRAW_QUAD(6, 2, 4, 3, 5, 5),
+    DRAW_QUAD(5, 1, 2, 0, 3, 5),
+    OBJ_END,
+    // clang-format on
+};
 
-    SetGeomScreen(320);
-    SetGeomOffset(128, 160);
-    RotMatrix(&empty, matrix);
-    SetRotMatrix(matrix);
-    cloudData = data;
-    var_s1 = &self->ext.clouds.unk84.i.hi;
-    prim = self->ext.clouds.prim;
-    if (g_Timer & 1) {
-        prim->clut = 0x46;
-    } else {
-        prim->clut = 0x47;
-    }
-
-    prim->x0 = prim->x2 = self->ext.clouds.unk9C.i.hi;
-#ifdef STAGE_IS_TOP
-    prim->x1 = prim->x3 = self->ext.clouds.unk9C.i.hi + 0x65;
-#else // STAGE_IS_RTOP
-    prim->x1 = prim->x3 = self->ext.clouds.unk9C.i.hi - 0x65;
-#endif
-    prim->y0 = prim->y1 = self->ext.clouds.unkA0.i.hi;
-#ifdef STAGE_IS_TOP
-    prim->y2 = prim->y3 = self->ext.clouds.unkA0.i.hi + 0x7B;
-#else // STAGE_IS_RTOP
-    prim->y2 = prim->y3 = self->ext.clouds.unkA0.i.hi - 0x7B;
-#endif
-    prim = prim->next;
-
-    for (i = 0; i < 2; i++, cloudData++, var_s1 += 4) {
-        posX = self->posX.i.hi + *var_s1;
-        posX %= 0x800;
-        priority = cloudData->priority;
-        var_s2 = cloudData->unk4;
-        var_s2 += (0x340 - g_Tilemap.scrollY.i.hi >> 3);
-        gte_ldty(var_s2);
-        for (sp5C = 0; sp5C < 8; sp5C++) {
-            var_s2 = sp5C * 0xE0 + 0x240;
-            sp40 = (u16)var_s1[2];
-            var_s2 -= sp40 % 224;
-            gte_ldtz(var_s2);
-            sp40 = (sp5C + (sp40 / 224)) % 8;
-            sp38 = (cloudData->unkPtr + sp40 * 8);
-            var_s2 -= 0x240;
-
-            sp4C = FIX(15) - var_s2 * 0x1DB;
-            var_s3[0] = sp4C >> 12;
-            var_s3[4] = (sp4C - FIX(106400.0 / 0x10000)) >> 12;
-
-            sp4C = FIX(15) - var_s2 * 0x200;
-            var_s3[1] = sp4C >> 12;
-            var_s3[5] = (sp4C - FIX(1.75)) >> 12;
-
-            sp4C = FIX(15) - var_s2 * 0x192;
-            var_s3[2] = sp4C >> 12;
-            var_s3[6] = (sp4C - FIX(1.37403)) >> 12;
-
-            sp44 = posX;
-            j = 0;
-            sp58 = -1;
-            while (1) {
-                sp44 += sp58 << 8;
-                j += sp58;
-                j &= 7;
-                var_s2 = sp38[j];
-                if (var_s2 == 0) {
-                    continue;
-                }
-
-                gte_ldtx(sp44);
-                gte_ldv0(&vector[3]);
-                gte_rtps();
-                prim->drawMode = DRAW_TPAGE | DRAW_COLORS | DRAW_TRANSP;
-
-                cloudStruct = &((cloudStructUnk*)(SP(0x80)))[var_s2];
-                LOH(prim->u0) = cloudStruct->unk0;
-                gte_stsxy((long*)&primTwo->x3);
-                gte_ldv3c(vector);
-                gte_rtpt();
-                if (primTwo->y3 < 0) {
-                    prim->drawMode = DRAW_HIDE;
-                    break;
-                }
-                if (primTwo->x3 < 0) {
-                    prim->drawMode = DRAW_HIDE;
-                    if (sp58 < 0) {
-                        sp58 += 2;
-                        sp44 = posX - 0x100;
-                        j = 7;
-                    }
-                    continue;
-                }
-                if (var_s2 < 5) {
-                    prim->clut = (g_Timer & 1) + 0x4A;
-                } else {
-                    prim->clut = (g_Timer & 1) + 0x48;
-                }
-                LOH(prim->u1) = cloudStruct->unk4;
-                LOH(prim->u2) = cloudStruct->unk8;
-                gte_stsxy3_gt3(primTwo);
-
-                if (primTwo->x2 > 0x100) {
-                    prim->drawMode = DRAW_HIDE;
-                    if (sp58 > 0) {
-                        break;
-                    } else {
-                        continue;
-                    }
-                } else {
-                    LOH(prim->u3) = cloudStruct->unkC;
-                    LOW(prim->x0) = LOW(primTwo->x0);
-                    LOW(prim->x1) = LOW(primTwo->x1);
-                    LOW(prim->x2) = LOW(primTwo->x2);
-                    LOW(prim->x3) = LOW(primTwo->x3);
-                    LOW(prim->r0) = LOW(prim->r1) = LOW(var_s3[0]);
-                    LOW(prim->r2) = LOW(prim->r3) = LOW(var_s3[4]);
-                    prim->priority = priority;
-                    prim = prim->next;
-                    if (prim == NULL) {
-                        return;
-                    }
-                }
-            }
-        }
-    }
-
-    for (j = 0; prim != NULL; j++, prim = prim->next) {
-        prim->drawMode = DRAW_HIDE;
-    }
-}
-
-extern ClockTowerData s_RoofTextureData[];
-extern ClockTowerData2 s_TowerTextureData[];
-
-extern u8 s_ClockRoofScript[];
-extern u8 s_ClockTowerScript[];
-extern SVECTOR* s_ClockVertexSets[];
+SVECTOR* s_ClockVertexSets[] = {
+    D_801821C8, D_801821F8, D_80182220, D_80182248, D_80182270, D_80182298,
+    D_801822D8, D_80182318, D_80182358, D_801818C8, D_80181908, D_80181948};
 
 void EntityClockTower3D(Entity* self) {
     SVECTOR rotVector;
     VECTOR transVector;
     MATRIX matrix;
-    Primitive* prim;
-    s16 primIndex;
-    SVECTOR* vectors;
-    u8* script;
-    ClockTowerData* var_s2;
-    ClockTowerData2* var_s3;
+    s32 unusedHalfZ;         // s8
+    s32 unusedScratch0;      // s7
+    s32 unusedScratch4;      // s6
+    s32 primIndex;           // s5
+    SVECTOR* vectors;        // s4
+    ClockTowerData2* var_s3; // s3
+    ClockTowerData* var_s2;  // s2
+    u8* script;              // s1
+    Primitive* prim;         // s0
 
-    if (self->step == 0) {
+    if (!self->step) {
         InitializeEntity(g_EInitInteractable);
-#ifdef STAGE_IS_TOP
-        self->posX.i.hi = 0x700 - g_Tilemap.scrollX.i.hi;
-        self->posY.i.hi = 0x3C0 - g_Tilemap.scrollY.i.hi;
-#else // STAGE_IS_RTOP
-        self->posX.i.hi = 0x100 - g_Tilemap.scrollX.i.hi;
-        self->posY.i.hi = 0x440 - g_Tilemap.scrollY.i.hi;
-#endif
+
+        self->posX.i.hi = POSX_3D - g_Tilemap.scrollX.i.hi;
+        self->posY.i.hi = POSY_3D - g_Tilemap.scrollY.i.hi;
+
         primIndex = g_api.AllocPrimitives(PRIM_GT4, 0x28);
         if (primIndex == -1) {
             DestroyEntity(self);
@@ -295,13 +183,8 @@ void EntityClockTower3D(Entity* self) {
     SetGeomScreen(0x300);
     SetGeomOffset(0x80, 0x80);
     rotVector.vx = 0;
-#ifdef STAGE_IS_TOP
-    rotVector.vy = -0x90;
-    rotVector.vz = 0;
-#else // STAGE_IS_RTOP
-    rotVector.vy = 0x90;
-    rotVector.vz = 0x800;
-#endif
+    rotVector.vy = DOWN 0x90;
+    rotVector.vz = ROTZ_3D;
     rotVector.vx += self->ext.clockTower.unk9C;
     rotVector.vy += self->ext.clockTower.unk9E;
     rotVector.vz += self->ext.clockTower.unkA0;
@@ -313,6 +196,13 @@ void EntityClockTower3D(Entity* self) {
     transVector.vz += self->ext.clockTower.unkAE;
     TransMatrix(&matrix, &transVector);
     SetTransMatrix(&matrix);
+
+    // These variables are unused and get stripped by optimisations on PSX
+    unusedHalfZ = transVector.vz / 2;
+    // Weird, we allocate two 32-bit values (could be pointers, idk) on
+    // scratchpad but we never end up using them. These are orphan variables.
+    unusedScratch0 = (s32)SP(0);
+    unusedScratch4 = (s32)SP(sizeof(s32));
 
     prim = self->ext.clockTower.prim;
     script = s_ClockRoofScript;

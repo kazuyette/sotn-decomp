@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 #include "no2.h"
 
-void OVL_EXPORT(EntityBreakable)(Entity* self);
+void EntityBreakable(Entity* self);
 void EntityExplosion(Entity* self);
 void EntityPrizeDrop(Entity* self);
 void EntityDamageDisplay(Entity* self);
-void OVL_EXPORT(EntityRedDoor)(Entity* self);
+void EntityRedDoor(Entity* self);
 void EntityIntenseExplosion(Entity* self);
 void EntitySoulStealOrb(Entity* self);
 void EntityRoomForeground(Entity* self);
@@ -16,8 +16,8 @@ void EntityHeartDrop(Entity* self);
 void EntityEnemyBlood(Entity* self);
 void EntityMessageBox(Entity* self);
 void EntityDummy(Entity* self);
-void OVL_EXPORT(EntityBackgroundBlock)(Entity* self);
-void OVL_EXPORT(EntityLockCamera)(Entity* self);
+void EntityBackgroundBlock(Entity* self);
+void EntityLockCamera(Entity* self);
 void EntityUnkId13(Entity* self);
 void EntityExplosionVariants(Entity* self);
 void EntityGreyPuff(Entity* self);
@@ -62,16 +62,16 @@ void EntityGurkhaWeapon(Entity* self);
 void EntityBlade(Entity* self);
 void EntityBladeWeapon(Entity* self);
 void EntitySpectralSword(Entity* self);
-void func_us_801CEB08(Entity* self);
+void EntitySpectralSwordAura(Entity* self);
 void EntityPoltergeist(Entity* self);
-void OVL_EXPORT(EntityBreakableDebris)(Entity* self);
+void EntityBreakableDebris(Entity* self);
 
-PfnEntityUpdate OVL_EXPORT(EntityUpdates)[] = {
-    OVL_EXPORT(EntityBreakable),
+PfnEntityUpdate EntityUpdates[] = {
+    EntityBreakable,
     EntityExplosion,
     EntityPrizeDrop,
     EntityDamageDisplay,
-    OVL_EXPORT(EntityRedDoor),
+    EntityRedDoor,
     EntityIntenseExplosion,
     EntitySoulStealOrb,
     EntityRoomForeground,
@@ -83,8 +83,8 @@ PfnEntityUpdate OVL_EXPORT(EntityUpdates)[] = {
     EntityMessageBox,
     EntityDummy,
     EntityDummy,
-    OVL_EXPORT(EntityBackgroundBlock),
-    OVL_EXPORT(EntityLockCamera),
+    EntityBackgroundBlock,
+    EntityLockCamera,
     EntityUnkId13,
     EntityExplosionVariants,
     EntityGreyPuff,
@@ -129,15 +129,13 @@ PfnEntityUpdate OVL_EXPORT(EntityUpdates)[] = {
     EntityBlade,
     EntityBladeWeapon,
     EntitySpectralSword,
-    func_us_801CEB08,
+    EntitySpectralSwordAura,
     EntityPoltergeist,
-    OVL_EXPORT(EntityBreakableDebris),
+    EntityBreakableDebris,
 };
 
-EInit OVL_EXPORT(
-    EInitBreakable) = {ANIMSET_DRA(3), 0x00, 0x00, PAL_NULL, 0x000};
-EInit OVL_EXPORT(
-    EInitObtainable) = {ANIMSET_DRA(3), 0x00, 0x00, PAL_NULL, 0x001};
+EInit g_EInitBreakable = {ANIMSET_DRA(3), 0x00, 0x00, PAL_NULL, 0x000};
+EInit g_EInitObtainable = {ANIMSET_DRA(3), 0x00, 0x00, PAL_NULL, 0x001};
 EInit g_EInitParticle = {ANIMSET_DRA(3), 0x00, 0x00, PAL_NULL, 0x002};
 EInit g_EInitSpawner = {ANIMSET_DRA(0x00), 0x00, 0x00, PAL_NULL, 0x004};
 EInit g_EInitInteractable = {ANIMSET_DRA(0x00), 0x00, 0x00, PAL_NULL, 0x005};
@@ -173,7 +171,7 @@ EInit g_EInitBlade = {ANIMSET_OVL(0x06), 0x02, 0x4C, PAL_BLADE, 0x0BE};
 EInit g_EInitBladeWeapon = {ANIMSET_OVL(0x06), 0x13, 0x4C, PAL_BLADE, 0x0BF};
 EInit g_EInitSpectralSword = {
     ANIMSET_OVL(0x04), 0x00, 0x50, PAL_SPECTRAL_SWORD, 0x081};
-EInit D_us_8018097C = {
+EInit g_EInitSpectralSwordAura = {
     ANIMSET_OVL(0x04), 0x00, 0x50, PAL_SPECTRAL_SWORD, 0x002};
 EInit g_EInitPoltergeist = {
     ANIMSET_OVL(0x04), 0x00, 0x50, PAL_SPECTRAL_SWORD, 0x082};

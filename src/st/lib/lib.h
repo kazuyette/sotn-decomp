@@ -6,10 +6,11 @@
 
 enum Palettes {
     PAL_NONE = 0,
+    PAL_SPELLBOOK = 0x25A,
     PAL_BREAKABLE = 0x26C,
 };
 
-typedef enum EntityIDs {
+typedef enum EntityID {
     /* 0x00 */ E_NONE,
     /* 0x01 */ E_BREAKABLE,
     /* 0x02 */ E_EXPLOSION = 0x02,
@@ -90,7 +91,7 @@ typedef enum EntityIDs {
     /* 0x4D */ E_MUDMAN,
     /* 0x4E */ E_ID_4E,
     /* 0x4F */ E_ID_4F,
-} EntityIDs;
+} EntityID;
 
 extern void EntityBloodDrips(Entity*);
 extern void EntityExplosionVariants(Entity* entity);
@@ -98,8 +99,8 @@ extern void EntityGreyPuff(Entity* entity);
 extern Primitive* FindFirstUnkPrim(Primitive* prim);
 extern Primitive* FindFirstUnkPrim2(Primitive* prim, u8 index);
 
-extern EInit OVL_EXPORT(EInitBreakable);
-extern EInit OVL_EXPORT(EInitObtainable);
+extern EInit g_EInitBreakable;
+extern EInit g_EInitObtainable;
 extern EInit g_EInitParticle;
 extern EInit D_us_80180824;
 extern EInit g_EInitInteractable;

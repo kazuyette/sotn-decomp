@@ -1,3 +1,4 @@
-#include "common.h"
+// SPDX-License-Identifier: AGPL-3.0-or-later
+#include "bo5.h"
 
-INCLUDE_ASM("boss/bo5/nonmatchings/e_lock_camera", func_us_8019FB74);
+#include "../../st/entity_lock_camera.h"

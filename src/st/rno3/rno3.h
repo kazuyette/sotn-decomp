@@ -12,13 +12,13 @@ enum Palettes {
     PAL_NONE,
 };
 
-typedef enum EntityIDs {
+typedef enum EntityID {
     /* 0x00 */ E_NONE,
     /* 0x01 */ E_BREAKABLE,              // EntityBreakable
     /* 0x02 */ E_EXPLOSION,              // EntityExplosion
     /* 0x03 */ E_PRIZE_DROP,             // EntityPrizeDrop
     /* 0x04 */ E_DAMAGE_DISPLAY,         // EntityDamageDisplay
-    /* 0x05 */ E_RED_DOOR,               // OVL_EXPORT(EntityRedDoor)
+    /* 0x05 */ E_RED_DOOR,               // EntityRedDoor
     /* 0x06 */ E_INTENSE_EXPLOSION,      // EntityIntenseExplosion
     /* 0x07 */ E_SOUL_STEAL_ORB,         // EntitySoulStealOrb
     /* 0x08 */ E_ROOM_FOREGROUND,        // EntityRoomForeground
@@ -30,8 +30,8 @@ typedef enum EntityIDs {
     /* 0x0E */ E_MESSAGE_BOX,            // EntityMessageBox
     /* 0x0F */ E_DUMMY_F,                // EntityDummy
     /* 0x10 */ E_DUMMY_10,               // EntityDummy
-    /* 0x11 */ E_BACKGROUND_BLOCK,       // OVL_EXPORT(EntityBackgroundBlock)
-    /* 0x12 */ E_LOCK_CAMERA,            // OVL_EXPORT(EntityLockCamera)
+    /* 0x11 */ E_BACKGROUND_BLOCK,       // EntityBackgroundBlock
+    /* 0x12 */ E_LOCK_CAMERA,            // EntityLockCamera
     /* 0x13 */ E_UNK_ID13,               // EntityUnkId13
     /* 0x14 */ E_EXPLOSION_VARIANTS,     // EntityExplosionVariants
     /* 0x15 */ E_GREY_PUFF,              // EntityGreyPuff
@@ -92,6 +92,6 @@ typedef enum EntityIDs {
     /* 0x4C */ E_SMALL_WATER_DROP,       // EntitySmallWaterDrop
     /* 0x4D */ E_WATER_DROP,             // EntityWaterDrop
     /* 0x4E */ E_DODO_BIRD,              // EntityDodoBird
-} EntityIDs;
+} EntityID;
 
 #endif // RNO3_H

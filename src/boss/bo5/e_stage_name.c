@@ -1,5 +1,8 @@
-#include "common.h"
+// SPDX-License-Identifier: AGPL-3.0-or-later
+#include "bo5.h"
 
-INCLUDE_ASM("boss/bo5/nonmatchings/e_stage_name", StageNamePopupDissolver);
-
-INCLUDE_ASM("boss/bo5/nonmatchings/e_stage_name", EntityStageNamePopup);
+#if defined(VERSION_PSP)
+#include "../../st/e_stage_name_jp.h"
+#else
+#include "../../st/e_stage_name_us.h"
+#endif

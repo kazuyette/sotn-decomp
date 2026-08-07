@@ -34,7 +34,12 @@ struct InitGameParams {
     enum TestMode testMode;
     int stage;
     int player;
+    int demo;
     int scale;
+    const char* recordPath;
+    const char* replayPath;
+    bool exitAfterReplay;
+    bool replayBoundlessFramerate;
 };
 
 struct FileOpenRead {
@@ -53,7 +58,7 @@ struct FileAsString {
 
 typedef struct FileUseContent {
     const char* filename;
-    const void* content;
+    void* content;
     size_t length;
     void* param;
 } FileLoad;
@@ -64,8 +69,10 @@ void MainGame(void);
 void ResetGame(void);
 
 // Controller input record/replay (src/pc/replay.c)
-void InitReplay(const struct InitGameParams* params);
-void ResetReplay(void);
+void Replay_Init(const struct InitGameParams* params);
+void Replay_Reset(void);
+void Replay_OnFrame(void);
+bool Replay_DidDrift(void);
 
 bool FileOpenRead(
     bool (*cb)(const struct FileOpenRead*), const char* filename, void* param);
@@ -75,6 +82,13 @@ bool FileAsString(bool (*cb)(const struct FileAsString* file),
 bool FileUseContent(bool (*cb)(const struct FileUseContent* file, void* param),
                     const char* filename, void* param);
 
-const char* AnsiToSotnMenuString(const char* str);
+typedef struct {
+    const void* pcAddr; // equivalent of symbol address on PC
+    unsigned psxAddr;   // equivalent of symbol address on PSX
+    unsigned size;      // symbol size in bytes
+} CutsceneSymbolRange;
+
+void CutscenePcAlloc(const CutsceneSymbolRange* symbols, int count);
+u8* CutsceneAddrToPc(u32 psxAddr);
 
 #endif

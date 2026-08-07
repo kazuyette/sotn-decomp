@@ -1,13 +1,36 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 #include "richter.h"
 
-// export table
-INCLUDE_ASM("asm/saturn/richter/data", d60A5000, d_060A5000);
-
 // ===== pl_main.c
 
+typedef enum {
+    TELEPORT_CHECK_NONE = 0,
+    TELEPORT_CHECK_TO_RTOP = 2,
+    TELEPORT_CHECK_TO_TOP = 4
+} TeleportCheck;
+
+extern s32 g_PlayerX;
+extern s32 g_PlayerY;
+
 // GetTeleportToOtherCastle
-INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60A5060, func_060A5060);
+static TeleportCheck func_060A5060(void) {
+    if (PLAYER.step != PL_S_STAND || PLAYER.step_s != 1) {
+        return TELEPORT_CHECK_NONE;
+    }
+    if (g_CurrentRoom.stageID == STAGE_TOP) {
+        if (ABS((g_Tilemap.left << 8) + g_PlayerX - 8079) < 4 &&
+            ABS((g_Tilemap.top << 8) + g_PlayerY - 2127) < 4) {
+            return TELEPORT_CHECK_TO_RTOP;
+        }
+    }
+    if (g_CurrentRoom.stageID == (STAGE_TOP | STAGE_INVERTEDCASTLE_FLAG)) {
+        if (ABS((g_Tilemap.left << 8) + g_PlayerX - 8430) < 4 &&
+            ABS((g_Tilemap.top << 8) + g_PlayerY - 14407) < 4) {
+            return TELEPORT_CHECK_TO_TOP;
+        }
+    }
+    return TELEPORT_CHECK_NONE;
+}
 
 // func_80156DE4
 extern s32 D_80154568[];
@@ -54,13 +77,19 @@ INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60A5208, func_060A5208);
 // CheckStageCollision
 INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60A5518, func_060A5518);
 
+typedef struct {
+    s16 buttonsCorrect;
+    s16 timer;
+} ButtonComboState;
+extern ButtonComboState g_RicComboButtons[2];
+
 // CheckBladeDashInput
 INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60A5864, func_060A5864);
 
 // CheckHighJumpInput
 INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60A5988, func_060A5988);
 
-INCLUDE_ASM_NO_ALIGN("asm/saturn/richter/f_nonmat", f60A6272, func_060A6272);
+INCLUDE_ASM_NO_ALIGN("asm/saturn/richter/f_nonmat", f60A5AA0, func_060A5AA0);
 
 // ===== pl_steps.c
 
@@ -112,7 +141,39 @@ void RicStepWalk(void) {
     }
 }
 
-INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60A67B0, func_060A67B0);
+extern AnimationFrame ric_anim_stop_run[];
+
+// RicStepRun
+void RicStepRun(void) {
+    if (g_Player.unk7A != 0) {
+        RicSetWalk(0);
+        return;
+    }
+    g_Player.timers[PL_T_8] = 8;
+    g_Player.timers[PL_T_CURSE] = 8;
+    if (!RicCheckInput(CHECK_FALL | CHECK_FACING | CHECK_JUMP | CHECK_CRASH |
+                       CHECK_ATTACK | CHECK_CROUCH)) {
+        RicDecelerateX(FIX(0.15625));
+        if (RicCheckFacing() == 0) {
+            RicSetStand(0);
+            if (g_Player.timers[PL_T_RUN] == 0) {
+                if (!(g_Player.vram_flag &
+                      (TOUCHING_L_WALL | TOUCHING_R_WALL))) {
+                    RicSetAnimation(ric_anim_stop_run);
+                    RicCreateEntFactoryFromEntity(
+                        g_CurrentEntity, BP_SKID_SMOKE, 0);
+                }
+            } else {
+                PLAYER.velocityX = 0;
+            }
+            return;
+        }
+        if (PLAYER.step_s == 0) {
+            RicSetSpeedX(FIX(2.8125));
+        }
+    }
+}
+
 INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60A68A0, func_060A68A0);
 // func_060A6D64
 void RicStepFall(void) {
@@ -168,7 +229,7 @@ static void func_80159C04(void) {
 }
 INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60A7310, func_060A7310);
 INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60A7B78, func_060A7B78);
-INCLUDE_ASM("asm/saturn/richter/data", d60A7CF0, d_060A7CF0);
+INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60A7CF0, RicStepDead);
 extern u16 D_80155528[];
 extern u32 g_SubwpnCrashTimer;
 void RicStepStandInAir(void) {
@@ -205,7 +266,7 @@ checkVelocity:
 void RicStepEnableFlameWhip(void) {
     if (PLAYER.animCurFrame == 181 && PLAYER.poseTimer == 1) {
         RicCreateEntFactoryFromEntity(g_CurrentEntity, BP_35, 0);
-        func_06011278(0x62F);
+        PlaySfx(SFX_WEAPON_APPEAR);
     }
 
     if (PLAYER.poseTimer < 0) {
@@ -254,7 +315,32 @@ void RicStepGenericSubwpnCrash(void) {
 }
 
 // RicStepThrowDaggers
-INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60A8234, func_060A8234);
+extern s32 throw_dagger_timer;
+void RicStepThrowDaggers(void) {
+    if (PLAYER.step_s == 0) {
+        throw_dagger_timer = 0x200;
+        PLAYER.step_s++;
+    } else {
+        RicCheckFacing();
+        if (!--throw_dagger_timer) {
+            g_Player.unk46 = 0;
+            RicSetStand(0);
+            g_Player.unk4E = 1;
+        }
+    }
+    if (g_Player.padTapped & PAD_CROSS) {
+        RicSetJump();
+        g_Player.unk46 = 0;
+        g_Player.unk4E = 1;
+        throw_dagger_timer = 0;
+    }
+    if (!(g_Player.vram_flag & TOUCHING_GROUND)) {
+        RicSetFall();
+        g_Player.unk46 = 0;
+        g_Player.unk4E = 1;
+        throw_dagger_timer = 0;
+    }
+}
 
 // RicStepDeadPrologue
 INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60A82F8, func_060A82F8);
@@ -262,7 +348,7 @@ INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60A82F8, func_060A82F8);
 INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60A8664, func_060A8664);
 extern s32 g_PlayerX;
 static void func_8015BB80(void) {
-    if (DAT_0605d750.stageID == STAGE_TOP) {
+    if (g_CurrentRoom.stageID == STAGE_TOP) {
         if (ABS((g_Tilemap.left << 8) + g_PlayerX) - 8079 > 0) {
             PLAYER.posX.i.hi--;
         }
@@ -270,7 +356,7 @@ static void func_8015BB80(void) {
             PLAYER.posX.i.hi++;
         }
     }
-    if (DAT_0605d750.stageID == (STAGE_TOP | STAGE_INVERTEDCASTLE_FLAG)) {
+    if (g_CurrentRoom.stageID == (STAGE_TOP | STAGE_INVERTEDCASTLE_FLAG)) {
         if (ABS((g_Tilemap.left << 8) + g_PlayerX) - 8430 > 0) {
             PLAYER.posX.i.hi--;
         }
@@ -304,8 +390,63 @@ void RicStepBladeDash(void) {
     }
 }
 
+extern void func_060A6428(u16 arg0);
+
 // RicStepHighJump
-INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60A8D64, func_060A8D64);
+void func_060A8D64(void) {
+    bool loadAnim;
+
+    loadAnim = false;
+    g_Player.high_jump_timer++;
+    switch (PLAYER.step_s) {
+    case 0:
+        if (g_Player.padPressed & (PAD_LEFT | PAD_RIGHT)) {
+            if (PLAYER.facingLeft) {
+                if (!(g_Player.padPressed & PAD_LEFT)) {
+                    RicDecelerateX(FIX(0.078125));
+                }
+            } else {
+                if (!(g_Player.padPressed & PAD_RIGHT)) {
+                    RicDecelerateX(FIX(0.078125));
+                }
+            }
+        } else {
+            RicDecelerateX(FIX(0.078125));
+        }
+
+        if (g_Player.vram_flag & TOUCHING_CEILING) {
+            func_060A6428(3);
+            g_Player.high_jump_timer = 0;
+            PLAYER.step_s = 2;
+        } else if (g_Player.high_jump_timer > 0x1C) {
+            PLAYER.step_s = 1;
+            PLAYER.velocityY = -0x60000;
+        }
+        break;
+    case 1:
+        if (g_Player.vram_flag & TOUCHING_CEILING) {
+            PLAYER.step_s = 2;
+            func_060A6428(3);
+            g_Player.high_jump_timer = 0;
+        } else {
+            PLAYER.velocityY += 0x6000;
+            if (PLAYER.velocityY > 0x8000) {
+                loadAnim = true;
+            }
+        }
+        break;
+    case 2:
+        if (g_Player.high_jump_timer > 4) {
+            loadAnim = true;
+        }
+        break;
+    }
+
+    if (loadAnim) {
+        RicSetAnimation(D_80155534);
+        RicSetStep(PL_S_JUMP);
+    }
+}
 
 void RicSetDebug(void) { RicSetStep(PL_S_DEBUG); }
 
@@ -459,7 +600,7 @@ void RicSetHighJump(void) {
     RicSetAnimation(ric_anim_high_jump);
     func_8015CC28();
     RicCreateEntFactoryFromEntity(g_CurrentEntity, BP_HIGH_JUMP, 0);
-    func_06011278(0x712);
+    PlaySfx(SFX_UNUSED_712);
     g_Player.timers[PL_T_12] = 4;
     if (g_Player.unk72) {
         PLAYER.velocityY = 0;
@@ -467,7 +608,7 @@ void RicSetHighJump(void) {
 }
 
 // func_060A938C
-static s32 RicCheckSubwpnChainLimit(s16 subwpnId, s16 limit) {
+s32 RicCheckSubwpnChainLimit(s16 subwpnId, s16 limit) {
     Entity* entity;
     s32 i;
     s32 nFound;
@@ -520,7 +661,7 @@ void RicSetSlide(void) {
     RicSetSpeedX(FIX(6.625));
     func_8015CC28();
     RicCreateEntFactoryFromEntity(g_CurrentEntity, BP_25, 0);
-    func_06011278(0x71A);
+    PlaySfx(SFX_TOAD_CROAK);
     g_Player.timers[PL_T_12] = 4;
 }
 
@@ -553,8 +694,8 @@ void RicSetBladeDash(void) {
     g_Player.timers[PL_T_12] = 4;
     RicCreateEntFactoryFromEntity(g_CurrentEntity, BP_BLADE_DASH, 0);
     func_8015CC28();
-    func_06011278(0x712);
-    func_06011278(0x71A);
+    PlaySfx(SFX_UNUSED_712);
+    PlaySfx(SFX_TOAD_CROAK);
 }
 
 // ===== pl_utils.c
@@ -660,7 +801,7 @@ void DisableAfterImage(s32 resetAnims, s32 arg1) {
         entity = &g_Entities[E_AFTERIMAGE_1];
         for (i = 0; i < 3; i++, entity++) {
             entity->animCurFrame = 0;
-            entity->unk0->unk0 = 0;
+            entity->unk0->flags = 0;
         }
         prim = &g_PrimBuf[g_Entities[E_AFTERIMAGE_1].primIndex];
         while (prim) {
@@ -717,7 +858,7 @@ INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60AB7B4, func_060AB7B4);
 
 #define E_NONE 0
 // func_060AB980
-static Entity* RicGetFreeEntity(s16 start, s16 end) {
+Entity* RicGetFreeEntity(s16 start, s16 end) {
     Entity* entity = &g_Entities[start];
     s16 i;
 
@@ -730,7 +871,7 @@ static Entity* RicGetFreeEntity(s16 start, s16 end) {
 }
 
 // func_060AB9C0
-static Entity* RicGetFreeEntityReverse(s16 start, s16 end) {
+Entity* RicGetFreeEntityReverse(s16 start, s16 end) {
     Entity* entity = &g_Entities[end - 1];
     s16 i;
     for (i = end - 1; i >= start; i--, entity--) {
@@ -778,7 +919,27 @@ void func_8015FA5C(s32 arg0) {
 }
 
 // RicSetSubweaponParams
-INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60ABA98, func_060ABA98);
+extern s32 func_0606F328(s32 arg0);
+extern SubweaponDef ric_subweapons_def[];
+
+// RicSetSubweaponParams
+void func_060ABA98(Entity* entity) {
+    SubweaponDef* subwpn =
+        &ric_subweapons_def[entity->ext.subweapon.subweaponId];
+    if (g_Player.timers[PL_T_INVINCIBLE_SCENE]) {
+        entity->attack = subwpn->attack * 2;
+    } else {
+        entity->attack = subwpn->attack;
+    }
+    entity->attackElement = subwpn->attackElement;
+    entity->hitboxState = subwpn->sp1C;
+    entity->nFramesInvincibility = subwpn->sp17;
+    entity->stunFrames = subwpn->sp18;
+    entity->hitEffect = subwpn->sp1E;
+    entity->entityRoomIndex = subwpn->sp22;
+    entity->attack = func_0606F328(entity->attack);
+    func_8015F9F0(entity);
+}
 
 // func_8015FB84
 INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60ABB78, func_060ABB78);
@@ -801,9 +962,9 @@ typedef struct {
     u16 uv1;
 } RicUvPair;
 
-extern u16 D_060C2F40;
+extern u16 g_RichterSpritePackage3AllocationIndex;
 extern u8 D_060BF1A4[];
-extern RicUvPair D_0605AEC0[];
+extern RicUvPair DAT_0605aec0[];
 
 s32 func_8015FDB0(RicPrimitive* prim, s16 posX, s16 posY) {
     s16 offset;
@@ -828,7 +989,8 @@ s32 func_8015FDB0(RicPrimitive* prim, s16 posX, s16 posY) {
     prim->x1 = posX + xOffset;
     prim->y1 = posY + offset;
 
-    uvAnim = &D_0605AEC0[D_060C2F40 + D_060BF1A4[frame]];
+    uvAnim = &DAT_0605aec0[g_RichterSpritePackage3AllocationIndex +
+                           D_060BF1A4[frame]];
     prim->uv0 = uvAnim->uv0;
     prim->uv1 = uvAnim->uv1;
 
@@ -854,16 +1016,114 @@ INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60AC2DC, func_060AC2DC);
 Entity* RicCreateEntFactoryFromEntity(
     Entity* source, u32 factoryParams, s32 arg2);
 // RicCreateEntFactoryFromEntity
-INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60AC398, func_060AC398);
+Entity* RicCreateEntFactoryFromEntity(
+    Entity* source, u32 factoryParams, s32 arg2) {
+    Entity* entity;
+    Entity* current;
+    s16 i;
+    s16 end = 16;
+
+    current = &g_Entities[8];
+    for (i = 8; i < end; i++, current++) {
+        if (current->entityId == E_NONE) {
+            entity = current;
+            goto found;
+        }
+    }
+    entity = NULL;
+found:
+    if (!entity) {
+        return NULL;
+    }
+    DestroyEntity(entity);
+    entity->entityId = 1;
+    entity->ext.factory.parent = source;
+    entity->posX.val = source->posX.val;
+    entity->posY.val = source->posY.val;
+    entity->facingLeft = source->facingLeft;
+    entity->zPriority = source->zPriority;
+    entity->params = factoryParams & 0xFFF;
+    entity->ext.factory.paramsBase = (factoryParams & 0xFF0000) >> 8;
+    if (source->flags & FLAG_POS_CAMERA_LOCKED) {
+        entity->flags |= FLAG_POS_CAMERA_LOCKED;
+    }
+    if (source->flags & FLAG_UNK_10000) {
+        entity->flags |= FLAG_UNK_10000;
+    }
+    return entity;
+}
 
 // RicEntityFactory
 INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60AC46C, func_060AC46C);
 
 // RicEntitySlideKick
-INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60AC824, func_060AC824);
+void RicEntitySlideKick(Entity* entity) {
+    void RicSetSubweaponParams(Entity * entity);
+
+    if (PLAYER.step != PL_S_SLIDE) {
+        DestroyEntity(entity);
+    } else {
+        entity->posX.i.hi = PLAYER.posX.i.hi;
+        entity->posY.i.hi = PLAYER.posY.i.hi;
+        entity->facingLeft = PLAYER.facingLeft;
+        if (entity->step == 0) {
+            entity->flags = FLAG_UNK_20000 | FLAG_POS_PLAYER_LOCKED |
+                            FLAG_KEEP_ALIVE_OFFCAMERA;
+            entity->hitboxOffX = 25;
+            entity->hitboxOffY = 12;
+            entity->hitboxWidth = 11;
+            entity->hitboxHeight = 9;
+            entity->ext.subweapon.subweaponId = PL_W_KICK;
+            RicSetSubweaponParams(entity);
+            entity->ext.subweapon.timer = entity->hitboxState;
+            entity->step++;
+        }
+        entity->hitboxState = entity->ext.subweapon.timer;
+        if (PLAYER.pose < 2) {
+            entity->hitboxState = 0;
+        }
+        if (PLAYER.pose > 7) {
+            DestroyEntity(entity);
+        }
+    }
+}
 
 // func_80160D2C
-INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60AC908, func_060AC908);
+// func_80160D2C
+void func_060AC908(Entity* entity) {
+    if (PLAYER.step != PL_S_SLIDE_KICK) {
+        DestroyEntity(entity);
+        return;
+    }
+    entity->posX.i.hi = PLAYER.posX.i.hi;
+    entity->posY.i.hi = PLAYER.posY.i.hi;
+    entity->facingLeft = PLAYER.facingLeft;
+    if (entity->step == 0) {
+        entity->flags =
+            FLAG_UNK_20000 | FLAG_POS_PLAYER_LOCKED | FLAG_KEEP_ALIVE_OFFCAMERA;
+        entity->hitboxOffX = 25;
+        entity->hitboxWidth = 11;
+        entity->hitboxHeight = 9;
+        entity->ext.subweapon.subweaponId = 23;
+        func_060ABA98(entity);
+        entity->step++;
+    }
+
+    if (PLAYER.animCurFrame == 140) {
+        entity->hitboxOffY = 0;
+    }
+
+    if (PLAYER.animCurFrame == 141) {
+        entity->hitboxOffY = 12;
+    }
+
+    if (entity->hitFlags) {
+        g_Player.unk44 |= 0x80;
+    } else {
+        g_Player.unk44 &= ~0x80;
+    }
+    entity->hitFlags = 0;
+}
 
 // RicEntityBladeDash
 void RicEntityBladeDash(Entity* self) {
@@ -941,9 +1201,9 @@ INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60ADFD4, func_060ADFD4);
 // RicEntityMariaPowers
 INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60AE1B4, func_060AE1B4);
 
-s32 func_0600FFB8();
+s32 DestroyEntity();
 
-void func_060AE538(void) { func_0600FFB8(); }
+void func_060AE538(void) { DestroyEntity(); }
 
 // RicEntityMaria
 INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60AE550, func_060AE550);
@@ -987,11 +1247,11 @@ INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60AF704, func_060AF704);
 INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60AF7F4, func_060AF7F4);
 
 INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60AFE70, func_060AFE70);
-INCLUDE_ASM_NO_ALIGN("asm/saturn/richter/f_nonmat", f60B052A, func_060B052A);
+INCLUDE_ASM_NO_ALIGN("asm/saturn/richter/f_nonmat", f60B00C4, func_060B00C4);
 
 // ===== ???
 
-void RicEntityDummy(void) { func_0600FFB8(); }
+void RicEntityDummy(void) { DestroyEntity(); }
 
 void func_060B0604() {}
 
@@ -1043,7 +1303,6 @@ const u16 pad_60B151E = 0; // file split!
 
 // RicEntitySubwpnReboundStone
 INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60B1520, func_060B1520);
-INCLUDE_ASM_NO_ALIGN("asm/saturn/richter/data", d60B23B6, d_060B23B6);
 INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60B240C, func_060B240C);
 
 // RicEntitySubwpnAgunea
@@ -1084,9 +1343,45 @@ void RicEntityCrashReboundStoneParticles(Entity* entity) {
 INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60B3454, func_060B3454);
 
 // RicEntityCrashReboundStoneExplosion, split start at mid function
-INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60B3A0C, func_060B3A0C);
+INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60B38FC, func_060B38FC);
 // RicEntityCrashReboundStone
-INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60B3A48, func_060B3A48);
+void RicEntityCrashReboundStone(Entity* entity) {
+    switch (entity->step) {
+    case 0:
+        entity->flags = FLAG_UNK_20000 | FLAG_KEEP_ALIVE_OFFCAMERA;
+        entity->step++;
+        entity->ext.subweapon.timer = 0x14;
+    case 1:
+        if (--entity->ext.subweapon.timer) {
+            break;
+        }
+    case 3:
+    case 5:
+        RicCreateEntFactoryFromEntity(entity, BP_57, 0);
+        entity->step++;
+    case 2:
+    case 4:
+    case 6:
+        entity->ext.subweapon.timer++;
+        if (entity->ext.subweapon.timer > 10) {
+            entity->ext.subweapon.timer = 0;
+            entity->posX.val = FIX(160.0);
+            entity->posY.val = 0;
+            RicCreateEntFactoryFromEntity(entity, FACTORY(BP_EMBERS, 1), 0);
+            entity->step++;
+        }
+        break;
+    case 7:
+        entity->ext.subweapon.timer++;
+        if (entity->ext.subweapon.timer > 15) {
+            DestroyEntity(entity);
+            g_Player.unk4E = 1;
+            RicCreateEntFactoryFromEntity(
+                entity, BP_CRASH_REBOUND_STONE_EXPLOSION, 0);
+        }
+        break;
+    }
+}
 
 // RicEntityCrashBibleBeam
 INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60B3B3C, func_060B3B3C);
@@ -1190,7 +1485,7 @@ INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60B7A4C, func_060B7A4C);
 INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60B8044, func_060B8044);
 
 // ===== pl_subweapons_cross.c
-INCLUDE_ASM_NO_ALIGN("asm/saturn/richter/f_nonmat", f60B89CE, func_060B89CE);
+INCLUDE_ASM_NO_ALIGN("asm/saturn/richter/f_nonmat", f60B8664, func_060B8664);
 
 // RicEntityRevivalColumn
 INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60B8B1C, func_060B8B1C);
@@ -1215,14 +1510,50 @@ const u16 pad_60B9666 = 0x0009; // nop
 // RicEntitySubwpnHolyWaterBreakGlass
 INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60B9668, func_060B9668);
 
-// bad split, part of previous function
-INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60B9A2C, func_060B9A2C);
+INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60B9978, func_060B9978);
 
 // RicEntityCrashHydroStorm
 INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60B9A50, func_060B9A50);
 
 // RicCheckHolyWaterCollision
-INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60B9D6C, func_060B9D6C);
+s32 RicCheckHolyWaterCollision(s32 baseY, s32 baseX) {
+    Collider res1;
+    Collider res2;
+    s32 newY;
+    s32 x;
+    s32 y;
+    s32 collEffs;
+    const u32 colFullSet = 0xF801;
+    const u32 colSetNo800 = 0xF001;
+    const u32 colSet1 = 0x8801;
+    const u32 colSet2 = 0x8001;
+
+    x = g_CurrentEntity->posX.val + baseX;
+    y = g_CurrentEntity->posY.val + baseY;
+    CheckCollision(x, y, &res1, 0);
+    collEffs = res1.effects & colFullSet;
+    y = y - FIX(1) + res1.unk18;
+    CheckCollision(x, y, &res2, 0);
+    newY = g_CurrentEntity->posY.val + res1.unk18 + baseY;
+
+    if ((collEffs & colSet1) == EFFECT_SOLID ||
+        (collEffs & colSet1) == (EFFECT_UNK_0800 | EFFECT_SOLID)) {
+        collEffs = res2.effects & colSetNo800;
+        if (!(collEffs & EFFECT_SOLID)) {
+            g_CurrentEntity->posY.val = newY;
+            return 1;
+        }
+        if ((res2.effects & colSet2) == colSet2) {
+            g_CurrentEntity->posY.val = newY - FIX(1) + res2.unk18;
+            return collEffs;
+        }
+        return 0;
+    } else if ((collEffs & colSet2) == colSet2) {
+        g_CurrentEntity->posY.val = newY;
+        return collEffs & colSetNo800;
+    }
+    return 0;
+}
 
 #define EFFECT_UNK_0002 1 << 1
 
@@ -1262,12 +1593,12 @@ INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60BA788, func_060BA788);
 
 void func_060BB330();
 
-s32 DAT_060c4118;
-s32 DAT_060c411c;
+extern u32 g_RichterCastleMapState;
+extern u8 g_RichterCastleMapBitmap[240][160];
 
 void func_060BACA4(void) {
-    memset(&DAT_060c4118, 0, 4);
-    memcpy(0x002B2000, &DAT_060c411c, 0x9600);
+    memset(&g_RichterCastleMapState, 0, 4);
+    memcpy(0x002B2000, g_RichterCastleMapBitmap, 0x9600);
 
     func_060BB330();
 }
@@ -1280,29 +1611,62 @@ INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60BB330, func_060BB330);
 INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60BB454, func_060BB454);
 INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60BB58C, func_060BB58C);
 INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60BB718, func_060BB718);
-INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60BB90C, func_060BB90C);
+typedef struct {
+    u8 pad[0x1800];
+    u16 colors0[4];
+    u16 colors1[4];
+} RicGouraudTable;
+
+extern s32 DAT_060476a0;
+extern s32 DAT_060476a4;
+extern s32 g_RichterSavedMapVramBase;
+extern s32 g_RichterSavedMapPlaneConfig;
+extern RicGouraudTable* SpGourTbl;
+extern s32 DAT_0605c6e4;
+s32* func_060784A8(void);
+
+void func_060BB90C(void) {
+    s32* ptr;
+    u16* colors0;
+    u16* colors1;
+
+    ptr = func_060784A8();
+    func_060BBDE0(ptr);
+    g_RichterSavedMapVramBase = DAT_060476a0;
+    g_RichterSavedMapPlaneConfig = DAT_060476a4;
+    if (g_PlayableCharacter == 0) {
+        DAT_060476a0 = 0x252000;
+        DAT_060476a4 = 1;
+    }
+    colors0 = SpGourTbl->colors0;
+    colors0[0] = colors0[1] = 0xB18C;
+    colors0[2] = colors0[3] = 0xD294;
+    colors1 = SpGourTbl->colors1;
+    colors1[0] = colors1[1] = colors1[2] = colors1[3] = 0x9084;
+    DAT_0605c6e4 = 1;
+}
+
 INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60BB9BC, func_060BB9BC);
 
-s32 d_06086390;
-s32 d_060476A0;
-s32 d_060476A4;
-s32 d_060cd748;
-s32 d_060cd74c;
+s32 DAT_06086390;
+s32 DAT_060476a0;
+s32 DAT_060476a4;
+extern s32 g_RichterSavedMapVramBase;
+extern s32 g_RichterSavedMapPlaneConfig;
 void func_060BB9BC(s32*);
-s32* func_060784A8();
 
 void func_060BBA88(void) {
     s32* iVar2;
     iVar2 = func_060784A8();
     func_060BB9BC(iVar2);
-    d_060476A0 = d_060cd748;
-    d_060476A4 = d_060cd74c;
+    DAT_060476a0 = g_RichterSavedMapVramBase;
+    DAT_060476a4 = g_RichterSavedMapPlaneConfig;
 }
 
-s32 d_06086390;
+s32 DAT_06086390;
 void func_060BBAC8(void) {
     s32* iVar2;
-    d_06086390 = 0;
+    DAT_06086390 = 0;
     iVar2 = func_060784A8();
     iVar2[0x4500] = 0xffffffff;
 }
@@ -1313,27 +1677,123 @@ INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60BBCCC, func_060BBCCC);
 
 void func_060BBD88(void) {
     int* iVar2;
-    d_06086390 = 4;
+    DAT_06086390 = 4;
     iVar2 = func_060784A8();
     iVar2[0x4500] = 0xffffffff;
 }
 
 void func_060BBDB4(void) {
     int* iVar2;
-    d_06086390 = 5;
+    DAT_06086390 = 5;
     iVar2 = func_060784A8();
     iVar2[0x4500] = 0xffffffff;
 }
 
 INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60BBDE0, func_060BBDE0);
 INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60BBF08, func_060BBF08);
-INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60BC048, func_060BC048);
+extern s16 g_ButtonMask[];
+
+// CheckIfAllButtonsAreAssigned
+bool func_060BC048(void) {
+    s32 buf[9];
+    s32 i;
+    s32 bitMask_Assigned;
+    s32* buttonConfig;
+
+    for (i = 0; i < 9; i++) {
+        buf[i] = 0;
+    }
+
+    buttonConfig = g_Settings.buttonConfig;
+    for (i = 0; i < 8; i++) {
+        buf[*buttonConfig++] = 1;
+    }
+
+    for (i = 0; i < 9; i++) {
+        if (buf[i] == 0) {
+            g_Settings.buttonConfig[8] = i;
+            break;
+        }
+    }
+
+    for (i = 0; i < 9; i++) {
+        g_Settings.buttonMask[i] = g_ButtonMask[g_Settings.buttonConfig[i]];
+    }
+
+    bitMask_Assigned = 0;
+    buttonConfig = g_Settings.buttonConfig;
+    for (i = 0; i < 9; i++) {
+        bitMask_Assigned |= 1 << *buttonConfig++;
+    }
+    if (bitMask_Assigned == 0xFF) {
+        return true;
+    } else {
+        return false;
+    }
+}
 INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60BC108, func_060BC108);
 INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60BC228, func_060BC228);
 INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60BC4E4, func_060BC4E4);
-INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60BC7A8, func_060BC7A8);
+extern s16 g_RichterMapRevealRowIndices[];
+
+void func_060BC7A8(u32 arg0) {
+    s32 first;
+    s32 current;
+    s32 offset;
+    s32 i;
+    u8* ptr;
+
+    if (arg0 == 6) {
+        offset = 0x28;
+    } else if (arg0 & 1) {
+        offset = 0x28;
+    } else {
+        offset = 0;
+    }
+
+    first = g_RichterMapRevealRowIndices[arg0];
+    for (current = first; current < first + 4; current++) {
+        s32 tile = current << 6;
+
+        ptr = (u8*)tile;
+        ptr += 0x25E58000 + offset;
+        for (i = 0; i < 0x20; i++) {
+            *ptr++ = 0;
+        }
+
+        if (offset == 0x28) {
+            ptr = (u8*)(0x25E58800 + tile);
+            for (i = 0; i < 0x10; i++) {
+                *ptr++ = 0;
+            }
+        }
+    }
+}
 INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60BC834, func_060BC834);
-INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60BCA10, func_060BCA10);
+
+extern Unk0605cd70 DAT_0605cd70;
+extern u8 DAT_06057f68;
+extern u32 D_06085534;
+s32 func_060732E4(u16 arg0);
+void func_060BC834(void);
+
+void func_060BCA10(void) {
+    if (DAT_0605cd70.unk8 != 0) {
+        if (DAT_0605cd70.unk8 == 1) {
+            goto after;
+        }
+        return;
+    } else {
+        func_060732E4(DAT_0605cd70.unk0);
+        DAT_0605cd70.unk8++;
+    }
+after:
+    if ((DAT_06057f68 == 0) && (g_pads[0].previous & 0x100)) {
+        D_06085534 = 6;
+        DAT_06057f68 = 4;
+    }
+    func_060BC834();
+}
 INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60BCA84, func_060BCA84);
 INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60BCDB8, func_060BCDB8);
 INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60BCE64, func_060BCE64);
@@ -1345,5 +1805,24 @@ INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60BD580, func_060BD580);
 INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60BD768, func_060BD768);
 INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60BDADC, func_060BDADC);
 INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60BDFD4, func_060BDFD4);
-INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60BE110, func_060BE110);
-INCLUDE_ASM("asm/saturn/richter/data", d60BED58, d_060BED58);
+extern u32* d_06086234;
+extern u32* d_06086250;
+extern s32 g_GameClearFlag;
+
+void func_060BE110(void) {
+    if (d_06086234 == 0) {
+        memset((void*)0x25E58288, 0, 0xC);
+        memset((void*)0x25E582C8, 0, 0xC);
+    }
+
+    if (d_06086250 == 0) {
+        memset((void*)0x25E58348, 0, 0xC);
+        memset((void*)0x25E58388, 0, 0xC);
+    }
+
+    if (g_GameClearFlag == 0) {
+        memset((void*)0x25E584C8, 0, 0x10);
+        memset((void*)0x25E58508, 0, 0x10);
+    }
+}
+INCLUDE_ASM("asm/saturn/richter/f_nonmat", f60BE198, func_060BE198);

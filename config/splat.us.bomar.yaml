@@ -41,9 +41,10 @@ segments:
     subalign: 4
     subsegments:
       - [0x0, .data, header]
-      - [0x8C, .data, header] # palette definitions
-      - [0xCC, .data, header] # layers
-      - [0xF4, .data, header] # graphics banks
+      - [0x2C, .data, sprite_banks]
+      - [0x8C, .data, palette_def]
+      - [0xCC, .data, layers]
+      - [0xF4, .data, graphics_banks]
       - [0x168, .data, gen/e_laydef] # layout entries header
       - [0x310, .data, e_init]
       - [0x4B0, .data, background_block_init]
@@ -67,7 +68,6 @@ segments:
       - [0x1308, .data, e_life_up]
       - [0x135C, .data, gen/e_layout] # layout entries data
       - [0x1424, .data, cutscene_data]
-      - [0x15DC, data]
       - [0x15F0, raw, cutscene_alucard]
       - [0x2370, raw, cutscene_maria]
       - [0x30F0, .data, stage_data]

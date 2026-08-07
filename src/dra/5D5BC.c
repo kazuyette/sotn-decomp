@@ -264,6 +264,7 @@ bool CastSpell(SpellIds spellId) {
     }
 }
 
+// original name: waza_work_set
 void LearnSpell(s32 spellId) {
     s32 i;
 
@@ -841,7 +842,7 @@ s32 HandleTransformationMP(TransformationForm form, CallMode mode) {
     }
 }
 
-bool HandleGravityBootsMP(CallMode mode) {
+s32 HandleGravityBootsMP(CallMode mode) {
     if ((g_Status.mp - 4) > 0) {
         if (mode != CHECK_ONLY) {
             g_Status.mp -= 4;

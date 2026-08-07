@@ -3,36 +3,46 @@
 #include "../pfn_entity_update.h"
 #include <cutscene.h>
 
-extern Dialogue OVL_EXPORT(Dialogue);
+extern u8 cutscene_data[];
+
+// bss
+STATIC_PAD_BSS(0xC00);
+s32 g_SkipCutscene;
+Dialogue g_Dialogue;
+STATIC_PAD_BSS(0x68);
+static u32 g_CutsceneFlags;
+s32 D_us_801BC514;
+static s32 g_IsCutsceneDone;
+
+static u8 D_us_80180D38[] = {0x00, 0x40, 0x00, 0x00};
+static u8 D_us_80180D3C[] = {0x00, 0x00, 0x00, 0x00};
+static u16 D_us_80180D40[] = {0x0210, 0x0218, 0x0220};
+static u16 D_us_80180D48[] = {0x0000, 0x0020};
+static u16 D_us_80180D4C[] = {0x01A1, 0x01A1, 0x01A1, 0x01A1};
+static s16 D_us_80180D54[] = {
+    0x0008, 0x0013, 0x0011, 0x0031, 0x004F, 0x0026, 0x0036, 0x001D, 0x001B,
+    0x0033, 0x002C, 0x0021, 0x0019, 0x000A, 0x0033, 0x001F, 0x0048, 0x002F,
+    0x0013, 0x0019, 0x004D, 0x004B, 0x0017, 0x001D, 0x0012, 0x0002, 0x001B,
+    0x002A, 0x0050, 0x0045, 0x0032, 0x000D, 0x002A, 0x004D, 0x0006, 0x0027,
+    0x0007, 0x0048, 0x002F, 0x001B, 0x0036, 0x0022, 0x0039, 0x0014, 0x0039,
+    0x001D, 0x000A, 0x0035, 0x0010, 0x001B, 0x003D, 0x0017, 0x002E, 0x000B,
+    0x0049, 0x0042, 0x003D, 0x002A, 0x0001, 0x000C, 0x001B, 0x0034, 0x0041,
+    0x0035, 0x0008, 0x000E, 0x004D, 0x0011, 0x0034, 0x0041, 0x0029, 0x0048,
+};
+static const char* actor_names[] = {_S("Alucard"), _S("Maria"), _S("Richter")};
 
 #include "../cutscene_unk1.h"
 #include "../set_cutscene_script.h"
 #include "../cutscene_unk3.h"
 #include "../cutscene_unk4.h"
 #include "../cutscene_actor_name.h"
-#include "../set_cutscene_end.h"
+#include "../set_cutscene_events.h"
 #define CUTSCENE_TILEMAP_SCROLL
-#include "../cutscene_run.h"
+#include "../cutscene_events.h"
 #include "../cutscene_skip.h"
 #include "../cutscene_scale_avatar.h"
 
-INCLUDE_RODATA("st/top/nonmatchings/cutscene", D_us_801A898C);
-
-INCLUDE_RODATA("st/top/nonmatchings/cutscene", D_us_801A8998);
-
-INCLUDE_RODATA("st/top/nonmatchings/cutscene", D_us_801A89A0);
-
-extern u8 OVL_EXPORT(cutscene_data)[];
-extern bool OVL_EXPORT(IsCutsceneDone);
-extern u32 OVL_EXPORT(CutsceneFlags);
-extern u8 D_us_80180D38[];
-extern u8 D_us_80180D3C[];
-extern u16 D_us_80180D40[];
-extern u16 D_us_80180D48[];
-extern u16 D_us_80180D4C[];
-extern s16 D_us_80180D54[];
-
-void OVL_EXPORT(EntityCutscene)(Entity* self) {
+void EntityCutscene(Entity* self) {
     RECT rect;
     Primitive* prim;
     s32 primIndex;
@@ -45,7 +55,7 @@ void OVL_EXPORT(EntityCutscene)(Entity* self) {
     u_long ptr;
 
     if (self->step) {
-        if (OVL_EXPORT(IsCutsceneDone) && !OVL_EXPORT(SkipCutscene)) {
+        if (g_IsCutsceneDone && !g_SkipCutscene) {
             if (g_GameClearFlag) {
                 CutsceneSkip(self);
             } else if (g_Settings.D_8003CB04 & 0x800000) {
@@ -53,8 +63,8 @@ void OVL_EXPORT(EntityCutscene)(Entity* self) {
             }
         }
 
-        if (self->step && OVL_EXPORT(Dialogue).unk3C) {
-            CutsceneRun();
+        if (self->step && g_Dialogue.hasEvents) {
+            RunCutsceneEvents();
         }
     }
 
@@ -65,85 +75,83 @@ void OVL_EXPORT(EntityCutscene)(Entity* self) {
             DestroyEntity(self);
             return;
         }
-        if (SetCutsceneScript(OVL_EXPORT(cutscene_data))) {
+        if (SetCutsceneScript(cutscene_data)) {
             g_CutsceneHasControl = true;
-            OVL_EXPORT(CutsceneFlags) = 0;
-            OVL_EXPORT(IsCutsceneDone) = 0;
-            OVL_EXPORT(SkipCutscene) = 0;
+            g_CutsceneFlags = 0;
+            g_IsCutsceneDone = 0;
+            g_SkipCutscene = 0;
             self->flags |= FLAG_HAS_PRIMS | FLAG_UNK_2000;
-            self->primIndex = OVL_EXPORT(Dialogue).primIndex[2];
+            self->primIndex = g_Dialogue.primIndex[2];
             self->step++;
         }
         break;
     case 1:
         // this is a huge While-loop! Don't miss it!
         while (1) {
-            if ((OVL_EXPORT(Dialogue).nextCharTimer != 0) &&
-                !OVL_EXPORT(SkipCutscene)) {
-                OVL_EXPORT(Dialogue).nextCharTimer--;
+            if ((g_Dialogue.nextCharTimer != 0) && !g_SkipCutscene) {
+                g_Dialogue.nextCharTimer--;
                 return;
             }
-            nextChar = *OVL_EXPORT(Dialogue).scriptCur++;
+            nextChar = *g_Dialogue.scriptCur++;
             switch (nextChar) {
             case CSOP_END_CUTSCENE:
                 self->step = 7;
                 return;
             case CSOP_LINE_BREAK:
-                if (OVL_EXPORT(SkipCutscene)) {
+                if (g_SkipCutscene) {
                     continue;
                 }
-                OVL_EXPORT(Dialogue).nextCharX = OVL_EXPORT(Dialogue).nextLineX;
-                if (!(OVL_EXPORT(Dialogue).unk12 & 1)) {
-                    OVL_EXPORT(Dialogue).nextLineY += 12;
+                g_Dialogue.nextCharX = g_Dialogue.nextLineX;
+                if (!(g_Dialogue.unk12 & 1)) {
+                    g_Dialogue.nextLineY += 12;
                 }
-                OVL_EXPORT(Dialogue).nextCharY++;
-                if (OVL_EXPORT(Dialogue).nextCharY >= 5) {
-                    OVL_EXPORT(Dialogue).nextCharY = 0;
+                g_Dialogue.nextCharY++;
+                if (g_Dialogue.nextCharY >= 5) {
+                    g_Dialogue.nextCharY = 0;
                 }
                 CutsceneUnk4();
-                if (!(OVL_EXPORT(Dialogue).unk12 & 1)) {
-                    if (OVL_EXPORT(Dialogue).nextCharY >= 4) {
-                        OVL_EXPORT(Dialogue).unk12 |= 1;
-                        OVL_EXPORT(Dialogue).portraitAnimTimer = 0;
+                if (!(g_Dialogue.unk12 & 1)) {
+                    if (g_Dialogue.nextCharY >= 4) {
+                        g_Dialogue.unk12 |= 1;
+                        g_Dialogue.portraitAnimTimer = 0;
                         self->step_s = 0;
                         self->step++;
                         return;
                     }
                     continue;
                 }
-                OVL_EXPORT(Dialogue).portraitAnimTimer = 0;
+                g_Dialogue.portraitAnimTimer = 0;
                 self->step_s = 0;
                 self->step++;
                 return;
             case CSOP_SET_SPEED:
-                OVL_EXPORT(Dialogue).unk17 = *OVL_EXPORT(Dialogue).scriptCur++;
+                g_Dialogue.unk17 = *g_Dialogue.scriptCur++;
                 continue;
             case CSOP_SET_WAIT:
-                OVL_EXPORT(Dialogue).nextCharTimer =
-                    *OVL_EXPORT(Dialogue).scriptCur++;
-                if (OVL_EXPORT(SkipCutscene)) {
+                g_Dialogue.nextCharTimer = *g_Dialogue.scriptCur++;
+                if (g_SkipCutscene) {
                     continue;
                 }
                 return;
             case CSOP_HIDE_DIALOG:
-                if (OVL_EXPORT(SkipCutscene)) {
+                if (g_SkipCutscene) {
                     continue;
                 }
-                prim = OVL_EXPORT(Dialogue).prim[0];
+                prim = g_Dialogue.prim[0];
                 for (i = 0; i < 5; i++) {
                     prim->drawMode = DRAW_HIDE;
                     prim = prim->next;
                 }
                 return;
             case CSOP_SET_PORTRAIT:
-                if (OVL_EXPORT(SkipCutscene)) {
-                    OVL_EXPORT(Dialogue).scriptCur += 2;
+                if (g_SkipCutscene) {
+                    g_Dialogue.scriptCur += 2;
                     continue;
                 }
                 // fake reuse of i?
-                i = *OVL_EXPORT(Dialogue).scriptCur++;
-                nextChar2 = *OVL_EXPORT(Dialogue).scriptCur++;
-                prim = OVL_EXPORT(Dialogue).prim[5];
+                i = *g_Dialogue.scriptCur++;
+                nextChar2 = *g_Dialogue.scriptCur++;
+                prim = g_Dialogue.prim[5];
                 uCoord = D_us_80180D38[nextChar2 & 1];
                 vCoord = D_us_80180D3C[nextChar2 & 1];
                 prim->clut = D_us_80180D40[i];
@@ -158,242 +166,235 @@ void OVL_EXPORT(EntityCutscene)(Entity* self) {
                 prim->v0 = prim->v1 = vCoord;
                 prim->v2 = prim->v3 = vCoord + 0x48;
                 prim->x0 = prim->x1 = prim->x2 = prim->x3 =
-                    OVL_EXPORT(Dialogue).startX - 0x1E;
+                    g_Dialogue.startX - 0x1E;
                 prim->y0 = prim->y1 = prim->y2 = prim->y3 =
-                    OVL_EXPORT(Dialogue).startY + 0x24;
-                OVL_EXPORT(Dialogue).clutIndex = D_us_80180D4C[i];
+                    g_Dialogue.startY + 0x24;
+                g_Dialogue.clutIndex = D_us_80180D4C[i];
                 CutsceneUnk1();
                 CutsceneUnk4();
                 prim->priority = 0x1FE;
                 prim->drawMode = DRAW_DEFAULT;
                 DrawCutsceneActorName(i, self);
-                OVL_EXPORT(Dialogue).portraitAnimTimer = 6;
+                g_Dialogue.portraitAnimTimer = 6;
                 self->step = 3;
                 return;
             case CSOP_NEXT_DIALOG:
-                if (OVL_EXPORT(SkipCutscene)) {
+                if (g_SkipCutscene) {
                     continue;
                 }
-                for (prim = OVL_EXPORT(Dialogue).prim[0], i = 0; i < 5; i++) {
+                for (prim = g_Dialogue.prim[0], i = 0; i < 5; i++) {
                     prim->drawMode = DRAW_HIDE;
                     prim = prim->next;
                 }
-                g_api.FreePrimitives(OVL_EXPORT(Dialogue).primIndex[1]);
-                OVL_EXPORT(Dialogue).primIndex[1] = -1;
-                OVL_EXPORT(Dialogue).portraitAnimTimer = 6;
+                g_api.FreePrimitives(g_Dialogue.primIndex[1]);
+                g_Dialogue.primIndex[1] = -1;
+                g_Dialogue.portraitAnimTimer = 6;
                 self->step = 4;
                 return;
             case CSOP_SET_POS:
-                if (OVL_EXPORT(SkipCutscene)) {
-                    OVL_EXPORT(Dialogue).scriptCur++;
-                    OVL_EXPORT(Dialogue).scriptCur++;
+                if (g_SkipCutscene) {
+                    g_Dialogue.scriptCur++;
+                    g_Dialogue.scriptCur++;
                     continue;
                 }
-                OVL_EXPORT(Dialogue).startX = *OVL_EXPORT(Dialogue).scriptCur++;
-                OVL_EXPORT(Dialogue).startY = *OVL_EXPORT(Dialogue).scriptCur++;
-                prim = OVL_EXPORT(Dialogue).prim[5];
+                g_Dialogue.startX = *g_Dialogue.scriptCur++;
+                g_Dialogue.startY = *g_Dialogue.scriptCur++;
+                prim = g_Dialogue.prim[5];
                 prim = prim->next;
-                prim->y0 = prim->y1 = OVL_EXPORT(Dialogue).startY;
-                prim->y2 = prim->y3 = OVL_EXPORT(Dialogue).startY + 0x48;
+                prim->y0 = prim->y1 = g_Dialogue.startY;
+                prim->y2 = prim->y3 = g_Dialogue.startY + 0x48;
                 prim = prim->next;
-                prim->y0 = OVL_EXPORT(Dialogue).startY - 1;
+                prim->y0 = g_Dialogue.startY - 1;
                 prim->u0 = 0xF6;
-                OVL_EXPORT(Dialogue).portraitAnimTimer = 0x18;
+                g_Dialogue.portraitAnimTimer = 0x18;
                 self->step = 5;
                 self->step_s = 0;
                 return;
             case CSOP_CLOSE_DIALOG:
-                if (OVL_EXPORT(SkipCutscene)) {
+                if (g_SkipCutscene) {
                     continue;
                 }
-                OVL_EXPORT(Dialogue).portraitAnimTimer = 0x18;
+                g_Dialogue.portraitAnimTimer = 0x18;
                 self->step = 6;
                 return;
             case CSOP_PLAY_SOUND:
-                if (OVL_EXPORT(SkipCutscene)) {
-                    OVL_EXPORT(Dialogue).scriptCur++;
-                    OVL_EXPORT(Dialogue).scriptCur++;
+                if (g_SkipCutscene) {
+                    g_Dialogue.scriptCur++;
+                    g_Dialogue.scriptCur++;
                     continue;
                 }
-                nextChar = *OVL_EXPORT(Dialogue).scriptCur++;
+                nextChar = *g_Dialogue.scriptCur++;
                 nextChar <<= 4;
-                nextChar |= *OVL_EXPORT(Dialogue).scriptCur++;
+                nextChar |= *g_Dialogue.scriptCur++;
                 g_api.PlaySfx(nextChar);
                 continue;
             case CSOP_WAIT_FOR_SOUND:
-                if (OVL_EXPORT(SkipCutscene)) {
+                if (g_SkipCutscene) {
                     continue;
                 }
                 if (g_api.func_80131F68() != false) {
                     continue;
                 }
-                *OVL_EXPORT(Dialogue).scriptCur--;
+                *g_Dialogue.scriptCur--;
                 return;
             case CSOP_SCRIPT_UNKNOWN_11:
-                if (OVL_EXPORT(SkipCutscene)) {
+                if (g_SkipCutscene) {
                     continue;
                 }
                 if (g_api.func_80131F68() != true) {
                     continue;
                 }
-                *OVL_EXPORT(Dialogue).scriptCur--;
+                *g_Dialogue.scriptCur--;
                 return;
-            case CSOP_SET_END:
-                ptr = (u_long)*OVL_EXPORT(Dialogue).scriptCur++;
+            case CSOP_SET_EVENTS:
+                ptr = (u_long)*g_Dialogue.scriptCur++;
                 ptr <<= 4;
-                ptr |= (u_long)*OVL_EXPORT(Dialogue).scriptCur++;
+                ptr |= (u_long)*g_Dialogue.scriptCur++;
                 ptr <<= 4;
-                ptr |= (u_long)*OVL_EXPORT(Dialogue).scriptCur++;
+                ptr |= (u_long)*g_Dialogue.scriptCur++;
                 ptr <<= 4;
-                ptr |= (u_long)*OVL_EXPORT(Dialogue).scriptCur++;
-                SetCutsceneEnd((u8*)ptr);
+                ptr |= (u_long)*g_Dialogue.scriptCur++;
+                SetCutsceneEvents((u8*)ptr);
                 continue;
             case CSOP_SCRIPT_UNKNOWN_13:
                 continue;
             case CSOP_SCRIPT_SWITCH:
-                ptr = (u_long)*OVL_EXPORT(Dialogue).scriptCur++;
+                ptr = (u_long)*g_Dialogue.scriptCur++;
                 ptr <<= 4;
-                ptr |= (u_long)*OVL_EXPORT(Dialogue).scriptCur++;
+                ptr |= (u_long)*g_Dialogue.scriptCur++;
                 ptr <<= 4;
-                ptr |= (u_long)*OVL_EXPORT(Dialogue).scriptCur++;
+                ptr |= (u_long)*g_Dialogue.scriptCur++;
                 ptr <<= 4;
-                ptr |= (u_long)*OVL_EXPORT(Dialogue).scriptCur++;
+                ptr |= (u_long)*g_Dialogue.scriptCur++;
                 ptr += 0x100000;
-                OVL_EXPORT(Dialogue).scriptCur += *(u8*)ptr << 2;
+                g_Dialogue.scriptCur += *(u8*)ptr << 2;
 
-                ptr = (u_long)*OVL_EXPORT(Dialogue).scriptCur++;
+                ptr = (u_long)*g_Dialogue.scriptCur++;
                 ptr <<= 4;
-                ptr |= (u_long)*OVL_EXPORT(Dialogue).scriptCur++;
+                ptr |= (u_long)*g_Dialogue.scriptCur++;
                 ptr <<= 4;
-                ptr |= (u_long)*OVL_EXPORT(Dialogue).scriptCur++;
+                ptr |= (u_long)*g_Dialogue.scriptCur++;
                 ptr <<= 4;
-                ptr |= (u_long)*OVL_EXPORT(Dialogue).scriptCur;
-                OVL_EXPORT(Dialogue).scriptCur = (u8*)ptr + 0x100000;
+                ptr |= (u_long)*g_Dialogue.scriptCur;
+                g_Dialogue.scriptCur = (u8*)ptr + 0x100000;
                 continue;
             case CSOP_SCRIPT_UNKNOWN_15:
-                ptr = (u_long)*OVL_EXPORT(Dialogue).scriptCur++;
+                ptr = (u_long)*g_Dialogue.scriptCur++;
                 ptr <<= 4;
-                ptr |= (u_long)*OVL_EXPORT(Dialogue).scriptCur++;
+                ptr |= (u_long)*g_Dialogue.scriptCur++;
                 ptr <<= 4;
-                ptr |= (u_long)*OVL_EXPORT(Dialogue).scriptCur++;
+                ptr |= (u_long)*g_Dialogue.scriptCur++;
                 ptr <<= 4;
-                ptr |= (u_long)*OVL_EXPORT(Dialogue).scriptCur;
-                OVL_EXPORT(Dialogue).scriptCur = (u8*)ptr + 0x100000;
+                ptr |= (u_long)*g_Dialogue.scriptCur;
+                g_Dialogue.scriptCur = (u8*)ptr + 0x100000;
                 continue;
             case CSOP_WAIT_FOR_FLAG:
-                if (!((OVL_EXPORT(CutsceneFlags) >>
-                       *OVL_EXPORT(Dialogue).scriptCur) &
-                      1)) {
-                    OVL_EXPORT(Dialogue).scriptCur--;
+                if (!((g_CutsceneFlags >> *g_Dialogue.scriptCur) & 1)) {
+                    g_Dialogue.scriptCur--;
                     return;
                 }
-                OVL_EXPORT(CutsceneFlags) &=
-                    ~(1 << *OVL_EXPORT(Dialogue).scriptCur);
-                *OVL_EXPORT(Dialogue).scriptCur++;
+                g_CutsceneFlags &= ~(1 << *g_Dialogue.scriptCur);
+                *g_Dialogue.scriptCur++;
                 continue;
             case CSOP_SET_FLAG:
-                OVL_EXPORT(CutsceneFlags) |=
-                    1 << *OVL_EXPORT(Dialogue).scriptCur++;
+                g_CutsceneFlags |= 1 << *g_Dialogue.scriptCur++;
                 continue;
-            case CSOP_SCRIPT_UNKNOWN_18:
-                OVL_EXPORT(Dialogue).unk3C = 0;
+            case CSOP_STOP_EVENTS:
+                g_Dialogue.hasEvents = 0;
                 continue;
             case CSOP_LOAD_PORTRAIT:
-                if (OVL_EXPORT(SkipCutscene)) {
-                    OVL_EXPORT(Dialogue).scriptCur += 5;
+                if (g_SkipCutscene) {
+                    g_Dialogue.scriptCur += 5;
                 } else {
-                    ptr = (u_long)*OVL_EXPORT(Dialogue).scriptCur++;
+                    ptr = (u_long)*g_Dialogue.scriptCur++;
                     ptr <<= 4;
-                    ptr |= (u_long)*OVL_EXPORT(Dialogue).scriptCur++;
+                    ptr |= (u_long)*g_Dialogue.scriptCur++;
                     ptr <<= 4;
-                    ptr |= (u_long)*OVL_EXPORT(Dialogue).scriptCur++;
+                    ptr |= (u_long)*g_Dialogue.scriptCur++;
                     ptr <<= 4;
-                    ptr |= (u_long)*OVL_EXPORT(Dialogue).scriptCur++;
+                    ptr |= (u_long)*g_Dialogue.scriptCur++;
                     ptr += 0x100000;
-                    nextChar2 = OVL_EXPORT(Dialogue).scriptCur++[0];
+                    nextChar2 = g_Dialogue.scriptCur++[0];
                     LoadTPage((u_long*)ptr, 1, 0, D_us_80180D48[nextChar2],
                               0x100, 48, 72);
                 }
                 continue;
             case CSOP_SCRIPT_UNKNOWN_20:
-                nextChar = *OVL_EXPORT(Dialogue).scriptCur++;
+                nextChar = *g_Dialogue.scriptCur++;
                 nextChar <<= 4;
-                nextChar |= *OVL_EXPORT(Dialogue).scriptCur++;
+                nextChar |= *g_Dialogue.scriptCur++;
                 g_api.PlaySfx(nextChar);
                 continue;
             case CSOP_SCRIPT_UNKNOWN_21:
-                OVL_EXPORT(CutsceneFlags) = 0;
-                OVL_EXPORT(SkipCutscene) = 0;
-                OVL_EXPORT(IsCutsceneDone) = 0;
+                g_CutsceneFlags = 0;
+                g_SkipCutscene = 0;
+                g_IsCutsceneDone = 0;
                 continue;
             case CSOP_SCRIPT_UNKNOWN_22:
-                OVL_EXPORT(CutsceneFlags) &=
-                    ~(1 << *OVL_EXPORT(Dialogue).scriptCur++);
+                g_CutsceneFlags &= ~(1 << *g_Dialogue.scriptCur++);
                 continue;
             case CSOP_SCRIPT_UNKNOWN_23:
                 return;
             case CSOP_WAIT_FOR_FLAG_RESET:
-                if (!((OVL_EXPORT(CutsceneFlags) >>
-                       *OVL_EXPORT(Dialogue).scriptCur) &
-                      1)) {
-                    *OVL_EXPORT(Dialogue).scriptCur--;
+                if (!((g_CutsceneFlags >> *g_Dialogue.scriptCur) & 1)) {
+                    *g_Dialogue.scriptCur--;
                     return;
                 }
-                *OVL_EXPORT(Dialogue).scriptCur++;
+                *g_Dialogue.scriptCur++;
                 continue;
             default:
-                if (OVL_EXPORT(SkipCutscene)) {
+                if (g_SkipCutscene) {
                     continue;
                 }
-                OVL_EXPORT(Dialogue).nextCharTimer = OVL_EXPORT(Dialogue).unk17;
+                g_Dialogue.nextCharTimer = g_Dialogue.unk17;
             }
             break; // This breaks the big while-loop!
         }
         if (nextChar == 0x20) {
-            OVL_EXPORT(Dialogue).nextCharX += 2;
+            g_Dialogue.nextCharX += 2;
             return;
         }
         rect.x = ((nextChar & 0xF) * 2) + 0x380;
         rect.y = ((u32)(nextChar & 0xF0) >> 1) + 0xF0;
         rect.w = 2;
         rect.h = 8;
-        vCoord = (OVL_EXPORT(Dialogue).nextCharY * 0xC) + 0x180;
-        MoveImage(&rect, OVL_EXPORT(Dialogue).nextCharX, vCoord);
-        OVL_EXPORT(Dialogue).nextCharX += 2;
+        vCoord = (g_Dialogue.nextCharY * 0xC) + 0x180;
+        MoveImage(&rect, g_Dialogue.nextCharX, vCoord);
+        g_Dialogue.nextCharX += 2;
         break;
     case 2:
         ScaleCutsceneAvatar(2);
-        if (OVL_EXPORT(Dialogue).portraitAnimTimer >= 6) {
+        if (g_Dialogue.portraitAnimTimer >= 6) {
             self->step -= 1;
             return;
         }
         break;
     case 3:
-        prim = OVL_EXPORT(Dialogue).prim[5];
+        prim = g_Dialogue.prim[5];
         prim->x0 = prim->x2 -= 4;
         prim->x1 = prim->x3 += 4;
         prim->y0 = prim->y1 -= 6;
         prim->y2 = prim->y3 += 6;
-        OVL_EXPORT(Dialogue).portraitAnimTimer--;
-        if (!OVL_EXPORT(Dialogue).portraitAnimTimer) {
+        g_Dialogue.portraitAnimTimer--;
+        if (!g_Dialogue.portraitAnimTimer) {
             self->step = 1;
-            for (prim = &g_PrimBuf[OVL_EXPORT(Dialogue).primIndex[1]];
-                 prim != NULL; prim = prim->next) {
+            for (prim = &g_PrimBuf[g_Dialogue.primIndex[1]]; prim != NULL;
+                 prim = prim->next) {
                 prim->drawMode = DRAW_DEFAULT;
             }
         }
         break;
     case 4:
-        prim = OVL_EXPORT(Dialogue).prim[5];
+        prim = g_Dialogue.prim[5];
         prim->x0 = prim->x2 += 4;
         prim->x1 = prim->x3 -= 4;
         prim->y0 = prim->y1 += 6;
         prim->y2 = prim->y3 -= 6;
-        if (prim->x1 >= (OVL_EXPORT(Dialogue).startX - 2)) {
-            prim->x1 = prim->x3 = OVL_EXPORT(Dialogue).startX - 3;
+        if (prim->x1 >= (g_Dialogue.startX - 2)) {
+            prim->x1 = prim->x3 = g_Dialogue.startX - 3;
         }
-        OVL_EXPORT(Dialogue).portraitAnimTimer--;
-        if (!OVL_EXPORT(Dialogue).portraitAnimTimer) {
+        g_Dialogue.portraitAnimTimer--;
+        if (!g_Dialogue.portraitAnimTimer) {
             self->step = 1;
             return;
         }
@@ -401,19 +402,19 @@ void OVL_EXPORT(EntityCutscene)(Entity* self) {
     case 5:
         switch (self->step_s) {
         case 0:
-            OVL_EXPORT(IsCutsceneDone) = 1;
+            g_IsCutsceneDone = 1;
             primIndex = g_api.AllocPrimitives(PRIM_LINE_G2, 0x48);
             if (primIndex == -1) {
                 DestroyEntity(self);
                 return;
             }
-            OVL_EXPORT(Dialogue).primIndex[0] = primIndex;
+            g_Dialogue.primIndex[0] = primIndex;
             for (prim = &g_PrimBuf[primIndex], j = 0; prim != NULL;
                  prim = prim->next) {
                 prim->r0 = prim->r1 = 0x7F;
                 prim->b0 = prim->b1 = prim->g0 = prim->g1 = 0;
                 prim->x0 = prim->x1 = 0xF7;
-                prim->y0 = prim->y1 = OVL_EXPORT(Dialogue).startY + j;
+                prim->y0 = prim->y1 = g_Dialogue.startY + j;
                 prim->priority = 0x1FE;
                 prim->drawMode = DRAW_DEFAULT;
                 prim->x2 = D_us_80180D54[j];
@@ -424,7 +425,7 @@ void OVL_EXPORT(EntityCutscene)(Entity* self) {
             self->step_s++;
             return;
         case 1:
-            for (j = 0, prim = &g_PrimBuf[OVL_EXPORT(Dialogue).primIndex[0]];
+            for (j = 0, prim = &g_PrimBuf[g_Dialogue.primIndex[0]];
                  prim != NULL; prim = prim->next) {
                 prim->x3 -= prim->x2;
                 prim->x2 += 2;
@@ -436,9 +437,9 @@ void OVL_EXPORT(EntityCutscene)(Entity* self) {
                 }
             }
             if (j == 0) {
-                g_api.FreePrimitives(OVL_EXPORT(Dialogue).primIndex[0]);
-                OVL_EXPORT(Dialogue).primIndex[0] = -1;
-                prim = OVL_EXPORT(Dialogue).prim[5];
+                g_api.FreePrimitives(g_Dialogue.primIndex[0]);
+                g_Dialogue.primIndex[0] = -1;
+                prim = g_Dialogue.prim[5];
                 prim = prim->next;
                 prim->drawMode = DRAW_TPAGE | DRAW_TRANSP;
                 prim = prim->next;
@@ -449,7 +450,7 @@ void OVL_EXPORT(EntityCutscene)(Entity* self) {
             break;
         case 2:
             j = 0;
-            prim = OVL_EXPORT(Dialogue).prim[5];
+            prim = g_Dialogue.prim[5];
             prim = prim->next;
             if (prim->r0 < 0x10) {
                 prim->r0 = prim->r1 = prim->r2 = prim->r3 = 0;
@@ -477,18 +478,18 @@ void OVL_EXPORT(EntityCutscene)(Entity* self) {
         }
         break;
     case 6:
-        prim = OVL_EXPORT(Dialogue).prim[5];
+        prim = g_Dialogue.prim[5];
         prim = prim->next;
-        OVL_EXPORT(Dialogue).portraitAnimTimer--;
-        if (OVL_EXPORT(Dialogue).portraitAnimTimer >= 0xC) {
+        g_Dialogue.portraitAnimTimer--;
+        if (g_Dialogue.portraitAnimTimer >= 0xC) {
             prim = prim->next;
             prim->u0 -= 20;
-            if (OVL_EXPORT(Dialogue).portraitAnimTimer & 1) {
+            if (g_Dialogue.portraitAnimTimer & 1) {
                 prim->u0--;
                 return;
             }
         } else {
-            if (!OVL_EXPORT(Dialogue).portraitAnimTimer) {
+            if (!g_Dialogue.portraitAnimTimer) {
                 self->step = 1;
                 prim->drawMode = DRAW_HIDE;
             } else {

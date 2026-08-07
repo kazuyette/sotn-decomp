@@ -123,6 +123,17 @@ typedef struct {
 typedef struct PACKED {
     /* 0x7C */ s16 lifetime;
     /* 0x7E */ s16 unk7E;
+    /* 0x80 */ struct Entity* unk80; // Y?
+    // /* 0x84 */ struct Entity* some_ent;
+    u8 pad[16];
+    /* 0x8C */ struct Entity* parent;
+    u8 pad2[8];
+    /* 0x88 */ s8 childPalette;
+} ET_B0_Unk;
+
+typedef struct PACKED {
+    /* 0x7C */ s16 lifetime;
+    /* 0x7E */ s16 unk7E;
     /* 0x80 */ s16 unk80; // Y?
     /* 0x82 */ s16 unk82; // X?
     /* 0x84 */ struct Entity* some_ent;
@@ -1523,7 +1534,10 @@ typedef struct {
     s16 unkA6;
     s32 unkA8;
     s32 unkAC;
-    s16 unkB0;
+#ifdef PLATFORM_64BIT
+    s32 _align_subweaponId[3];
+#endif
+    s16 subweaponId;
     s32 unkB4;
 } ET_Whip;
 
@@ -3584,6 +3598,16 @@ typedef struct {
 } ET_HellfireBeastFlamePillar;
 
 typedef struct {
+    /* 0x7C */ s16 timer;
+    /* 0x7E */ s16 velocityAngle;
+    /* 0x80 */ s32 : 32;
+    /* 0x84 */ s32 : 32;
+    /* 0x88 */ s32 : 32;
+    /* 0x8C */ struct Entity* parent;
+    /* 0x90 */ s16 unkTimer;
+} ET_ShaftOrb;
+
+typedef struct {
     /* 0x7C */ s16 skeletonPosX;
     /* 0x7E */ s16 skeletonPosY;
     /* 0x80 */ s16 unk80;
@@ -4425,6 +4449,7 @@ typedef union { // offset=0x7C
     ET_HellfireBeast hellfireBeast;
     ET_HellfireBeastThorsHammer hellfireBeastThorsHammer;
     ET_HellfireBeastFlamePillar hellfireBeastFlamePillar;
+    ET_ShaftOrb shaftOrb;
     ET_BoneArk boneArk;
     ET_Harpy harpy;
     ET_CloakedKnight cloakedKnight;
@@ -4469,6 +4494,7 @@ typedef union { // offset=0x7C
     ET_NovaSkeleton nova;
     ET_Orobourous orob;
     ET_Dodo dodo;
+    ET_B0_Unk b0Unk;
 } Ext;
 
 SYNC_FIELD(ET_Player, ET_Weapon, anim);
@@ -4542,5 +4568,6 @@ SYNC_FIELD(ET_Subweapon, ET_Agunea, subweaponId);
 SYNC_FIELD(ET_Subweapon, ET_AguneaCrash, subweaponId);
 SYNC_FIELD(ET_Subweapon, ET_GiantSpinningCross, subweaponId);
 SYNC_FIELD(ET_Subweapon, ET_CrashCross, subweaponId);
+SYNC_FIELD(ET_Subweapon, ET_Whip, subweaponId);
 
 #endif // ENTITY_H

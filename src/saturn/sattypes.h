@@ -18,10 +18,18 @@ typedef unsigned long long u64;
 #define NULL 0
 #define FIX(x) ((s32)((x) * 65536.0))
 
+typedef struct {
+    u8 storedWidth;
+    u8 storedHeight;
+    u16 characterOffsetUnits;
+} SaturnSpriteImage;
+
 typedef enum {
     PAD_NONE = 0x0000,
     PAD_L1 = 0x0008,
     PAD_R1 = 0x0080,
+    PAD_CROSS = 0x0100,
+    PAD_SQUARE = 0x0400,
     PAD_UP = 0x1000,
     PAD_DOWN = 0x2000,
     PAD_LEFT = 0x4000,
@@ -36,10 +44,21 @@ typedef enum {
 #define STAGE_ENTITY_START 64
 #define FACTORY(id, param) ((id) + (param << 16))
 
+#define SET_STOP_MUSIC 0xF000000A
+#define SET_UNK_0B 0xF000000B
+#define SET_UNPAUSE_SFX_SCRIPTS 0xF000000F
+#define SET_UNK_10 0xF0000010
+#define SET_XA_PLAYBACK 0xF0000011
+#define SET_UNK_80 0xF0000080
+#define SET_KEY_ON_20_21 0xF00000A4
+#define SET_KEY_ON_22_23 0xF00000A8
+#define SFX_WEAPON_APPEAR 0x62F
 #define SFX_BAT_SCREECH 0x64E
 #define SFX_HEART_PICKUP 0x67A
 #define SFX_UI_MOVE 0x67B
 #define SFX_UI_ALERT_TINK 0x6AD
+#define SFX_UNUSED_712 0x712
+#define SFX_TOAD_CROAK 0x71A
 
 #define PLAYER g_Entities[PLAYER_CHARACTER]
 
@@ -63,6 +82,33 @@ typedef struct {
     u16 duration;
     u16 pose;
 } AnimationFrame;
+
+typedef struct {
+    u8 duration;
+    u8 frame;
+    u8 hitbox;
+} SaturnAnimationFrame;
+
+typedef struct {
+    s8 offsetX;
+    s8 offsetY;
+    s8 hitboxWidth;
+    s8 hitboxHeight;
+} FrameProperty;
+
+typedef struct {
+    s16 attack;
+    u8 hitboxWidth;
+    u8 hitboxHeight;
+    s8 hitboxOffX;
+    s8 hitboxOffY;
+    u16 attackElement;
+    u16 hitboxState;
+    u8 unkA;
+    u8 unkB;
+    u16 unkC;
+    u16 entityRoomIndex;
+} SaturnEntityCombatConfig;
 
 typedef struct Collider {
     /* 0x00 */ u32 effects;
@@ -169,6 +215,13 @@ typedef struct {
 } ET_AfterImage;
 
 typedef struct {
+    /* 0x78 */ u8 pad78[0x10];
+    /* 0x88 */ struct Entity* parent;
+    /* 0x8C */ u8 pad8C[0x10];
+    /* 0x9C */ u16 paramsBase;
+} ET_Factory;
+
+typedef struct {
     /* 0x7C */ u8 pad0[0x4];
     /* 0x80 */ u8* anim;
     /* 0x84 */ s16 unk84;
@@ -234,6 +287,7 @@ typedef struct {
 typedef union { // offset=0x78
     u8 base[0x38];
     ET_AfterImage afterImage; // g_Entities[1], not entityID 1
+    ET_Factory factory;
     ET_ExplosionPuffOpaque opaquePuff;
     ET_Subweapon subweapon;
     ET_BatFamBlueTrail batFamBlueTrail;
@@ -245,7 +299,7 @@ typedef union { // offset=0x78
 } Ext;
 
 typedef struct Entity {
-    /* 0x00 */ struct Unk0600B344* unk0;
+    /* 0x00 */ struct SpriteObject* unk0;
     /* 0x04 */ SotnFixed32 posX;
     /* 0x08 */ SotnFixed32 posY;
     /* 0x0c */ s32 velocityX;
@@ -254,12 +308,13 @@ typedef struct Entity {
     /* 0x16 */ s16 hitboxOffY;
     /* 0x18 */ u16 facingLeft;
     /* 0x1A */ u16 palette;
-    /* 0x1C */ char pad_1C[0x2];
+    /* 0x1B */ u8 : 8;
+    /* 0x1C */ u8 unk1C;
     /* 0x1E */ s16 rotate;
-    /* 0x20 */ s16 unk1A;
-    /* 0x22 */ s16 unk1C;
-    /* 0x24 */ s16 ghidra_pad_24;
-    /* 0x26 */ char pad_26[0x2];
+    /* 0x20 */ s16 : 16;
+    /* 0x22 */ s16 : 16;
+    /* 0x24 */ s16 : 16;
+    /* 0x26 */ s16 : 16;
     /* 0x28 */ PfnEntityUpdate pfnUpdate;
     /* 0x2c */ u16 step;
     /* 0x2e */ u16 step_s;
@@ -275,18 +330,21 @@ typedef struct Entity {
     /* 0x44 */ u8 hitboxWidth;
     /* 0x45 */ u8 hitboxHeight;
     /* 0x46 */ u8 hitFlags; // 1 = took hit
+    /* 0x47 */ u8 nFramesInvincibility;
     /* 0x48 */ AnimationFrame* anim;
     /* 0x4c */ u16 pose;
     /* 0x4e */ s16 poseTimer;
     /* 0x50 */ s16 animSet;
     /* 0x52 */ s16 animCurFrame;
-    /* 0x54 */ char pad_54[0x2];
+    /* 0x54 */ s16 stunFrames;
     /* 0x56 */ s16 unk56;
     /* 0x58 */ char pad_58[0x8];
     /* 0x60 */ s16 primIndex;
     /* 0x62 */ u16 zPriority;
     /* 0x64 */ u16 unk68;
-    /* 0x66 */ char pad_66[0xE];
+    /* 0x66 */ u16 hitEffect;
+    /* 0x68 */ char pad_68[1];
+    /* 0x69 */ char unk6D[11];
     /* 0x74 */ u16 entityId;
     /* 0x76 */ char pad_76[0x2];
     /* 0x78 */ Ext ext;
@@ -294,16 +352,44 @@ typedef struct Entity {
     /* 0xB4 */ struct UnkStruct_060e8350* unkB4;
 } Entity; // size = 0xB8
 
-typedef struct Unk0600B344 {
-    /* 0x00 */ u16 unk0;
-    /* 0x02 */ char pad_02[0x6];
-    /* 0x08 */ s16 unk8;
-    /* 0x0A */ char pad_0A[0x4];
-    /* 0x0E */ s16 zPriority;
-    /* 0x10 */ char pad_10[0x1];
-    /* 0x14 */ s32 unk14;
-    /* 0x18 */ s32 unk18;
-} Unk0600B344;
+typedef struct SpritePart {
+    /* 0x00 */ u16 attributes;
+    /* 0x02 */ s16 offsetX;
+    /* 0x04 */ s16 offsetY;
+    /* 0x06 */ u16 imageIndex;
+    /* 0x08 */ s16 rotate;
+    /* 0x0A */ u8 scaleX;
+    /* 0x0B */ u8 scaleY;
+    /* 0x0C */ struct SpritePart* next;
+} SpritePart; /* size = 0x10 */
+
+typedef struct SpriteObject {
+    /* 0x00 */ u16 flags;
+    /* 0x02 */ u16 slotAndStreamId; /* high byte: permanent pool slot, baked in
+                                     * by func_0600B254 as (i << 8) and
+                                     * preserved (low byte cleared) on each
+                                     * alloc by AllocSpriteObject.
+                                     * low 7 bits: streamed-frame id, set by
+                                     * func_0600AFA8 from commandFlags & 0x7F */
+    /* 0x04 */ u16 charBase;
+    /* 0x06 */ u16 clutBase;
+    /* 0x08 */ s16 rotate;
+    /* 0x0A */ u8 scaleX;
+    /* 0x0B */ u8 scaleY;
+    /* 0x0C */ u8 unk0C;
+    /* 0x0D */ u8 unk0D;
+    /* 0x0E */ u16 zPriority;
+    /* 0x10 */ u16 subPixelX;
+    /* 0x12 */ u16 subPixelY;
+    /* 0x14 */ s32 posX;
+    /* 0x18 */ s32 posY;
+    /* 0x1C */ SaturnSpriteImage* images;
+    /* 0x20 */ SpritePart* parts;
+    /* 0x24 */ struct SpriteObject* next;
+} SpriteObject; /* size = 0x28 */
+
+#define SPRITE_OBJECT_MAX 255 /* 0x0FF */
+#define SPRITE_PART_MAX 640   /* 0x280 */
 
 typedef struct {
     /* 060645A8 */ Entity* (*CreateEntFactoryFromEntity)(
@@ -311,26 +397,38 @@ typedef struct {
 } GameApi;
 
 void (*func_06064580)();
+void (*func_06064590)();
+void (*func_06064594)();
+void (*func_060645A0)();
+void (*func_060645A4)();
 void (*func_060645B0)();
+void (*func_060645B4)();
 void (*func_060645BC)();
-void (*func_060645e0)();
+void (*func_060645C0)();
+void (*func_060645E0)();
 void (*func_060645FC)();
 void (*func_06064600)();
 void (*func_06064608)();
 void (*func_06064614)();
+void (*func_06064618)();
 void (*func_06064620)();
+void (*func_06064628)(s32);
+void (*func_06064630)();
 void (*GetPlayerSensor)(Collider* col);
 void (*func_06064638)();
 void (*func_0606463c)();
 void (*func_06064644)();
+void (*func_0606464C)();
 void (*func_06064674)();
 void (*func_06064684)();
 void (*func_06064688)();
 void (*func_0606468c)();
 s32 (*func_06064690)();
+void (*func_060CF01C)();
 
 typedef struct {
-    s32 unk0;
+    // Either a legacy SpriteParts table or a Saturn sprite-resource descriptor.
+    void* spriteBank;
     PfnEntityUpdate func;
 } EntityEntry;
 
@@ -424,7 +522,8 @@ typedef struct {
     /* 0x2C */ u16 icon;
     /* 0x2E */ u16 palette;
     /* 0x30 */ u16 criticalRate;
-} Equipment; /* size=0x32 */
+    /* 0x32 */ u16 unk32;
+} Equipment; /* size=0x34 */
 
 // Defines armor, cloak and rings
 typedef struct {
@@ -440,7 +539,8 @@ typedef struct {
     /* 0x18 */ u16 icon;
     /* 0x1A */ u16 palette;
     /* 0x1C */ u16 equipType;
-} Accessory; /* size=0x1E */
+    /* 0x1E */ u16 unk1E;
+} Accessory; /* size=0x20 */
 
 typedef struct {
     /* 0x00 */ const char* name;
@@ -454,7 +554,8 @@ typedef struct {
     /* 0x14 */ s16 unk14;
     /* 0x16 */ u16 attackElement;
     /* 0x18 */ s16 attack;
-} SpellDef;
+    /* 0x1A */ u16 unk1A;
+} SpellDef; /* size=0x1C */
 
 typedef struct {
     /* 0x00 */ const char* name;
@@ -514,13 +615,16 @@ typedef struct {
     char pad324[0x8C];
     /* 0x3B0 */ u32 padPressed;
     /* 0x3B4 */ u32 padTapped;
-    char pad3B8[0x10];
+    /* 0x3B8 */ s32 : 32;
+    /* 0x3BC */ u32 padSim;
+    /* 0x3C0 */ s32 : 32;
+    /* 0x3C4 */ s32 demo_timer;
     /* 0x3C8 */ s16 timers[16]; // the array is bigger than PSX
     char pad3E8[4];
     /* 0x3EC */ s32 vram_flag;
     char pad2[8];
     /* 0x3F8 */ u32 status;
-    u32 unk3FC;
+    /* 0x3FC */ u32 unk3FC;
     char pad400[0x2E];
     /* 0x42E */ u16 high_jump_timer;
     /* 0x430 */ u16 unk44;
@@ -552,7 +656,7 @@ typedef struct {
     s32 : 32;
     s32 : 32;
     s32 : 32;
-    s32 : 32;
+    s32 unk28;
     s32 : 32;
     u32 D_80097428[8];
     s32 : 32;
@@ -571,31 +675,30 @@ typedef struct {
     s32 : 32;
     s32 : 32;
     s32 : 32;
-    s16 unk90;
-    s16 unk92;
-    s16 unk94;
+    SotnFixed32 shoveX;
+    SotnFixed32 shoveY;
 } unkGraphicsStruct;
 
 typedef struct {
     const char* name;
-    s32 : 32;
-    u16 : 16;
-    u16 : 16;
+    const char* description;
+    u16 unk08;
+    u16 unk0A;
     s32 unk0C;
 } RelicDesc;
 
 typedef struct {
-    s32 buttonConfig[8];
-    u16 buttonMask[8];
-    s32 timeAttackRecords[32];
-    s32 cloakColors[6];
-    s32 windowColors[3];
-    s32 equipOrderTypes[11];
-    s32 isCloakLiningReversed;
-    s32 isSoundMono;
-    s32 D_8003CB00;
-    s32 D_8003CB04;
-} GameSettings;
+    /* 0x000 */ s32 buttonConfig[8];
+    /* 0x020 */ u16 buttonMask[8];
+    /* 0x030 */ s32 timeAttackRecords[32];
+    /* 0x0B0 */ s32 cloakColors[6];
+    /* 0x0C8 */ s32 windowColors[3];
+    /* 0x0D4 */ s32 equipOrderTypes[11];
+    /* 0x100 */ s32 isCloakLiningReversed;
+    /* 0x104 */ s32 isSoundMono;
+    /* 0x108 */ s32 D_8003CB00;
+    /* 0x10C */ s32 D_8003CB04;
+} GameSettings; /* size=0x110 */
 
 typedef struct {
     u16 flags;
@@ -620,8 +723,8 @@ typedef struct {
 } MenuNavigation; /* size=0x4C */
 
 typedef struct {
-    u32 : 32;
-    s32 : 32;
+    s32 displayHP;
+    s32 primIndex1;
     s32 : 32;
     s32 : 32;
     u32 : 32;
@@ -631,16 +734,16 @@ typedef struct {
     u32 : 32;
     u32 unk24;
     s32 : 32;
-    s32 : 32;
+    s32 g_HealingMailTimer;
 } PlayerHud;
 
 typedef struct {
     s16 type;
-    s16 : 16;
-    s16 : 16;
-    s16 : 16;
-    s16 : 16;
-    s16 : 16;
+    s16 priority;
+    u16 unk4;
+    s16 unk6;
+    s16 unk8;
+    s16 unkA;
     s16 x0;
     s16 y0;
     s16 x1;
@@ -651,7 +754,7 @@ typedef struct {
     s16 y3;
     s16 : 16;
     u16 drawMode;
-    s32 : 32;
+    struct Primitive* next;
 } Primitive;
 
 typedef struct {
@@ -760,6 +863,30 @@ typedef struct {
     RoomLoadDef* def;
     Point32 pos;
 } RoomLoadDefHolder;
+
+typedef struct {
+    u16 unk0;
+    u16 unk2;
+    u32 unk4;
+    u32 unk8;
+} Unk0605cd70;
+
+typedef struct {
+    const char* prg;
+    const char* chr;
+    const char* map;
+    u32 unkC;
+    u32 unk10;
+    u8 unk14;
+} SaturnStageFileRecord;
+
+typedef struct {
+    u16 x;
+    u16 y;
+    u16 roomId;
+    u16 reloadStageId;
+    u16 stageId;
+} RoomTeleport;
 
 typedef enum {
     PLAYER_CHARACTER,
@@ -893,7 +1020,7 @@ extern GameSettings g_Settings;
 extern GameApi g_api;
 extern Entity g_Entities[TOTAL_ENTITY_COUNT]; // 0x060997F8
 extern EntityEntry** PfnEntityUpdates[];
-extern Unk0605D750 DAT_0605d750;
+extern Unk0605D750 g_CurrentRoom;
 extern SpellDef g_SpellDefs[];
 extern Accessory g_AccessoryDefs[];
 extern s32 D_80137960;
@@ -910,6 +1037,7 @@ extern PlayerStatus g_Status;
 extern SubweaponDef g_SubwpnDefs[];
 extern unkGraphicsStruct g_unkGraphicsStruct;
 extern u32 g_GameTimer;
+extern u32 g_Timer;
 extern FgLayer D_8003C708;
 extern s32 D_801375C8;
 extern s32 D_8006BB00;
@@ -927,6 +1055,8 @@ extern Primitive g_PrimBuf[];
 
 #define NUM_HORIZONTAL_SENSORS 4
 #define NUM_VERTICAL_SENSORS 7
+
+#define RELIC_CUBE_OF_ZOE 10
 
 enum RicSubweapons {
     PL_W_NONE,

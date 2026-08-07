@@ -22,7 +22,7 @@ enum Palettes {
     PAL_CTULHU_DEATH = 0x2CE,
 };
 
-typedef enum EntityIDs {
+typedef enum EntityID {
     /* 0x00 */ E_NONE,
     /* 0x01 */ E_BREAKABLE,
     /* 0x02 */ E_EXPLOSION,
@@ -105,12 +105,12 @@ typedef enum EntityIDs {
     /* 0x4F */ E_SKELETON_PIECES,
     /* 0x50 */ E_ID_50,
     /* 0x51 */ E_ID_51,
-} EntityIDs;
+} EntityID;
 
 extern Primitive* FindFirstUnkPrim(Primitive* poly);
 
-extern EInit OVL_EXPORT(EInitBreakable);
-extern EInit OVL_EXPORT(EInitObtainable);
+extern EInit g_EInitBreakable;
+extern EInit g_EInitObtainable;
 extern EInit g_EInitParticle;
 extern EInit D_us_80180A88;
 extern EInit g_EInitInteractable;

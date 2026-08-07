@@ -29,6 +29,8 @@ options:
   ld_bss_is_noload: false
   disasm_unknown: true
   global_vram_start: 0x80010000
+  ld_generate_symbol_per_data_segment: true
+sha1: 98da46f83a0060d6b10fc7819744c9b3dd2191f9
 segments:
   - name: bobo1
     type: code
@@ -37,128 +39,42 @@ segments:
     align: 4
     subalign: 4
     subsegments:
-      # 0x0 - 0x20CDC: unidentified (~133 KB). A `jr $ra` scan found ZERO returns
-      # in this range, confirming it's pure data (not code) -- likely entity
-      # layout tables, sprite/animation data, room graphics. splat also detected
-      # a jumptable at vram 0x801A0B98 (offset 0x20B98), and independently a
-      # rodata boundary hint at 0x20AA0 -- both fall inside this gap and support
-      # treating it as data. Needs manual rodata/data subsegmenting, not `c`.
-      - [0x0, data]  # TODO: boss-specific data, not yet split into rodata/data
-
-      # BO1_pStObjLayoutHorizontal / BO1_pStObjLayoutVertical (create_entity.h's
-      # OBJ_LAYOUT_HORIZONTAL/VERTICAL): per-objLayoutId pointer tables into the
-      # LayoutEntity blobs at 0x1BCC-0x1D84 (see below). Confirmed against
-      # InitRoomEntities' real disassembly (indexed by objLayoutId*4).
-      # IMPORTANT asymmetry, confirmed by direct ROM reading: horizontal has 53
-      # entries (0x850-0x924, ends exactly where vertical begins) but vertical
-      # has only 52 (0x924-0x9F4) -- a naive "read 53 of both" misreads
-      # vertical's would-be 53rd entry as the dispatch table's own slot 0
-      # (0x80181D2A), since 0x9F4 is where the dispatch table actually starts
-      # (confirmed: the real bytes at 0x9F8 are func_us_801A0F60, the dispatch
-      # table's slot 1 -- matches e_init.c exactly). Nothing requires the two
-      # tables to have equal length; they're just indexed by the same
-      # objLayoutId at runtime.
-      - [0x850, .data, e_init]  # BO1_pStObjLayoutHorizontal (53 entries)
-      - [0x924, .data, e_init]  # BO1_pStObjLayoutVertical (52 entries)
-
-      # Overlay struct instance (Update/HitDetection/UpdateRoomPosition/
-      # InitRoomEntities/rooms/spriteBanks/cluts/objLayoutHorizontal/
-      # tileLayers/gfxBanks/UpdateStageEntities/... -- game.h's `Overlay`),
-      # confirmed word-for-word against real symbol addresses (Update=
-      # 0x801A55D0 etc, config/symbols.us.bobo1.txt). Not yet given field
-      # names/a C definition (not blocking current migration work), but
-      # carved out so the entity-dispatch table right after it (see below)
-      # can be split cleanly.
-      - [0x9F4, .data, e_init]
-      - [0xA8C, data]
-
-      # EInit constants used by the 10 files migrated to shared st/*.h
-      # headers this checkpoint, confirmed against real InitializeEntity
-      # call sites in the still-unmigrated files' frozen asm (e_misc.c,
-      # e_red_door.c). Carved out individually (not left in the generic
-      # `data` catch-all) because 3 of them (EInitObtainable,
-      # g_EInitInteractable, D_us_80180AE0/g_EInitCommon) are referenced by
-      # raw name from that still-unmigrated asm -- splat auto-labels them
-      # inside the data blob regardless, which collided with e_init.c's own
-      # definitions at link time ("multiple definition of `D_us_80180A98`"
-      # etc) until carved out here. The other two (g_EInitLockCamera,
-      # g_EInitDamageNum) have no such raw reference but are carved anyway
-      # for consistency/safety ahead of the next checkpoint.
-      - [0xA98, .data, e_init]  # EInitObtainable
-      - [0xAA2, data]
-      # g_EInitParticle -- confirmed against D_us_80180AA4, {3,0,0,0,2}.
-      # MUST be carved (not left in the generic catch-all): both e_misc.h and
-      # e_collect.h reference it by this exact literal name, and a real WSL
-      # build failed with "undefined reference to g_EInitParticle" the first
-      # time it was left as a raw-name alias local to e_misc.c instead of a
-      # real definition here.
-      - [0xAA4, .data, e_init]  # g_EInitParticle
-      - [0xAAE, data]
-      - [0xABC, .data, e_init]  # g_EInitInteractable
-      - [0xAC6, data]
-      - [0xAD4, .data, e_init]  # g_EInitLockCamera
-      - [0xADE, data]
-      - [0xAE0, .data, e_init]  # g_EInitCommon
-      - [0xAEA, data]
-      - [0xAEC, .data, e_init]  # g_EInitDamageNum
-      - [0xAF6, data]
-
-      # RedDoorTiles[2][8] -- confirmed byte-for-byte against the real ROM
-      # data at this address (16 x u16), same pattern as bo3's
-      # e_red_door_tiles.c. Needed once e_red_door.c is migrated to the
-      # shared e_red_door.h (func_us_801A7D80 turned out to be EntityRedDoor
-      # itself -- confirmed via the g_eRedDoorUV table matching byte-for-byte
-      # too, see e_red_door.c).
-      - [0xB64, .data, e_red_door_tiles]  # RedDoorTiles[2][8]
-
-      # BackgroundBlockInit's animFrames data (4 bytes, frame/duration pairs
-      # terminated by 0xFF) + the ObjInit2 table itself (1 confirmed entry,
-      # 0x14 bytes -- see e_init.c for why only 1 entry is defined).
-      - [0xB84, .data, e_init]  # animFrames
-      - [0xB88, .data, e_init]  # BackgroundBlockInit
-      - [0xB9C, data]
-
-      # BO1_PrizeDrops (e_collect.h), 16 real entries -- confirmed via
-      # EntityHeartDrop's real disassembly and splat's own auto-detected
-      # boundary in asm/us/boss/bo1/data/0.data.s (D_us_80181040, a different
-      # table, starts immediately after). Unlike bo4 this is NOT empty --
-      # Granfaloon's room has real prize-drop content here.
+      - [0x0, .data, header]
+      - [0x2C, data]
+      - [0x9F8, .data, e_init]
+      - [0xB64, .data, e_red_door_tiles]
+      - [0xB84, data]
+      - [0xB9C, .data, e_lock_camera]
+      - [0xC1C, data]
       - [0x1020, .data, d_prize_drops]
-      - [0x1040, data]
-
-      # g_bigRedFireballAnim -- confirmed byte-for-byte against
-      # D_us_80181950 (26 bytes). Hardcoded directly (non-extern) inside
-      # e_collect.h itself, so it's carved as e_collect's own data, not
-      # e_init's -- e_misc.h's own EntityBigRedFireball just externs the
-      # same literal name, no alias needed.
-      - [0x1950, .data, e_collect]  # g_bigRedFireballAnim
-      - [0x196A, data]
-
-      # LayoutEntity content blobs pointed to by BO1_pStObjLayoutHorizontal/
-      # Vertical above (12 unique blobs, contiguous 0x1BCC-0x1D84: 6 for
-      # horizontal followed immediately by 6 for vertical). Each transcribed
-      # byte-for-byte from the ROM, terminator-scanned (sentinel-terminated
-      # LayoutEntity lists, same convention as bo3's room layout data).
-      - [0x1BCC, .data, e_init]
-      - [0x1D84, data]
-
-      # --- shared/common code confirmed via mipsmatch against bo0/bo4/bo6 ---
-      - [0x20CDC, c, e_room_bg]
+      - [0x1020, .data, st_update]
+      - [0x106C, data]
+      - [0x106C, .data, collision]
+      - [0x142C, .data, e_red_door]
+      - [0x1444, .data, st_common]
+      - [0x1644, .data, e_misc]
+      - [0x1654, data]
+      - [0x16F8, .data, e_collect]
+      - [0x1A4C, data]
+      - [0x1A50, .data, e_particles]
+      - [0x1AD0, .data, e_room_fg]
+      - [0x1B5C, data]
+      - [0x1B78, .data, e_life_up]
+      - [0x1BCC, data]
+      - [0x20AA0, .rodata, unk_20F60]
+      - [0x20B98, .rodata, e_red_door]
+      - [0x20BB0, .rodata, e_collect]
+      - [0x20C84, .rodata, e_stage_name]
+      - [0x20CB8, .rodata, prim_helpers]
+      - [0x20CC0, .rodata, e_life_up]
+      - [0x20CDC, c, unk_20CDC]
       - [0x20DA4, c, e_lock_camera]
-
-      # 0x20F60 - 0x255A0 (~18 KB): Granfaloon-specific behavior code (confirmed).
-      # No match in bo0/bo4/bo6 reference set (boss-unique, not shared). A `jr $ra`
-      # scan found 18 real function returns here (vs. 0 in the two `data` gaps
-      # below), and splitting it as `c` produced 18 clean functions with valid
-      # MIPS disassembly (no "handwritten instruction" garbage) -- e.g. func_us_801A10A8
-      # calls InitializeEntity with a standard prologue. This is Granfaloon's actual
-      # AI/attack logic, ready for real m2c/asm-differ decompilation work.
-      - [0x20F60, c]
-
+      - [0x20F60, c, unk_20F60]
       - [0x255A0, c, st_update]
-      - [0x259D4, c, st_collision]
+      - [0x259D4, c, collision]
       - [0x27190, c, create_entity]
       - [0x27D08, c, e_red_door]
+      - [0x27D80, c, e_red_door]
       - [0x289B8, c, st_common]
       - [0x29E68, c, e_misc]
       - [0x2C204, c, e_collect]
@@ -168,8 +84,8 @@ segments:
       - [0x302EC, c, popup]
       - [0x3061C, c, prim_helpers]
       - [0x30E4C, c, e_life_up]
-
-      # 0x31700 - end (~3.2 KB): unidentified tail. `jr $ra` scan: ZERO returns
-      # found -- pure data (tail asset table), not code.
-      - [0x31700, data]  # TODO: boss-specific data, not yet split into rodata/data
+      - [0x31700, .bss, create_entity]
+      - [0x31710, bss]
+      - [0x3237C, .bss, st_update]
+      - [0x323BC, bss]
   - [0x323BC]

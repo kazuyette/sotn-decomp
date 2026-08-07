@@ -36,7 +36,7 @@ static void ForceAfterImageOn(void) UNUSED {
 }
 #endif
 
-void OVL_EXPORT(EnableAfterImage)(void) {
+void EnableAfterImage(void) {
     g_Entities[STAGE_ENTITY_START + E_AFTERIMAGE_1].ext.afterImage.resetFlag =
         0;
     g_Entities[STAGE_ENTITY_START + E_AFTERIMAGE_1].ext.afterImage.disableFlag =
@@ -45,7 +45,7 @@ void OVL_EXPORT(EnableAfterImage)(void) {
 
 // similar to DRA's func_8010E168. share's the function signature but
 // not the entity creation logic, a0 is ignored
-void OVL_EXPORT(func_us_801C5430)(s16 a0, s16 minTime) {
+void func_us_801C5430(s16 a0, s16 minTime) {
     if (g_Dop.timers[ALU_T_INVINCIBLE_CONSUMABLES] <= minTime) {
         g_Dop.timers[ALU_T_INVINCIBLE_CONSUMABLES] = minTime;
     }
@@ -55,7 +55,7 @@ void OVL_EXPORT(func_us_801C5430)(s16 a0, s16 minTime) {
 #include "../../decelerate.h"
 #endif
 
-s32 OVL_EXPORT(CheckMoveDirection)(void) {
+s32 CheckMoveDirection(void) {
     if (g_Dop.unk44 & 2) {
         return 0;
     }
@@ -111,7 +111,7 @@ static u8 D_us_80181318[][2] = {
     {0x03, 0x23},
 };
 
-void OVL_EXPORT(func_8010E470)(s32 arg0, s32 velocityX) {
+void func_8010E470(s32 arg0, s32 velocityX) {
     s32 unused_stack[2];
 
     DOPPLEGANGER.velocityX = velocityX;
@@ -125,7 +125,7 @@ static u8 D_us_80181320[] = {
     0x04, 0x05, 0x0A, 0x0B, 0x0E, 0x0F, 0x1D, 0x1E, 0x04, 0x03, 0x00, 0x00,
 };
 
-void OVL_EXPORT(func_8010E570)(s32 arg0) {
+void func_8010E570(s32 arg0) {
     s32 anim = 0;
     bool atLedge = false;
 
@@ -170,7 +170,7 @@ void OVL_EXPORT(func_8010E570)(s32 arg0) {
     SetDopplegangerAnim(D_us_80181320[anim]);
 }
 
-void OVL_EXPORT(func_8010E6AC)(bool forceAnim13) {
+void func_8010E6AC(bool forceAnim13) {
     bool atLedge;
 
     atLedge = false;
@@ -189,8 +189,7 @@ void OVL_EXPORT(func_8010E6AC)(bool forceAnim13) {
     } else {
         SetDopplegangerAnim(7);
         // Factory blueprint 1 has child 2, which is EntitySmokePuff
-        OVL_EXPORT(CreateEntFactoryFromEntity)
-        (g_CurrentEntity, FACTORY(1, 5), 0);
+        CreateEntFactoryFromEntity(g_CurrentEntity, FACTORY(1, 5), 0);
     }
 
     if (g_Dop.unk4C) {
@@ -207,7 +206,7 @@ void OVL_EXPORT(func_8010E6AC)(bool forceAnim13) {
 }
 
 void func_us_801C58E4(void) {
-    if (OVL_EXPORT(CheckMoveDirection)() != 0) {
+    if (CheckMoveDirection() != 0) {
         SetDopplegangerAnim(0x1A);
         SetSpeedX(FIX(3.0 / 2.0));
         g_Dop.unk44 = 0;
@@ -243,7 +242,7 @@ void func_us_801C59DC(void) {
 }
 
 void func_us_801C5A4C(void) {
-    if (OVL_EXPORT(CheckMoveDirection)() != 0) {
+    if (CheckMoveDirection() != 0) {
         SetSpeedX(0x30000);
     } else {
         DOPPLEGANGER.velocityX = 0;
@@ -251,9 +250,9 @@ void func_us_801C5A4C(void) {
     SetDopplegangerStep(9);
     DOPPLEGANGER.velocityY = FIX(-12);
     SetDopplegangerAnim(0x21);
-    g_Dop.unk4A = 0;
+    g_Dop.gravBootTimer = 0;
     g_Dop.unk44 &= 0xFFFE;
-    OVL_EXPORT(CreateEntFactoryFromEntity)(g_CurrentEntity, FACTORY(2, 0), 0);
+    CreateEntFactoryFromEntity(g_CurrentEntity, FACTORY(2, 0), 0);
 }
 
 static s16 D_us_8018132C[] = {
@@ -263,7 +262,7 @@ static s16 D_us_8018132C[] = {
     SFX_VO_DOP_ATTACK_D,
 };
 
-void OVL_EXPORT(func_8010EA54)(s32 arg0) {
+void func_8010EA54(s32 arg0) {
     s16 temp_hi;
 
     if (arg0 != 0) {
@@ -303,7 +302,7 @@ s32 func_us_801C5B68(void) {
         }
     }
 
-    OVL_EXPORT(CreateEntFactoryFromEntity)(g_CurrentEntity, FACTORY(3, 0), 0);
+    CreateEntFactoryFromEntity(g_CurrentEntity, FACTORY(3, 0), 0);
 
     g_Dop.timers[ALU_T_USE_SUBWPN] = 4;
     if (DOPPLEGANGER.step_s >= 0x40) {
@@ -333,7 +332,7 @@ static void func_8010ED54(u8 anim) UNUSED {
     DOPPLEGANGER.velocityX = DOPPLEGANGER.velocityY = 0;
     SetDopplegangerStep(16);
     SetDopplegangerAnim(anim);
-    OVL_EXPORT(CreateEntFactoryFromEntity)(g_CurrentEntity, FACTORY(61, 20), 0);
+    CreateEntFactoryFromEntity(g_CurrentEntity, FACTORY(61, 20), 0);
     g_Dop.unk48 = 0;
 }
 #endif
@@ -365,8 +364,7 @@ s32 func_us_801C5CF8(void) {
     }
 
     if (g_Dop.timers[ALU_T_CURSE]) {
-        OVL_EXPORT(CreateEntFactoryFromEntity)
-        (g_CurrentEntity, FACTORY(0x39, 1), 0);
+        CreateEntFactoryFromEntity(g_CurrentEntity, FACTORY(0x39, 1), 0);
 
         switch (DOPPLEGANGER.step) {
         case Dop_Stand:
@@ -392,8 +390,7 @@ s32 func_us_801C5CF8(void) {
     }
 
     if (attackPressed == PAD_SQUARE) {
-        OVL_EXPORT(CreateEntFactoryFromEntity)
-        (g_CurrentEntity, FACTORY(0x30, 0), 0);
+        CreateEntFactoryFromEntity(g_CurrentEntity, FACTORY(0x30, 0), 0);
         DOPPLEGANGER.step_s = 0x41;
         g_Dop.unk46 = 0x8002;
         g_Dop.unk54 = 0xD;
@@ -401,8 +398,7 @@ s32 func_us_801C5CF8(void) {
     } else {
         g_Dop.unk46 = 0x8003;
         DOPPLEGANGER.step_s = 0x42;
-        OVL_EXPORT(CreateEntFactoryFromEntity)
-        (g_CurrentEntity, FACTORY(0x30, 1), 0);
+        CreateEntFactoryFromEntity(g_CurrentEntity, FACTORY(0x30, 1), 0);
         g_Dop.unk54 = 8;
         animBase = 0xA7;
     }
@@ -442,7 +438,7 @@ s32 func_us_801C5CF8(void) {
     return 1;
 }
 
-void OVL_EXPORT(func_8010FAF4)(void) {
+void func_8010FAF4(void) {
     Entity* ent = &g_Entities[E_ID_50];
     DestroyEntity(ent);
     g_Dop.unk46 = 0;
@@ -454,7 +450,7 @@ void func_us_801C5FDC(void) {
     SetSpeedX(FIX(-3.5));
     g_CurrentEntity->velocityY = FIX(0.0);
     SetDopplegangerAnim(0xDB);
-    OVL_EXPORT(CreateEntFactoryFromEntity)(g_CurrentEntity, 0, 0);
+    CreateEntFactoryFromEntity(g_CurrentEntity, 0, 0);
 }
 
 bool func_us_801C6040(s32 arg0) {
@@ -464,7 +460,7 @@ bool func_us_801C6040(s32 arg0) {
 
     if (arg0 & 8) {
         if (g_Dop.unk46 == 0) {
-            OVL_EXPORT(CheckMoveDirection)();
+            CheckMoveDirection();
         }
     }
 
@@ -511,54 +507,53 @@ bool func_us_801C6040(s32 arg0) {
         if ((arg0 & 1) && (g_Dop.vram_flag & TOUCHING_GROUND)) {
             if (g_Dop.unk46) {
                 if ((g_Dop.unk46 & 0x7FFF) == 0xFF) {
-                    OVL_EXPORT(func_8010E570)(0);
-                    OVL_EXPORT(func_8010FAF4)();
+                    func_8010E570(0);
+                    func_8010FAF4();
                     g_api.PlaySfx(SFX_STOMP_SOFT_B);
                     return true;
                 }
                 if (DOPPLEGANGER.velocityY > FIX(6.875)) {
-                    OVL_EXPORT(func_8010E470)(1, 0U);
+                    func_8010E470(1, 0U);
                     g_api.PlaySfx(SFX_STOMP_HARD_B);
-                    OVL_EXPORT(CreateEntFactoryFromEntity)
-                    (g_CurrentEntity, 0, 0);
+                    CreateEntFactoryFromEntity(g_CurrentEntity, 0, 0);
                 } else {
                     if (g_Dop.unk44 & 0x10) {
-                        OVL_EXPORT(func_8010E6AC)(1);
+                        func_8010E6AC(1);
                     } else {
-                        OVL_EXPORT(func_8010E570)(0);
+                        func_8010E570(0);
                     }
                     g_api.PlaySfx(SFX_STOMP_SOFT_B);
                 }
-                OVL_EXPORT(func_8010FAF4)();
+                func_8010FAF4();
                 return true;
             }
             if (DOPPLEGANGER.velocityY > FIX(6.875)) {
                 if (DOPPLEGANGER.step_s == 0x70 ||
                     DOPPLEGANGER.step == Dop_Jump) {
-                    OVL_EXPORT(func_8010E470)(3, DOPPLEGANGER.velocityX / 2);
+                    func_8010E470(3, DOPPLEGANGER.velocityX / 2);
                 } else {
-                    OVL_EXPORT(func_8010E470)(1, 0);
+                    func_8010E470(1, 0);
                 }
                 g_api.PlaySfx(SFX_STOMP_HARD_B);
-                OVL_EXPORT(CreateEntFactoryFromEntity)(g_CurrentEntity, 0, 0);
+                CreateEntFactoryFromEntity(g_CurrentEntity, 0, 0);
             } else if (g_Dop.unk44 & 0x10) {
-                OVL_EXPORT(func_8010E6AC)(1);
+                func_8010E6AC(1);
                 g_api.PlaySfx(SFX_STOMP_SOFT_B);
             } else if (abs(DOPPLEGANGER.velocityX) > FIX(2)) {
                 g_api.PlaySfx(SFX_STOMP_HARD_B);
-                OVL_EXPORT(CreateEntFactoryFromEntity)(g_CurrentEntity, 0, 0);
-                OVL_EXPORT(func_8010E570)(DOPPLEGANGER.velocityX);
+                CreateEntFactoryFromEntity(g_CurrentEntity, 0, 0);
+                func_8010E570(DOPPLEGANGER.velocityX);
             } else {
                 g_api.PlaySfx(SFX_STOMP_SOFT_B);
-                OVL_EXPORT(func_8010E570)(0);
+                func_8010E570(0);
             }
             return true;
         }
 
         if ((arg0 & 0x20000) && (g_Dop.vram_flag & TOUCHING_GROUND)) {
-            OVL_EXPORT(func_8010E470)(3, DOPPLEGANGER.velocityX);
+            func_8010E470(3, DOPPLEGANGER.velocityX);
             g_api.PlaySfx(SFX_STOMP_HARD_B);
-            OVL_EXPORT(CreateEntFactoryFromEntity)(g_CurrentEntity, 0, 0);
+            CreateEntFactoryFromEntity(g_CurrentEntity, 0, 0);
             return true;
         }
     }
@@ -584,7 +579,7 @@ bool func_us_801C6040(s32 arg0) {
         }
 
         if ((arg0 & 0x2000) && (g_Dop.padPressed & 0x4000)) {
-            OVL_EXPORT(func_8010E470)(2, 0U);
+            func_8010E470(2, 0U);
             return true;
         }
 
@@ -598,14 +593,12 @@ bool func_us_801C6040(s32 arg0) {
     return false;
 }
 
-void OVL_EXPORT(func_80111CC0)(void) {
+void func_80111CC0(void) {
     if (g_Dop.timers[ALU_T_CURSE] != 0) {
-        OVL_EXPORT(CreateEntFactoryFromEntity)
-        (g_CurrentEntity, FACTORY(0x2C, 0x17), 0);
+        CreateEntFactoryFromEntity(g_CurrentEntity, FACTORY(0x2C, 0x17), 0);
     }
     if (g_Dop.timers[ALU_T_POISON] != 0) {
-        OVL_EXPORT(CreateEntFactoryFromEntity)
-        (g_CurrentEntity, FACTORY(0x2C, 0x16), 0);
+        CreateEntFactoryFromEntity(g_CurrentEntity, FACTORY(0x2C, 0x16), 0);
     }
 }
 
@@ -666,7 +659,7 @@ void DopplegangerStepStand(void) {
         }
 
         if (var_s0 & 4) {
-            OVL_EXPORT(func_8010E570)(0);
+            func_8010E570(0);
             var_s0 |= 0x8000;
         }
         if (var_s0 & 2 && g_Dop.padPressed & PAD_UP && !g_Dop.unk48) {
@@ -675,12 +668,12 @@ void DopplegangerStepStand(void) {
             var_s0 |= 0x8000;
         }
 
-        if (var_s0 & 1 && OVL_EXPORT(CheckMoveDirection)() != 0) {
-            OVL_EXPORT(func_8010E6AC)(0);
+        if (var_s0 & 1 && CheckMoveDirection() != 0) {
+            func_8010E6AC(0);
             var_s0 |= 0x8000;
         }
         if (var_s0 & 0x8000 && var_s0 & 8) {
-            OVL_EXPORT(func_8010FAF4)();
+            func_8010FAF4();
         }
     }
 }
@@ -688,8 +681,8 @@ void DopplegangerStepStand(void) {
 void DopplegangerStepWalk(void) {
     if (func_us_801C6040(0x4301C) == false) {
         SetSpeedX(FIX(1.5));
-        if (OVL_EXPORT(CheckMoveDirection)() == 0) {
-            OVL_EXPORT(func_8010E570)(0);
+        if (CheckMoveDirection() == 0) {
+            func_8010E570(0);
         }
     }
 }
@@ -722,7 +715,7 @@ void DopplegangerStepJump(void) {
 
     switch (DOPPLEGANGER.step_s) {
     case 0:
-        moveDirection = OVL_EXPORT(CheckMoveDirection)();
+        moveDirection = CheckMoveDirection();
         if (moveDirection) {
             if (DOPPLEGANGER.ext.player.anim == 22 ||
                 DOPPLEGANGER.ext.player.anim == 25) {
@@ -744,7 +737,7 @@ void DopplegangerStepJump(void) {
         }
         break;
     case 1:
-        moveDirection = OVL_EXPORT(CheckMoveDirection)();
+        moveDirection = CheckMoveDirection();
         if (moveDirection != 0) {
             SetSpeedX(FIX(1.5));
         }
@@ -773,7 +766,7 @@ void DopplegangerStepJump(void) {
             }
             DOPPLEGANGER.step_s = D_us_80181334[index];
             SetDopplegangerAnim((u8)D_us_80181334[index + 1]);
-            OVL_EXPORT(func_8010FAF4)();
+            func_8010FAF4();
         }
         break;
     }
@@ -782,7 +775,7 @@ void DopplegangerStepJump(void) {
 void DopplegangerStepFall(void) {
     if (func_us_801C6040(0x9029) == false) {
         DecelerateX(FIX(1.0 / 16.0));
-        if (OVL_EXPORT(CheckMoveDirection)() != 0) {
+        if (CheckMoveDirection() != 0) {
             SetSpeedX(FIX(3.0 / 4.0));
         }
     }
@@ -833,7 +826,7 @@ void DopplegangerStepCrouch(void) {
         case 2:
             var_s0 = 1;
             if (DOPPLEGANGER.poseTimer < 0) {
-                OVL_EXPORT(func_8010E570)(0);
+                func_8010E570(0);
             }
             break;
         case 0x40:
@@ -859,7 +852,7 @@ void DopplegangerStepCrouch(void) {
         }
 
         if (var_s0 & 0x20) {
-            OVL_EXPORT(func_8010E470)(0, 0);
+            func_8010E470(0, 0);
             var_s0 |= 0x8000;
         }
 
@@ -875,13 +868,13 @@ void DopplegangerStepCrouch(void) {
             var_s0 |= 0x8000;
         }
 
-        if (var_s0 & 1 && OVL_EXPORT(CheckMoveDirection)()) {
-            OVL_EXPORT(func_8010E6AC)(0);
+        if (var_s0 & 1 && CheckMoveDirection()) {
+            func_8010E6AC(0);
             var_s0 |= 0x8000;
         }
 
         if (var_s0 & 0x8000 && var_s0 & 8) {
-            OVL_EXPORT(func_8010FAF4)();
+            func_8010FAF4();
         }
     }
 }

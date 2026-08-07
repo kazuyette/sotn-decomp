@@ -131,13 +131,16 @@ static void* OpenOverlayEntrypoint(
 static OvlHandle CurrentStageOverlay = NULL;
 bool LoadStageOverlay(const char* name, Overlay* o) {
     OvlHandle handle;
-    PfnInitStage entrypoint = (PfnInitStage)OpenOverlayEntrypoint(
-        name, OVL_STAGE_ENTRYPOINT_NAME, &handle);
-    if (!entrypoint) {
-        return false;
-    }
+    PfnInitStage entrypoint;
+
     if (CurrentStageOverlay) {
         OvlClose(CurrentStageOverlay);
+        CurrentStageOverlay = NULL;
+    }
+    entrypoint =
+        (PfnInitStage)OpenOverlayEntrypoint(name, "InitStage", &handle);
+    if (!entrypoint) {
+        return false;
     }
     CurrentStageOverlay = handle;
     entrypoint(o);
@@ -147,15 +150,41 @@ bool LoadStageOverlay(const char* name, Overlay* o) {
 static OvlHandle CurrentServantOverlay = NULL;
 bool LoadServantOverlay(const char* name, ServantDesc* o) {
     OvlHandle handle;
-    PfnInitServant entrypoint = (PfnInitServant)OpenOverlayEntrypoint(
-        name, OVL_SERVANT_ENTRYPOINT_NAME, &handle);
+    PfnInitServant entrypoint;
+
+    if (CurrentServantOverlay) {
+        OvlClose(CurrentServantOverlay);
+        CurrentServantOverlay = NULL;
+    }
+    entrypoint =
+        (PfnInitServant)OpenOverlayEntrypoint(name, "InitServant", &handle);
     if (!entrypoint) {
         return false;
     }
-    if (CurrentServantOverlay) {
-        OvlClose(CurrentServantOverlay);
-    }
     CurrentServantOverlay = handle;
+    entrypoint(o);
+    return true;
+}
+
+static OvlHandle CurrentWeaponOverlay[2] = {NULL, NULL};
+bool LoadWeaponOverlay(const char* name, unsigned handId, Weapon* o) {
+    OvlHandle handle;
+    PfnInitWeapon entrypoint;
+
+    if (handId >= LEN(CurrentWeaponOverlay)) {
+        ERRORF("hand ID %d not valid", handId);
+        return false;
+    }
+    if (CurrentWeaponOverlay[handId]) {
+        OvlClose(CurrentWeaponOverlay[handId]);
+        CurrentWeaponOverlay[handId] = NULL;
+    }
+    entrypoint =
+        (PfnInitWeapon)OpenOverlayEntrypoint(name, "InitWeapon", &handle);
+    if (!entrypoint) {
+        return false;
+    }
+    CurrentWeaponOverlay[handId] = handle;
     entrypoint(o);
     return true;
 }

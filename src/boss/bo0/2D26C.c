@@ -122,15 +122,19 @@ INCLUDE_ASM("boss/bo0/nonmatchings/2D26C", func_us_801B0930);
 
 INCLUDE_ASM("boss/bo0/nonmatchings/2D26C", func_us_801B13A8);
 
-// Resets both linked body-part phase counters (ext+0x24) and starts a new step
+// Resets both linked body-part phase counters (childPalette) and starts a
+// new step. Confirmed equivalent to our earlier raw-offset translation:
+// ET_B0_Unk's declared field order compiles parent to +0x18 and
+// childPalette to +0x24 relative to unk80, matching byte-for-byte.
 void func_us_801B1590(u8 step) {
-    s16* part = ENTITY_EXT80(g_CurrentEntity);
+    ET_B0_Unk* temp = (ET_B0_Unk*)g_CurrentEntity->ext.b0Unk.unk80;
 
     g_CurrentEntity->step = step;
     g_CurrentEntity->step_s = 0;
-    *((u8*)part + 0x24) = 0;
-    part = *(s16**)((u8*)part + 0x18);
-    *((u8*)part + 0x24) = 0;
+
+    temp->childPalette = 0;
+    temp = (ET_B0_Unk*)temp->parent;
+    temp->childPalette = 0;
 }
 
 // Moves *value toward target by at most step units per call; returns true

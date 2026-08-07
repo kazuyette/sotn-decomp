@@ -1,33 +1,50 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 #include "bo3.h"
 
-void func_us_8019CEEC(Entity* self);
-void func_us_801ABDB0(Entity* self);
-void func_us_801AB53C(Entity* self);
+void EntityBreakable(Entity* self);
+void EntityExplosion(Entity* self);
+void EntityPrizeDrop(Entity* self);
 void EntityDamageDisplay(Entity* self);
-void OVL_EXPORT(EntityRedDoor)(Entity* self);
-void func_us_801AE7E4(Entity* self);
+void EntityRedDoor(Entity* self);
+void EntityIntenseExplosion(Entity* self);
 void EntitySoulStealOrb(Entity* self);
 void EntityRoomForeground(Entity* self);
 void EntityStageNamePopup(Entity* self);
-void func_us_801ABF50(Entity* self);
-void func_us_801AC7E8(Entity* self);
-void func_us_801AD2B8(Entity* self);
+void EntityEquipItemDrop(Entity* self);
+void EntityRelicOrb(Entity* self);
+void EntityHeartDrop(Entity* self);
 void EntityEnemyBlood(Entity* self);
-void func_us_801AD3E0(Entity* self);
+void EntityMessageBox(Entity* self);
 void EntityDummy(Entity* self);
-// e_room_bg.c / e_lock_camera.c are now migrated to the shared headers, so
-// these two slots use the shared (OVL_EXPORT-wrapped) names, not the old raw
-// func_us_ names — those symbols no longer exist once migrated.
-void OVL_EXPORT(EntityBackgroundBlock)(Entity* self);
-void OVL_EXPORT(EntityLockCamera)(Entity* self);
+void EntityDummy(Entity* self);
+void EntityBackgroundBlock(Entity* self);
+void EntityLockCamera(Entity* self);
 void EntityUnkId13(Entity* self);
 void EntityExplosionVariants(Entity* self);
 void EntityGreyPuff(Entity* self);
-void func_us_801A1EE4(Entity* self);
-void func_us_801A27EC(Entity* self);
-void func_us_8019D1D4(Entity* self);
-void func_us_8019D51C(Entity* self);
+void EntityDummy(Entity* self);
+void EntitySplashWater(Entity* self);
+void EntityDummy(Entity* self);
+void EntityDummy(Entity* self);
+void EntityDummy(Entity* self);
+void EntityWaterDrop(Entity* self);
+void func_us_801C12B0_from_no4(Entity* self);
+void func_us_801C15F8_from_no4(Entity* self);
+void EntityDummy(Entity* self);
+void EntityDummy(Entity* self);
+void EntityDummy(Entity* self);
+void EntityDummy(Entity* self);
+void EntityDummy(Entity* self);
+void EntityDummy(Entity* self);
+void EntityDummy(Entity* self);
+void EntityDummy(Entity* self);
+void EntityDummy(Entity* self);
+void EntityDummy(Entity* self);
+void EntityDummy(Entity* self);
+void EntityDummy(Entity* self);
+void EntityDummy(Entity* self);
+void EntityDummy(Entity* self);
+void EntityDummy(Entity* self);
 void func_us_801A07CC(Entity* self);
 void func_us_801A0A80(Entity* self);
 void func_us_801A1120(Entity* self);
@@ -46,342 +63,100 @@ void func_us_801A57A4(Entity* self);
 void func_us_801A5948(Entity* self);
 void func_us_801A5F0C(Entity* self);
 void func_us_801A1BE8(Entity* self);
-void func_us_801A61F0(Entity* self);
+void EntityBreakableWallDebris(Entity* self);
 void EntityLifeUpSpawn(Entity* self);
 void func_us_801A6370(Entity* self);
 void func_us_801A6568(Entity* self);
-void func_us_8019D160(Entity* self);
+void func_us_801C123C_from_no4(Entity* self);
 
-// Room layout data for InitRoomEntities/CreateEntity* (create_entity.h),
-// transcribed byte-for-byte from asm/us/boss/bo3/data/0.data.s
-// (D_us_80181C94 through D_us_80181FFC). Each LayoutEntity list is
-// sentinel-terminated ({LAYOUT_OBJ_START,LAYOUT_OBJ_START,0,0,0} head,
-// {LAYOUT_OBJ_END,LAYOUT_OBJ_END,0,0,0} tail); most of bo3's 53 rooms reuse
-// one shared "empty" (no scripted entities) list. Kept as raw byte blobs
-// (not typed LayoutEntity[]) since no per-field semantic meaning is needed
-// for a byte-exact build — only the pointer identity/values matter.
-//
-// D_us_80181E58 (the vertical-default blob) is the SAME real address already
-// declared for dispatch-table slot 0x00 (see below) — the retail binary
-// reuses this one address for both purposes. Defined once here as data;
-// slot 0x00 casts it to a function pointer to preserve the exact value
-// without asserting it's ever actually called (it isn't).
-u8 D_us_80181C94[] = {
-    0xFE, 0xFF, 0xFE, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF,
-    0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+PfnEntityUpdate EntityUpdates[] = {
+    EntityBreakable,
+    EntityExplosion,
+    EntityPrizeDrop,
+    EntityDamageDisplay,
+    EntityRedDoor,
+    EntityIntenseExplosion,
+    EntitySoulStealOrb,
+    EntityRoomForeground,
+    EntityStageNamePopup,
+    EntityEquipItemDrop,
+    EntityRelicOrb,
+    EntityHeartDrop,
+    EntityEnemyBlood,
+    EntityMessageBox,
+    EntityDummy,
+    EntityDummy,
+    EntityBackgroundBlock,
+    EntityLockCamera,
+    EntityUnkId13,
+    EntityExplosionVariants,
+    EntityGreyPuff,
+    EntityDummy,
+    EntitySplashWater,
+    EntityDummy,
+    EntityDummy,
+    EntityDummy,
+    EntityWaterDrop,
+    func_us_801C12B0_from_no4,
+    func_us_801C15F8_from_no4,
+    EntityDummy,
+    EntityDummy,
+    EntityDummy,
+    EntityDummy,
+    EntityDummy,
+    EntityDummy,
+    EntityDummy,
+    EntityDummy,
+    EntityDummy,
+    EntityDummy,
+    EntityDummy,
+    EntityDummy,
+    EntityDummy,
+    EntityDummy,
+    EntityDummy,
+    func_us_801A07CC,
+    func_us_801A0A80,
+    func_us_801A1120,
+    func_us_801A16E4,
+    func_us_801A2AEC,
+    func_us_801A3CD8,
+    func_us_801A365C,
+    func_us_801A3EE0,
+    func_us_801A42A8,
+    func_us_801A4680,
+    func_us_801A4988,
+    func_us_801A4C0C,
+    func_us_801A4E24,
+    func_us_801A5338,
+    func_us_801A57A4,
+    func_us_801A5948,
+    func_us_801A5F0C,
+    func_us_801A1BE8,
+    EntityBreakableWallDebris,
+    EntityLifeUpSpawn,
+    func_us_801A6370,
+    func_us_801A6568,
+    func_us_801C123C_from_no4,
 };
 
-u8 D_us_80181CA8[] = {
-    0xFE, 0xFF, 0xFE, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00,
-    0x80, 0x00, 0x3E, 0x00, 0x84, 0x00, 0x05, 0x00, 0x48, 0x00, 0x88, 0x00,
-    0x31, 0x00, 0x10, 0x00, 0x00, 0x00, 0x80, 0x00, 0x80, 0x00, 0x2D, 0x00,
-    0x80, 0x00, 0x00, 0x01, 0x80, 0x00, 0x80, 0x00, 0x1C, 0x00, 0x81, 0x00,
-    0x17, 0x02, 0x80, 0x00, 0x80, 0x00, 0x1D, 0x00, 0x82, 0x00, 0x1C, 0x02,
-    0x80, 0x00, 0x80, 0x00, 0x2E, 0x00, 0x91, 0x00, 0x01, 0x02, 0x80, 0x01,
-    0x80, 0x00, 0x41, 0x00, 0x06, 0x00, 0x00, 0x00, 0x80, 0x01, 0x80, 0x00,
-    0x32, 0x00, 0x01, 0x00, 0x00, 0x00, 0x80, 0x01, 0x80, 0x00, 0x32, 0x00,
-    0x02, 0x00, 0x01, 0x00, 0x80, 0x01, 0x80, 0x00, 0x32, 0x00, 0x03, 0x00,
-    0x02, 0x00, 0x80, 0x01, 0x80, 0x00, 0x32, 0x00, 0x04, 0x00, 0x03, 0x00,
-    0x80, 0x01, 0x80, 0x00, 0x32, 0x00, 0x05, 0x00, 0x04, 0x00, 0xF8, 0x01,
-    0x80, 0x00, 0x3E, 0x00, 0x83, 0x00, 0x04, 0x00, 0x80, 0x03, 0x80, 0x00,
-    0x2D, 0x00, 0x80, 0x00, 0x00, 0x01, 0x80, 0x03, 0x80, 0x00, 0x1C, 0x00,
-    0x81, 0x00, 0x17, 0x02, 0x80, 0x03, 0x80, 0x00, 0x1D, 0x00, 0x82, 0x00,
-    0x1C, 0x02, 0x80, 0x03, 0x80, 0x00, 0x2E, 0x00, 0x91, 0x00, 0x01, 0x02,
-    0xB4, 0x04, 0x9F, 0x00, 0x01, 0xA0, 0x01, 0x01, 0x15, 0x70, 0xFF, 0xFF,
-    0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
-};
-
-// Vertical sublist begins at +0x46 (see OBJ_LAYOUT_VERTICAL below).
-u8 D_us_80181D70[] = {
-    0xFE, 0xFF, 0xFE, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x08, 0x00,
-    0x80, 0x00, 0x3E, 0x00, 0x80, 0x00, 0x01, 0x00, 0x18, 0x00, 0x80, 0x00,
-    0x3E, 0x00, 0x81, 0x00, 0x02, 0x00, 0x80, 0x00, 0x80, 0x00, 0x42, 0x00,
-    0x06, 0x00, 0x00, 0x00, 0xE8, 0x00, 0x80, 0x00, 0x3E, 0x00, 0x82, 0x00,
-    0x03, 0x00, 0x00, 0x01, 0x10, 0x00, 0x3A, 0x00, 0x10, 0x00, 0x00, 0x00,
-    0xFF, 0xFF, 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFE, 0xFF,
-    0xFE, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x08, 0x00, 0x80, 0x00,
-    0x3E, 0x00, 0x83, 0x00, 0x00, 0x00, 0x80, 0x00, 0x80, 0x00, 0x2D, 0x00,
-    0x80, 0x00, 0x00, 0x01, 0x80, 0x00, 0x80, 0x00, 0x1C, 0x00, 0x81, 0x00,
-    0x16, 0x01, 0x80, 0x00, 0x80, 0x00, 0x1D, 0x00, 0x82, 0x00, 0x1B, 0x01,
-    0x80, 0x00, 0x80, 0x00, 0x2E, 0x00, 0x91, 0x00, 0x00, 0x01, 0xB0, 0x02,
-    0xCF, 0x00, 0x0C, 0x00, 0x21, 0x21, 0x14, 0x00, 0x80, 0x03, 0x80, 0x00,
-    0x2D, 0x00, 0x80, 0x00, 0x00, 0x01, 0x80, 0x03, 0x80, 0x00, 0x1C, 0x00,
-    0x81, 0x00, 0x16, 0x01, 0x80, 0x03, 0x80, 0x00, 0x1D, 0x00, 0x82, 0x00,
-    0x1B, 0x01, 0x80, 0x03, 0x80, 0x00, 0x2E, 0x00, 0x91, 0x00, 0x00, 0x01,
-    0xC0, 0x04, 0xB7, 0x00, 0x0C, 0x00, 0x20, 0x20, 0x13, 0x00, 0xFF, 0xFF,
-    0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
-};
-
-u8 D_us_80181E38[] = {
-    0xFE, 0xFF, 0xFE, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x80, 0x00,
-    0xA9, 0x00, 0x0C, 0x00, 0x10, 0x00, 0x02, 0x00, 0xFF, 0xFF, 0xFF, 0xFF,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
-};
-
-u8 D_us_80181E58[] = {
-    0xFE, 0xFF, 0xFE, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF,
-    0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
-};
-
-u8 D_us_80181E6C[] = {
-    0xFE, 0xFF, 0xFE, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xF8, 0x01,
-    0x80, 0x00, 0x3E, 0x00, 0x83, 0x00, 0x04, 0x00, 0x06, 0x00, 0x80, 0x00,
-    0x3E, 0x00, 0x84, 0x00, 0x05, 0x00, 0x80, 0x00, 0x80, 0x00, 0x2D, 0x00,
-    0x80, 0x00, 0x00, 0x01, 0x80, 0x03, 0x80, 0x00, 0x2D, 0x00, 0x80, 0x00,
-    0x00, 0x01, 0x80, 0x00, 0x80, 0x00, 0x1C, 0x00, 0x81, 0x00, 0x17, 0x02,
-    0x80, 0x03, 0x80, 0x00, 0x1C, 0x00, 0x81, 0x00, 0x17, 0x02, 0x80, 0x00,
-    0x80, 0x00, 0x1D, 0x00, 0x82, 0x00, 0x1C, 0x02, 0x80, 0x03, 0x80, 0x00,
-    0x1D, 0x00, 0x82, 0x00, 0x1C, 0x02, 0x80, 0x00, 0x80, 0x00, 0x2E, 0x00,
-    0x91, 0x00, 0x01, 0x02, 0x80, 0x03, 0x80, 0x00, 0x2E, 0x00, 0x91, 0x00,
-    0x01, 0x02, 0x80, 0x01, 0x80, 0x00, 0x41, 0x00, 0x06, 0x00, 0x00, 0x00,
-    0x80, 0x01, 0x80, 0x00, 0x32, 0x00, 0x01, 0x00, 0x00, 0x00, 0x80, 0x01,
-    0x80, 0x00, 0x32, 0x00, 0x02, 0x00, 0x01, 0x00, 0x80, 0x01, 0x80, 0x00,
-    0x32, 0x00, 0x03, 0x00, 0x02, 0x00, 0x80, 0x01, 0x80, 0x00, 0x32, 0x00,
-    0x04, 0x00, 0x03, 0x00, 0x80, 0x01, 0x80, 0x00, 0x32, 0x00, 0x05, 0x00,
-    0x04, 0x00, 0x48, 0x00, 0x88, 0x00, 0x31, 0x00, 0x10, 0x00, 0x00, 0x00,
-    0xB4, 0x04, 0x9F, 0x00, 0x01, 0xA0, 0x01, 0x01, 0x15, 0x70, 0xFF, 0xFF,
-    0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
-};
-
-// Vertical sublist begins at +0x46 (see OBJ_LAYOUT_VERTICAL below).
-u8 D_us_80181F34[] = {
-    0xFE, 0xFF, 0xFE, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01,
-    0x10, 0x00, 0x3A, 0x00, 0x10, 0x00, 0x00, 0x00, 0x08, 0x00, 0x80, 0x00,
-    0x3E, 0x00, 0x80, 0x00, 0x01, 0x00, 0x18, 0x00, 0x80, 0x00, 0x3E, 0x00,
-    0x81, 0x00, 0x02, 0x00, 0xE8, 0x00, 0x80, 0x00, 0x3E, 0x00, 0x82, 0x00,
-    0x03, 0x00, 0x80, 0x00, 0x80, 0x00, 0x42, 0x00, 0x06, 0x00, 0x00, 0x00,
-    0xFF, 0xFF, 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFE, 0xFF,
-    0xFE, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x08, 0x00, 0x80, 0x00,
-    0x3E, 0x00, 0x83, 0x00, 0x00, 0x00, 0x80, 0x00, 0x80, 0x00, 0x2D, 0x00,
-    0x80, 0x00, 0x00, 0x01, 0x80, 0x03, 0x80, 0x00, 0x2D, 0x00, 0x80, 0x00,
-    0x00, 0x01, 0x80, 0x00, 0x80, 0x00, 0x1C, 0x00, 0x81, 0x00, 0x16, 0x01,
-    0x80, 0x03, 0x80, 0x00, 0x1C, 0x00, 0x81, 0x00, 0x16, 0x01, 0x80, 0x00,
-    0x80, 0x00, 0x1D, 0x00, 0x82, 0x00, 0x1B, 0x01, 0x80, 0x03, 0x80, 0x00,
-    0x1D, 0x00, 0x82, 0x00, 0x1B, 0x01, 0x80, 0x00, 0x80, 0x00, 0x2E, 0x00,
-    0x91, 0x00, 0x00, 0x01, 0x80, 0x03, 0x80, 0x00, 0x2E, 0x00, 0x91, 0x00,
-    0x00, 0x01, 0xC0, 0x04, 0xB7, 0x00, 0x0C, 0x00, 0x20, 0x20, 0x13, 0x00,
-    0xB0, 0x02, 0xCF, 0x00, 0x0C, 0x00, 0x21, 0x21, 0x14, 0x00, 0xFF, 0xFF,
-    0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
-};
-
-u8 D_us_80181FFC[] = {
-    0xFE, 0xFF, 0xFE, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x80, 0x00,
-    0xA9, 0x00, 0x0C, 0x00, 0x10, 0x00, 0x02, 0x00, 0xFF, 0xFF, 0xFF, 0xFF,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
-};
-
-// OBJ_LAYOUT_HORIZONTAL: per-room pointer table (53 rooms), transcribed from
-// D_us_80180280. Confirmed against InitRoomEntities' real disassembly
-// (indexed by objLayoutId*4, asm/us/boss/bo3/nonmatchings/create_entity/
-// InitRoomEntities.s).
-//
-// Kept under the raw name D_us_80180280 (not renamed to the friendly
-// OVL_EXPORT name directly): the still-unsplit head data blob's own real
-// bytes (D_us_80180000, bo3's Overlay struct instance) reference this
-// address by that raw name — confirmed via a real WSL build ("undefined
-// reference to D_us_80180280"). bo3.h aliases the friendly name to it via
-// #define, same fix pattern as g_EInitCommon etc.
-LayoutEntity* D_us_80180280[] = {
-    (LayoutEntity*)D_us_80181C94, (LayoutEntity*)D_us_80181C94,
-    (LayoutEntity*)D_us_80181C94, (LayoutEntity*)D_us_80181C94,
-    (LayoutEntity*)D_us_80181C94, (LayoutEntity*)D_us_80181C94,
-    (LayoutEntity*)D_us_80181C94, (LayoutEntity*)D_us_80181C94,
-    (LayoutEntity*)D_us_80181C94, (LayoutEntity*)D_us_80181C94,
-    (LayoutEntity*)D_us_80181C94, (LayoutEntity*)D_us_80181C94,
-    (LayoutEntity*)D_us_80181C94, (LayoutEntity*)D_us_80181C94,
-    (LayoutEntity*)D_us_80181C94, (LayoutEntity*)D_us_80181C94,
-    (LayoutEntity*)D_us_80181C94, (LayoutEntity*)D_us_80181C94,
-    (LayoutEntity*)D_us_80181C94, (LayoutEntity*)D_us_80181C94,
-    (LayoutEntity*)D_us_80181C94, (LayoutEntity*)D_us_80181C94,
-    (LayoutEntity*)D_us_80181C94, (LayoutEntity*)D_us_80181C94,
-    (LayoutEntity*)D_us_80181C94, (LayoutEntity*)D_us_80181E38,
-    (LayoutEntity*)D_us_80181C94, (LayoutEntity*)D_us_80181C94,
-    (LayoutEntity*)D_us_80181CA8, (LayoutEntity*)D_us_80181D70,
-    (LayoutEntity*)((u8*)D_us_80181D70 + 0x46), (LayoutEntity*)D_us_80181C94,
-    (LayoutEntity*)D_us_80181C94, (LayoutEntity*)D_us_80181C94,
-    (LayoutEntity*)D_us_80181C94, (LayoutEntity*)D_us_80181C94,
-    (LayoutEntity*)D_us_80181C94, (LayoutEntity*)D_us_80181C94,
-    (LayoutEntity*)D_us_80181C94, (LayoutEntity*)D_us_80181C94,
-    (LayoutEntity*)D_us_80181C94, (LayoutEntity*)D_us_80181C94,
-    (LayoutEntity*)D_us_80181C94, (LayoutEntity*)D_us_80181C94,
-    (LayoutEntity*)D_us_80181C94, (LayoutEntity*)D_us_80181C94,
-    (LayoutEntity*)D_us_80181C94, (LayoutEntity*)D_us_80181C94,
-    (LayoutEntity*)D_us_80181C94, (LayoutEntity*)D_us_80181C94,
-    (LayoutEntity*)D_us_80181C94, (LayoutEntity*)D_us_80181C94,
-    (LayoutEntity*)D_us_80181C94,
-};
-
-// OBJ_LAYOUT_VERTICAL: per-room pointer table (53 rooms), transcribed from
-// D_us_80180354. Same raw-name-kept treatment as the horizontal table above
-// (no confirmed raw reference found for this one specifically, but keeping
-// it consistent/symmetric with its horizontal sibling costs nothing and
-// avoids a second surprise if one turns up).
-LayoutEntity* D_us_80180354[] = {
-    (LayoutEntity*)D_us_80181E58, (LayoutEntity*)D_us_80181E58,
-    (LayoutEntity*)D_us_80181E58, (LayoutEntity*)D_us_80181E58,
-    (LayoutEntity*)D_us_80181E58, (LayoutEntity*)D_us_80181E58,
-    (LayoutEntity*)D_us_80181E58, (LayoutEntity*)D_us_80181E58,
-    (LayoutEntity*)D_us_80181E58, (LayoutEntity*)D_us_80181E58,
-    (LayoutEntity*)D_us_80181E58, (LayoutEntity*)D_us_80181E58,
-    (LayoutEntity*)D_us_80181E58, (LayoutEntity*)D_us_80181E58,
-    (LayoutEntity*)D_us_80181E58, (LayoutEntity*)D_us_80181E58,
-    (LayoutEntity*)D_us_80181E58, (LayoutEntity*)D_us_80181E58,
-    (LayoutEntity*)D_us_80181E58, (LayoutEntity*)D_us_80181E58,
-    (LayoutEntity*)D_us_80181E58, (LayoutEntity*)D_us_80181E58,
-    (LayoutEntity*)D_us_80181E58, (LayoutEntity*)D_us_80181E58,
-    (LayoutEntity*)D_us_80181E58, (LayoutEntity*)D_us_80181FFC,
-    (LayoutEntity*)D_us_80181E58, (LayoutEntity*)D_us_80181E58,
-    (LayoutEntity*)D_us_80181E6C, (LayoutEntity*)D_us_80181F34,
-    (LayoutEntity*)((u8*)D_us_80181F34 + 0x46), (LayoutEntity*)D_us_80181E58,
-    (LayoutEntity*)D_us_80181E58, (LayoutEntity*)D_us_80181E58,
-    (LayoutEntity*)D_us_80181E58, (LayoutEntity*)D_us_80181E58,
-    (LayoutEntity*)D_us_80181E58, (LayoutEntity*)D_us_80181E58,
-    (LayoutEntity*)D_us_80181E58, (LayoutEntity*)D_us_80181E58,
-    (LayoutEntity*)D_us_80181E58, (LayoutEntity*)D_us_80181E58,
-    (LayoutEntity*)D_us_80181E58, (LayoutEntity*)D_us_80181E58,
-    (LayoutEntity*)D_us_80181E58, (LayoutEntity*)D_us_80181E58,
-    (LayoutEntity*)D_us_80181E58, (LayoutEntity*)D_us_80181E58,
-    (LayoutEntity*)D_us_80181E58, (LayoutEntity*)D_us_80181E58,
-    (LayoutEntity*)D_us_80181E58, (LayoutEntity*)D_us_80181E58,
-    (LayoutEntity*)D_us_80181E58,
-};
-
-// Exact order transcribed from asm/us/boss/bo3/data/0.data.s (D_us_80180424,
-// 0x44 entries, indices 0x00-0x43). See src/boss/bo3/bo3.h for the EntityIDs
-// enum documenting each slot.
-//
-// NAMED `D_us_80180424` (not the friendlier OVL_EXPORT(EntityUpdates)) on
-// purpose: create_entity.c and e_misc.c are still raw, un-migrated
-// INCLUDE_ASM stubs whose frozen .s text already references this table by
-// its old splat-assigned raw name. Renaming this array broke the real WSL
-// link (undefined reference to `D_us_80180424`) the first time around —
-// keep this name until those two files are properly migrated/re-disassembled,
-// at which point this can be renamed and the callers updated together.
-PfnEntityUpdate D_us_80180424[] = {
-    (PfnEntityUpdate)D_us_80181E58, // 0x00 (real addr doubles as the shared
-                                    // "empty room" vertical layout default,
-                                    // see room-layout section above; never
-                                    // actually invoked through this table)
-    func_us_8019CEEC,       // 0x01 E_BREAKABLE
-    func_us_801ABDB0,       // 0x02 E_EXPLOSION
-    func_us_801AB53C,       // 0x03 E_PRIZE_DROP
-    EntityDamageDisplay,    // 0x04 E_DAMAGE_DISPLAY
-    OVL_EXPORT(EntityRedDoor), // 0x05 E_RED_DOOR
-    func_us_801AE7E4,       // 0x06 E_INTENSE_EXPLOSION
-    EntitySoulStealOrb,     // 0x07 E_SOUL_STEAL_ORB
-    EntityRoomForeground,   // 0x08 E_ROOM_FOREGROUND
-    EntityStageNamePopup,   // 0x09 E_STAGE_NAME_POPUP
-    func_us_801ABF50,       // 0x0A E_EQUIP_ITEM_DROP
-    func_us_801AC7E8,       // 0x0B E_RELIC_ORB
-    func_us_801AD2B8,       // 0x0C E_HEART_DROP
-    EntityEnemyBlood,       // 0x0D E_ENEMY_BLOOD
-    func_us_801AD3E0,       // 0x0E E_MESSAGE_BOX
-    EntityDummy,            // 0x0F
-    EntityDummy,            // 0x10
-    OVL_EXPORT(EntityBackgroundBlock), // 0x11 E_BACKGROUND_BLOCK
-    OVL_EXPORT(EntityLockCamera),      // 0x12 E_LOCK_CAMERA
-    EntityUnkId13,          // 0x13
-    EntityExplosionVariants,// 0x14
-    EntityGreyPuff,         // 0x15
-    EntityDummy,            // 0x16
-    func_us_801A1EE4,       // 0x17
-    EntityDummy,            // 0x18
-    EntityDummy,            // 0x19
-    EntityDummy,            // 0x1A
-    func_us_801A27EC,       // 0x1B
-    func_us_8019D1D4,       // 0x1C
-    func_us_8019D51C,       // 0x1D
-    EntityDummy,            // 0x1E
-    EntityDummy,            // 0x1F
-    EntityDummy,            // 0x20
-    EntityDummy,            // 0x21
-    EntityDummy,            // 0x22
-    EntityDummy,            // 0x23
-    EntityDummy,            // 0x24
-    EntityDummy,            // 0x25
-    EntityDummy,            // 0x26
-    EntityDummy,            // 0x27
-    EntityDummy,            // 0x28
-    EntityDummy,            // 0x29
-    EntityDummy,            // 0x2A
-    EntityDummy,            // 0x2B
-    EntityDummy,            // 0x2C
-    func_us_801A07CC,       // 0x2D
-    func_us_801A0A80,       // 0x2E (deferred)
-    func_us_801A1120,       // 0x2F
-    func_us_801A16E4,       // 0x30
-    func_us_801A2AEC,       // 0x31 (deferred)
-    func_us_801A3CD8,       // 0x32
-    func_us_801A365C,       // 0x33 (deferred)
-    func_us_801A3EE0,       // 0x34
-    func_us_801A42A8,       // 0x35
-    func_us_801A4680,       // 0x36
-    func_us_801A4988,       // 0x37
-    func_us_801A4C0C,       // 0x38
-    func_us_801A4E24,       // 0x39
-    func_us_801A5338,       // 0x3A (deferred)
-    func_us_801A57A4,       // 0x3B
-    func_us_801A5948,       // 0x3C (deferred)
-    func_us_801A5F0C,       // 0x3D
-    func_us_801A1BE8,       // 0x3E
-    func_us_801A61F0,       // 0x3F
-    EntityLifeUpSpawn,      // 0x40
-    func_us_801A6370,       // 0x41
-    func_us_801A6568,       // 0x42
-    func_us_8019D160,       // 0x43
-};
-
-// g_EInitCommon and g_EInitLockCamera, confirmed byte-for-byte against bo3's
-// real compiled data at D_us_80180588 and D_us_8018057C
-// (asm/us/boss/bo3/data/0.data.s) — both exactly match the values already
-// used by mar/bo0 for these same two constants.
-//
-// D_us_80180588 is kept under its old raw name (not renamed to g_EInitCommon
-// directly) because 1CEEC.c's own already-decompiled code references this
-// exact address by that name too (it's one of the 6 known baseline
-// "conflicting types" symbols) — renaming it broke the real WSL link the
-// first time around ("undefined reference to D_us_80180588"). bo3.h aliases
-// g_EInitCommon to it via #define, same fix pattern as EntityExplosion etc.
-EInit D_us_80180588 = {0x0000, 0x0000, 0x0000, 0x0000, 0x0003};
-EInit g_EInitLockCamera = {0x0000, 0x0000, 0x0000, 0x0000, 0x0001};
-
-// g_EInitInteractable and EInitObtainable, confirmed against real
-// InitializeEntity call sites (see bo3.h for the full explanation). Kept
-// under their raw names since 1CEEC.c/2AFCC.c already reference them that
-// way; bo3.h aliases the friendly names to these.
-EInit D_us_80180564 = {0x0000, 0x0000, 0x0000, 0x0000, 0x0005};
-EInit D_us_80180540 = {0x0003, 0x0000, 0x0000, 0x0000, 0x0001};
-
-// g_EInitDamageNum, confirmed against EntityDamageDisplay's real
-// InitializeEntity(D_us_80180594) call. No existing raw-name conflict found.
-EInit g_EInitDamageNum = {0x0000, 0x0000, 0x0000, 0x0000, 0x0003};
-
-// animFrames tables for BackgroundBlockInit, transcribed byte-for-byte from
-// D_us_8018060C/D_us_80180610 (fell inside the still-unsplit data blob with
-// no linkable symbol — a plain `extern` reference failed at link time
-// ("undefined reference"), so defined here matching the real bytes exactly).
-u8 D_us_8018060C[] = {0x10, 0x0B, 0x00, 0x00};
-u8 D_us_80180610[] = {
-    0x08, 0x0C, 0x08, 0x0D, 0x08, 0x0E, 0x08, 0x0F, 0x08, 0x10, 0x00, 0x00,
-};
-
-// BackgroundBlockInit[2], transcribed byte-for-byte from D_us_8018061C
-// (0x61C-0x644).
-ObjInit2 OVL_EXPORT(BackgroundBlockInit)[] = {
-    {0x8001, 0x0061, 0, 0, 0x0000, 0x0000, 0x0000, 0x00000000, D_us_8018060C},
-    {0x8001, 0x0069, 0, 0, 0x0000, 0x3000, 0x0000, 0x00000000, D_us_80180610},
-};
-
-// NOTE: e_particles.c, e_room_fg.c, e_stage_name.c and st_collision.c are now
-// migrated to the shared headers (all 3 EInit blockers above resolved) — see
-// each file for its #include. None of their shared function names are
-// OVL_EXPORT-wrapped (EntitySoulStealOrb, EntityEnemyBlood,
-// EntityRoomForeground, EntityStageNamePopup, EntityDamageDisplay, HitDetection
-// all keep their plain names in the shared headers), so the dispatch table
-// above needed no changes for this batch — only e_room_bg.c/e_lock_camera.c's
-// slots required the OVL_EXPORT treatment.
-//
-// e_life_up.c remains excluded from migration for an unrelated reason: its
-// real disassembly is 600+ lines of boss-specific matrix/primitive rendering
-// and custom prize-drop dispatch, not a generic shared implementation (see
-// project memory).
+// clang-format off
+// animSet, animCurFrame, unk5A, palette, enemyID
+EInit g_EInitBreakable = {ANIMSET_DRA(3), 0, 0, 0, 0x000};
+EInit g_EInitObtainable = {ANIMSET_DRA(3), 0, 0, 0, 0x001};
+EInit g_EInitParticle = {ANIMSET_DRA(3), 0, 0, 0, 0x002};
+EInit g_EInitSpawner = {ANIMSET_DRA(0), 0, 0, 0, 0x004};
+EInit g_EInitInteractable = {ANIMSET_DRA(0), 0, 0, 0, 0x005};
+EInit g_EInitUnkId13 = {ANIMSET_DRA(0), 0, 0, 0, 0x002};
+EInit g_EInitLockCamera = {ANIMSET_DRA(0), 0, 0, 0, 0x001};
+EInit g_EInitCommon = {ANIMSET_DRA(0), 0, 0, 0, 0x003};
+EInit g_EInitDamageNum = {ANIMSET_DRA(0), 0, 0, 0, 0x003};
+EInit g_EInitScylla = {ANIMSET_OVL(2), 0, 72, 512, 0x11F};
+EInit D_us_801805AC = {ANIMSET_OVL(2), 0, 72, 512, 0x120};
+EInit D_us_801805B8 = {ANIMSET_OVL(2), 0, 72, 512, 0x005};
+EInit D_us_801805C4 = {ANIMSET_OVL(2), 0, 72, 512, 0x121};
+EInit D_us_801805D0 = {ANIMSET_OVL(2), 0, 72, 512, 0x122};
+EInit D_us_801805DC = {ANIMSET_OVL(2), 0, 72, 512, 0x124};
+EInit D_us_801805E8 = {ANIMSET_OVL(2), 0, 72, 512, 0x125};
+EInit D_us_801805F4 = {ANIMSET_OVL(2), 0, 72, 512, 0x002};
+EInit g_EInitScyllawyrm = {ANIMSET_OVL(2), 0, 72, 512, 0x126};
+// clang-format on

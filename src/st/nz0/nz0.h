@@ -14,7 +14,7 @@ enum Palettes {
     PAL_PUFF_OPAQUE_OFFSET = 0x2E0,
 };
 
-typedef enum EntityIDs {
+typedef enum EntityID {
     /* 0x00 */ E_NONE,
     /* 0x01 */ E_BREAKABLE,
     /* 0x02 */ E_EXPLOSION,
@@ -94,7 +94,7 @@ typedef enum EntityIDs {
     /* 0x4C */ E_UNK4C,                   // func_pspeu_0925A980
     /* 0x4D */ E_UNK4D,                   // func_pspeu_0925A7B8
     NUM_ENTITIES,
-} EntityIDs;
+} EntityID;
 
 Primitive* FindFirstUnkPrim2(Primitive* prim, u8 index);
 
@@ -119,8 +119,8 @@ extern s32 E_ID(LIFE_UP_SPAWN);
 
 extern s32 g_BossFlag; // original names: boss_flag / beri_flag
 
-extern EInit OVL_EXPORT(EInitBreakable);
-extern EInit OVL_EXPORT(EInitObtainable);
+extern EInit g_EInitBreakable;
+extern EInit g_EInitObtainable;
 extern EInit g_EInitParticle;
 extern GAME_IMPORT EInit g_EInitSpawner;
 extern EInit g_EInitInteractable;

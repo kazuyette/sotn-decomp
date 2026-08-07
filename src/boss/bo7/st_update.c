@@ -1,7 +1,4 @@
-#include "common.h"
+// SPDX-License-Identifier: AGPL-3.0-or-later
+#include "bo7.h"
 
-INCLUDE_ASM("boss/bo7/nonmatchings/st_update", Random);
-
-INCLUDE_ASM("boss/bo7/nonmatchings/st_update", Update);
-
-INCLUDE_ASM("boss/bo7/nonmatchings/st_update", UpdateStageEntities);
+#include "../../st/st_update.h"

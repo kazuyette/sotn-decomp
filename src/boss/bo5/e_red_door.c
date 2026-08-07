@@ -1,5 +1,4 @@
-#include "common.h"
+// SPDX-License-Identifier: AGPL-3.0-or-later
+#include "bo5.h"
 
-INCLUDE_ASM("boss/bo5/nonmatchings/e_red_door", EntityIsNearPlayer);
-
-INCLUDE_ASM("boss/bo5/nonmatchings/e_red_door", func_us_801A9394);
+#include "../../st/e_red_door.h"

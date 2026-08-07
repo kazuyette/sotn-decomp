@@ -29,6 +29,8 @@ options:
   ld_bss_is_noload: false
   disasm_unknown: true
   global_vram_start: 0x80010000
+  ld_generate_symbol_per_data_segment: true
+sha1: 91d90c1ea31a9fbfbccc0ab66b59551d823c51f6
 segments:
   - name: bobo2
     type: code
@@ -37,106 +39,46 @@ segments:
     align: 4
     subalign: 4
     subsegments:
-      - [0x0, data]  # TODO: Overlay struct + other unidentified data (0x26C bytes)
-
-      # D_us_8018026C/D_us_80180340 (create_entity.h's OBJ_LAYOUT_HORIZONTAL/
-      # VERTICAL, raw names -- see e_init.c/bo2.h, create_entity.c stays raw
-      # INCLUDE_ASM this checkpoint): confirmed against real disassembly of
-      # CreateEntityFromLayout.s (D_us_80180410 == PfnEntityUpdates - 4, base
-      # for entityId*4 addressing) and InitRoomEntities.s (D_us_8018026C read
-      # first == horizontal, D_us_80180340 read second == vertical).
-      # Horizontal is 53 entries; vertical is only 52 (asymmetric, same
-      # pattern as bo1 -- the real 53rd vertical address, 0x410, is
-      # D_us_80180410 itself, the dispatch table's own addressing base, not
-      # a 53rd room-layout entry). This single carve covers 0x26C-0x414
-      # (both tables + the dispatch base + the dispatch table below all live
-      # in e_init.c, no need for a finer-grained boundary between them).
-      - [0x26C, .data, e_init]  # pStObjLayoutHorizontal (53) + pStObjLayoutVertical (52) + dispatch base
-
-      # BO2_EntityUpdates (entity dispatch table), 41 entries, confirmed
-      # against config/symbols.us.bobo2.txt (entry 0 == EntityBreakable ==
-      # 0x801A24DC).
-      - [0x414, .data, e_init]  # EntityUpdates (41 entries)
-
-      # EInit constants used by the files migrated this checkpoint. 3 of them
-      # (g_EInitParticle, g_EInitInteractable, g_EInitCommon) are ALSO
-      # referenced by raw name from bo2's still-unmigrated boss-specific code
-      # (22610.c/337D0.c) -- confirmed by grepping
-      # asm/us/boss/bo2/nonmatchings/{22610,337D0} for each candidate address
-      # BEFORE writing e_init.c/bo2.h (same class of bug bo1 hit with
-      # D_us_80180AA4/20F60.c) -- so those 3 are defined under their raw name
-      # in e_init.c and aliased to the friendly name in bo2.h. The rest have
-      # no such conflict. Small (2-14 byte) gaps between consecutive EInit
-      # constants are left as generic `data` catchall -- same pattern as
-      # bo1's yaml, not something that needs hand explanation.
-      - [0x4B8, .data, e_init]  # EInitBreakable
-      - [0x4C2, data]
-      - [0x4C4, .data, e_init]  # EInitObtainable
-      - [0x4CE, data]
-      - [0x4D0, .data, e_init]  # g_EInitParticle (raw name D_us_801804D0)
-      - [0x4DA, data]
-      - [0x4E8, .data, e_init]  # g_EInitInteractable (raw name D_us_801804E8)
-      - [0x4F2, data]
-      - [0x4F4, .data, e_init]  # g_EInitUnkId13
-      - [0x4FE, data]
-      - [0x500, .data, e_init]  # g_EInitLockCamera
-      - [0x50A, data]
-      - [0x50C, .data, e_init]  # g_EInitCommon (raw name D_us_8018050C)
-      - [0x516, data]
-      - [0x518, .data, e_init]  # g_EInitDamageNum
-      - [0x522, data]  # TODO: unidentified table 0x524-0x590 (not needed by this checkpoint)
-
-      # BackgroundBlockInit's animFrames data (2 small AnimateEntityFrame
-      # lists, sentinel-terminated) + the ObjInit2 table itself (2 real
-      # entries -- confirmed via direct ROM reading: a hypothetical 3rd entry
-      # reproduces RedDoorTiles' own bytes verbatim, same technique used on
-      # bo1's single-entry case).
-      - [0x590, .data, e_init]  # animFrames x2
-      - [0x5A0, .data, e_init]  # BackgroundBlockInit (2 entries)
-
-      # RedDoorTiles[2][8] -- confirmed byte-for-byte against real ROM data,
-      # referenced via `params << 4` row-stride addressing in
-      # func_us_801A9E50/EntityRedDoor.
-      - [0x5C8, .data, e_init]  # RedDoorTiles[2][8]
+      - [0x0, .data, header]
+      - [0x2C, data]
+      - [0x414, .data, e_init]
+      - [0x590, data]
+      - [0x5C8, .data, e_red_door_tiles]
       - [0x5E8, data]
-
-      # e_breakable.c's 5 static per-boss tables + 2 anim arrays, confirmed
-      # byte-for-byte via EntityBreakable's real disassembly (each table's
-      # address confirmed via its own lui/lw reference).
-      - [0x668, .data, e_breakable]  # anim_1, anim_2
-      - [0x678, .data, e_breakable]  # g_eBreakableAnimations ptrs[8]
-      - [0x698, .data, e_breakable]  # blend_modes[8]
-      - [0x6A0, .data, e_breakable]  # g_eBreakableExplosionTypes[8]
-      - [0x6A8, .data, e_breakable]  # g_eBreakableanimSets[8]
-      - [0x6B8, .data, e_breakable]  # g_eBreakableHitboxes[8]
-      - [0x6C0, data]  # TODO: rest of unidentified head data blob
-
-      # BO2_PrizeDrops (e_collect.h), 16 real entries -- confirmed via
-      # EntityHeartDrop's real disassembly (D_us_80180CA4) and the boundary
-      # confirmed against the following bytes turning into unrelated large
-      # values at 0xCC4.
+      - [0x5E8, .data, e_lock_camera]
+      - [0x668, data]
       - [0xCA4, .data, d_prize_drops]
-      - [0xCC4, data]
-
-      # LayoutEntity content blobs pointed to by pStObjLayoutHorizontal/
-      # Vertical above (10 unique blobs, contiguous 0x1AEC-0x1CCC: fewer real
-      # room-layout variants than bo1). Each transcribed byte-for-byte from
-      # the ROM, terminator-scanned (sentinel-terminated LayoutEntity lists,
-      # same convention as bo1/bo3). Single carve covering the whole
-      # contiguous range, same as bo1's yaml pattern (not carved per-blob).
-      - [0x1AEC, .data, e_init]
-      - [0x1CCC, data]
-
-      - [0x22258, c, e_room_bg]
+      - [0xCA4, .data, st_update]
+      - [0xCF0, data]
+      - [0xCF0, .data, collision]
+      - [0x10B0, .data, e_red_door]
+      - [0x10C8, .data, st_common]
+      - [0x12C8, .data, e_collect]
+      - [0x161C, .data, e_misc]
+      - [0x16D4, data]
+      - [0x16D4, .data, e_particles]
+      - [0x1754, .data, e_room_fg]
+      - [0x17E0, data]
+      - [0x17FC, .data, e_life_up]
+      - [0x1850, data]
+      - [0x21E98, .rodata, unk_224DC]
+      - [0x21F6C, .rodata, unk_25910]
+      - [0x22058, .rodata, e_red_door]
+      - [0x22070, .rodata, e_collect]
+      - [0x22144, .rodata, e_stage_name]
+      - [0x22178, .rodata, prim_helpers]
+      - [0x22180, .rodata, e_life_up]
+      - [0x2219C, .rodata, unk_337D0]
+      - [0x22258, c, unk_22258]
       - [0x22320, c, e_lock_camera]
-      - [0x224DC, c, e_breakable]
-      # Minotaur/Werewolf-specific behavior code (confirmed via `jr $ra` scan:
-      # 24 real function returns found here, vs. 0 in the head `data` gap).
-      - [0x22610, c]
+      - [0x224DC, c, unk_224DC]
+      - [0x25460, c, e_cutscene_dialogue]
+      - [0x25910, c, unk_25910]
       - [0x27670, c, st_update]
-      - [0x27AA4, c, st_collision]
+      - [0x27AA4, c, collision]
       - [0x29260, c, create_entity]
       - [0x29DD8, c, e_red_door]
+      - [0x29E50, c, e_red_door]
       - [0x2AA88, c, st_common]
       - [0x2BF38, c, e_collect]
       - [0x2E89C, c, e_misc]
@@ -146,8 +88,10 @@ segments:
       - [0x323BC, c, popup]
       - [0x326EC, c, prim_helpers]
       - [0x32F1C, c, e_life_up]
-      # Second boss-specific code region in the tail gap (confirmed via `jr $ra`
-      # scan: 6 real function returns found here). bo2 is unusual in having two
-      # separate boss-code regions rather than one contiguous gap.
-      - [0x337D0, c]
+      - [0x337D0, c, unk_337D0]
+      - [0x35BCC, bss]
+      - [0x35C2C, .bss, create_entity]
+      - [0x35C3C, bss]
+      - [0x368F4, .bss, st_update]
+      - [0x36934, bss]
   - [0x36934]

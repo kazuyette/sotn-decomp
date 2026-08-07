@@ -6,7 +6,7 @@
 #define SFX_BREAKABLE_HIT SFX_CANDLE_HIT
 #endif
 
-extern EInit OVL_EXPORT(EInitBreakable);
+extern EInit g_EInitBreakable;
 
 void CreateEntityFromCurrentEntity(u16 entityId, Entity* entity);
 void ReplaceBreakableWithItemDrop(Entity*);
@@ -18,17 +18,7 @@ void EntityBreakable(Entity* entity) {
         AnimateEntity(g_eBreakableAnimations[breakableType], entity);
         if (entity->hitParams) { // If the candle is destroyed
             Entity* entityDropItem;
-#if defined(STAGE_IS_RNO3)
-            entity->drawFlags = ENTITY_DEFAULT;
-            entity->rotate = ROT(0);
-#endif
-
-#if defined(STAGE_IS_NO0)
-            breakableType == 1 ? g_api.PlaySfx(SFX_GLASS_BREAK_C)
-                               : g_api.PlaySfx(SFX_CANDLE_HIT_WHOOSH_A);
-#else
             g_api.PlaySfx(SFX_BREAKABLE_HIT);
-#endif
             entityDropItem = AllocEntity(&g_Entities[224], &g_Entities[256]);
             if (entityDropItem != NULL) {
                 CreateEntityFromCurrentEntity(E_EXPLOSION, entityDropItem);
@@ -38,14 +28,10 @@ void EntityBreakable(Entity* entity) {
             ReplaceBreakableWithItemDrop(entity);
         }
     } else {
-        InitializeEntity(OVL_EXPORT(EInitBreakable));
+        InitializeEntity(g_EInitBreakable);
         entity->zPriority = g_unkGraphicsStruct.g_zEntityCenter - 20;
         entity->blendMode = blend_modes[breakableType];
         entity->hitboxHeight = g_eBreakableHitboxes[breakableType];
         entity->animSet = g_eBreakableanimSets[breakableType];
-#if defined(STAGE_IS_RNO3)
-        entity->drawFlags = ENTITY_ROTATE;
-        entity->rotate = ROT(180);
-#endif
     }
 }

@@ -315,7 +315,13 @@ s32 LoadFileSimToMem(SimKind kind) {
 
 bool LoadFilePc(const struct FileUseContent* file) {
     SimFile* sim = (SimFile*)file->param;
-    sim->addr = file->content;
+    if (sim->kind == SIM_VH || sim->kind == SIM_VB) {
+        // file->content is freed after the call, but sound file data must
+        // remain present in memory. Just do a memcpy to solve it.
+        memcpy(sim->addr, file->content, file->length);
+    } else {
+        sim->addr = file->content;
+    }
     switch (sim->kind) { // slowly replacing the original func
     case SIM_1:
         LoadStageTileset(sim->addr, file->length, 0x100);
@@ -436,6 +442,46 @@ s32 LoadFileSim(s32 fileId, SimFileType type) {
             sim.path = "BIN/RIC.BIN";
             sim.kind = 99;
             break;
+        case 6:
+            sim.path = "BIN/F_PROLO0.BIN";
+            sim.kind = SIM_11;
+            break;
+        case 7:
+            sim.path = "BIN/F_PROLO1.BIN";
+            sim.kind = SIM_12;
+            break;
+        // gof.bin, gob.bin, c_gof.bin, c_gob.bin are packed back-to-back
+        // inside a single combined BIN/F_GO.BIN on disk
+        case 8: // game over bitmap foreground
+            if (FileReadToBuf(
+                    "disks/us/BIN/F_GO.BIN", D_80280000, 0x00000, 0x8000) < 0) {
+                return -1;
+            }
+            LoadImage(&g_Vram.D_800ACDD0, D_80280000);
+            return 0;
+        case 9: // game over bitmap background
+            if (FileReadToBuf("disks/us/BIN/F_GO.BIN", D_80280000, 0x08000,
+                              0x10000) < 0) {
+                return -1;
+            }
+            LoadImage(&g_Vram.D_800ACDD8, D_80280000);
+            return 0;
+        case 10: // game over palette foreground
+            if (FileReadToBuf(
+                    "disks/us/BIN/F_GO.BIN", D_80280000, 0x18000, 0x2000) < 0) {
+                return -1;
+            }
+            LoadImage(&g_Vram.D_800ACDB8, D_80280000);
+            StoreImage(&g_Vram.D_800ACDB8, g_Clut[2]);
+            return 0;
+        case 11: // game over palette background
+            if (FileReadToBuf(
+                    "disks/us/BIN/F_GO.BIN", D_80280000, 0x1A000, 0x2000) < 0) {
+                return -1;
+            }
+            LoadImage(&g_Vram.D_800ACDA8, D_80280000);
+            StoreImage(&g_Vram.D_800ACDA8, g_Clut[0]);
+            return 0;
         case 12:
             sim.path = "ST/SEL/F_SEL.BIN";
             sim.kind = SIM_STAGE_CHR;
@@ -454,7 +500,13 @@ s32 LoadFileSim(s32 fileId, SimFileType type) {
             if (g_GameParams.player >= 0) {
                 g_PlayableCharacter = g_GameParams.player;
             }
-            if (g_GameParams.stage >= 0) {
+            if (g_GameParams.demo >= 0) {
+                D_80097C98 = 0x80000000 |
+                             (g_GameParams.demo & STAGE_INVERTEDCASTLE_MASK);
+                DemoInit(2);
+                SetGameState(Game_NowLoading);
+                g_GameStep = 1;
+            } else if (g_GameParams.stage >= 0) {
                 g_StageId = g_GameParams.stage;
                 SetGameState(Game_NowLoading);
                 g_GameStep = 1;
@@ -497,9 +549,15 @@ s32 LoadFileSim(s32 fileId, SimFileType type) {
             return 0;
         } else {
             sim.path = smolbuf;
-            snprintf(smolbuf, sizeof(smolbuf), "ST/%s/SD_ZK%s.VH",
-                     g_StagesLba[g_StageId].ovlName,
-                     g_StagesLba[g_StageId].ovlName);
+            if (g_StageId & STAGE_INVERTEDCASTLE_FLAG) {
+                snprintf(smolbuf, sizeof(smolbuf), "ST/%s/SD_Z%s.VH",
+                         g_StagesLba[g_StageId].ovlName,
+                         g_StagesLba[g_StageId].ovlName);
+            } else {
+                snprintf(smolbuf, sizeof(smolbuf), "ST/%s/SD_ZK%s.VH",
+                         g_StagesLba[g_StageId].ovlName,
+                         g_StagesLba[g_StageId].ovlName);
+            }
             sim.addr = aPbav_2;
             sim.path = smolbuf;
             sim.size = g_StagesLba[g_StageId].vhLen;
@@ -543,14 +601,24 @@ s32 LoadFileSim(s32 fileId, SimFileType type) {
             return 0;
         } else {
             sim.path = smolbuf;
-            snprintf(smolbuf, sizeof(smolbuf), "ST/%s/SD_ZK%s.VB",
-                     g_StagesLba[g_StageId].ovlName,
-                     g_StagesLba[g_StageId].ovlName);
+            if (g_StageId & STAGE_INVERTEDCASTLE_FLAG) {
+                snprintf(smolbuf, sizeof(smolbuf), "ST/%s/SD_Z%s.VB",
+                         g_StagesLba[g_StageId].ovlName,
+                         g_StagesLba[g_StageId].ovlName);
+            } else {
+                snprintf(smolbuf, sizeof(smolbuf), "ST/%s/SD_ZK%s.VB",
+                         g_StagesLba[g_StageId].ovlName,
+                         g_StagesLba[g_StageId].ovlName);
+            }
             sim.path = sim.path;
+            sim.addr = D_80280000;
             sim.size = g_StagesLba[g_StageId].vbLen;
             sim.kind = SIM_VB;
         }
         break;
+    case SimFileType_Seq:
+        LoadFileSimToMem(SIM_SEQ);
+        return 0;
     case SimFileType_StageChr:
         sim.kind = SIM_STAGE_CHR;
         sim.path = smolbuf;
@@ -559,16 +627,16 @@ s32 LoadFileSim(s32 fileId, SimFileType type) {
                  g_StagesLba[g_StageId].ovlName);
         break;
     case SimFileType_Weapon0Prg:
-        HandleWeapon0Prg(fileId);
+        HandleWeaponPrg(0, fileId);
         return 0;
     case SimFileType_Weapon1Prg:
-        INFOF("TODO: will load weapon 'w1_%03d'", fileId);
+        HandleWeaponPrg(1, fileId);
         return 0;
     case SimFileType_Weapon0Chr:
-        HandleWeapon0Chr(fileId);
+        HandleWeaponChr(0, fileId);
         return 0;
     case SimFileType_Weapon1Chr:
-        INFOF("TODO: will load weapon 'f1_%03d'", fileId);
+        HandleWeaponChr(1, fileId);
         return 0;
     case SimFileType_FamiliarPrg:
         HandleServantPrg();

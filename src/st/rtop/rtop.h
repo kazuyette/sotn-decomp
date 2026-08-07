@@ -6,17 +6,16 @@
 
 #include <stage.h>
 
-#define OVL_EXPORT(x) RTOP_##x
 #define INVERTED_STAGE
 
-enum OVL_EXPORT(Palette) {
+enum RTOP_Palette {
     PAL_NONE = 0,
     PAL_BREAKABLE = 0x200,
     PAL_BREAKABLE_DEBRIS = 0x204,
     PAL_UNK_220 = 0x220,
 };
 
-typedef enum EntityIDs {
+typedef enum EntityID {
     /* 0x00 */ E_NONE,
     /* 0x01 */ E_BREAKABLE,
     /* 0x02 */ E_EXPLOSION,
@@ -46,12 +45,12 @@ typedef enum EntityIDs {
     /* 0x25 */ E_TOMBSTONE,
     /* 0x26 */ E_SKULL_LORD,
     /* 0x27 */ E_SKULL_LORD_OUTLINE,
-    /* 0x28 */ E_SKULL_LORD_FLAMES,
+    /* 0x28 */ E_SKULL_LORD_EYE,
     /* 0x29 */ E_SKULL_LORD_PIECES,
-} EntityIDs;
+} EntityID;
 
-extern EInit OVL_EXPORT(EInitBreakable);
-extern EInit OVL_EXPORT(EInitObtainable);
+extern EInit g_EInitBreakable;
+extern EInit g_EInitObtainable;
 extern EInit g_EInitParticle;
 extern EInit g_EInitSpawner;
 extern EInit g_EInitInteractable;

@@ -6,6 +6,7 @@ import (
 	"github.com/xeeynamo/sotn-decomp/tools/sotn-assets/assets"
 	"github.com/xeeynamo/sotn-decomp/tools/sotn-assets/assets/tiledef"
 	"github.com/xeeynamo/sotn-decomp/tools/sotn-assets/psx"
+	"github.com/xeeynamo/sotn-decomp/tools/sotn-assets/sotn"
 	"github.com/xeeynamo/sotn-decomp/tools/sotn-assets/util"
 	"path/filepath"
 	"strconv"
@@ -20,7 +21,7 @@ func (h *handler) Name() string { return "layers" }
 func (h *handler) Extract(e assets.ExtractArgs) error {
 	roomLayersOffset, err := findRoomsLayerArray(e)
 	if err != nil {
-		return fmt.Errorf("unable to find the start of OVL_EXPORT(rooms_layers): %w", err)
+		return fmt.Errorf("unable to find the start of rooms_layers: %w", err)
 	}
 	r := bytes.NewReader(e.Data)
 	l, _, err := readLayers(r, roomLayersOffset, e.RamBase)
@@ -63,7 +64,7 @@ func (h *handler) Extract(e assets.ExtractArgs) error {
 		return fmt.Errorf("unable to create layers file: %w", err)
 	}
 
-	tilesDir := filepath.Dir(filepath.Join(e.AssetDir, e.Name));
+	tilesDir := filepath.Dir(filepath.Join(e.AssetDir, e.Name))
 	for offset, data := range tileMaps {
 		fileName := filepath.Join(tilesDir, tilemapFileName(e.OvlName, addrPool[offset]))
 		if err := util.WriteFile(fileName, data); err != nil {
@@ -89,15 +90,38 @@ func (h *handler) Build(e assets.BuildArgs) error {
 }
 
 func (h *handler) Info(a assets.InfoArgs) (assets.InfoResult, error) {
-	// this will not work anymore. Ignore.
-	return assets.InfoResult{}, nil
+	r := bytes.NewReader(a.StageData)
+	header, err := sotn.ReadStageHeader(r)
+	if err != nil {
+		return assets.InfoResult{}, err
+	}
+	if header.Layers == psx.RamNull || header.Layers == 0 {
+		// SEL and friends have no layers at all
+		return assets.InfoResult{}, nil
+	}
+	boundaries := header.Layers.Boundaries()
+	_, rng, err := readLayers(r, header.Layers, boundaries.StageBegin)
+	if err != nil {
+		return assets.InfoResult{}, fmt.Errorf("unable to read layers at %s: %w", header.Layers, err)
+	}
+	if rng.Empty() {
+		return assets.InfoResult{}, nil
+	}
+	return assets.InfoResult{
+		AssetEntries: []assets.InfoAssetEntry{
+			{DataRange: rng, Kind: h.Name(), Name: "layers"},
+		},
+		SplatEntries: []assets.InfoSplatEntry{
+			{DataRange: rng, Name: "layers"},
+		},
+	}, nil
 }
 
 func findRoomsLayerArray(e assets.ExtractArgs) (psx.Addr, error) {
 	// format is:
 	//   LayerDef layer_empty = {a bunch of nulls}
 	//   LayerDef layers[???] = {...}
-	//   RoomDef OVL_EXPORT(rooms_layers)[???] = {...}
+	//   RoomDef rooms_layers[???] = {...}
 	// we need to find 'rooms_layers' first. This is done by assuming each entry
 	// is a 0x10 long 'LayerDef'. We need to save the offset of each entry.
 	// As soon as we read an entry where the address points to one of the LayerDef,

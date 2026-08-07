@@ -102,9 +102,6 @@ static u16 g_eDamageDisplayClut[] = {
 // Some of the logic is removed since it doesn't apply in prologue.
 // Attempting to de-duplicate this would involve a lot of #ifdef.
 void OVL_EXPORT(HitDetection)(void) {
-#ifdef VERSION_PC
-    u8 sp[SP_LEN];
-#endif
     Entity* otherEntity;
     Primitive* prim;
     Entity* entityHit;
@@ -290,6 +287,13 @@ void OVL_EXPORT(HitDetection)(void) {
             BottomCornerText(g_api.enemyDefs[entityHit->enemyId].name, false);
             entityHit->flags |= FLAG_NOT_AN_ENEMY;
         }
+#ifdef FIX_UB
+        // BUG! On ST0 only, the sentinel value miscVar2 is never reset. If the
+        // entityHit has hitPoints==0 (e.g. EntityDraculaFireball), the value
+        // miscVar2=0xFF will leak resulting to a UNK_Invincibility0[] OOB.
+        // This is fixed in the normal HitDetection with a simple miscVar2=0.
+        miscVar2 = 0;
+#endif
         if (entityHit->hitPoints) {
             if (iterEnt->attack) {
                 if ((iterEnt->hitboxState & 0x80) == 0) {

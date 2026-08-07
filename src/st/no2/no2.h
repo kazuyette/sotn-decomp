@@ -24,13 +24,13 @@ enum OVL_EXPORT(Palette) {
     PAL_OWL_KNIGHT_SWORD = 0x2CB,
 };
 
-enum EntityIDs {
+enum EntityID {
     E_NONE,
-    E_BREAKABLE,            // OVL_EXPORT(EntityBreakable)
+    E_BREAKABLE,            // EntityBreakable
     E_EXPLOSION,            // EntityExplosion
     E_PRIZE_DROP,           // EntityPrizeDrop
     E_DAMAGE_DISPLAY,       // EntityDamageDisplay
-    E_RED_DOOR,             // OVL_EXPORT(EntityRedDoor)
+    E_RED_DOOR,             // EntityRedDoor
     E_INTENSE_EXPLOSION,    // EntityIntenseExplosion
     E_SOUL_STEAL_ORB,       // EntitySoulStealOrb
     E_ROOM_FOREGROUND,      // EntityRoomForeground
@@ -42,8 +42,8 @@ enum EntityIDs {
     E_MESSAGE_BOX,          // EntityMessageBox
     E_DUMMY_F,              // EntityDummy
     E_DUMMY_10,             // EntityDummy
-    E_BACKGROUND_BLOCK,     // OVL_EXPORT(EntityBackgroundBlock)
-    E_LOCK_CAMERA,          // OVL_EXPORT(EntityLockCamera)
+    E_BACKGROUND_BLOCK,     // EntityBackgroundBlock
+    E_LOCK_CAMERA,          // EntityLockCamera
     E_UNK_ID13,             // EntityUnkId13
     E_EXPLOSION_VARIANTS,   // EntityExplosionVariants
     E_GREY_PUFF,            // EntityGreyPuff
@@ -88,7 +88,7 @@ enum EntityIDs {
     E_BLADE,                // EntityBlade
     E_BLADE_WEAPON,         // EntityBladeWeapon
     E_SPECTRAL_SWORD,       // EntitySpectralSword
-    E_UNK_3F,               // func_us_801CEB08
+    E_UNK_3F,               // EntitySpectralSwordAura
     E_POLTERGEIST,          // EntityPoltergeist
     E_BREAKABLE_DEBRIS,     // EntityBreakableDebris
     NUM_ENTITIES,
@@ -97,8 +97,8 @@ enum EntityIDs {
 extern Primitive* FindFirstUnkPrim(Primitive* prim);
 extern Primitive* FindFirstUnkPrim2(Primitive* prim, u8 index);
 
-extern EInit OVL_EXPORT(EInitBreakable);
-extern EInit OVL_EXPORT(EInitObtainable);
+extern EInit g_EInitBreakable;
+extern EInit g_EInitObtainable;
 extern EInit g_EInitParticle;
 extern EInit g_EInitSpawner;
 extern EInit g_EInitInteractable;
@@ -119,5 +119,5 @@ extern EInit g_EInitGurkhaWeapon;
 extern EInit g_EInitBlade;
 extern EInit g_EInitBladeWeapon;
 extern EInit g_EInitSpectralSword;
-extern EInit D_us_8018097C;
+extern EInit g_EInitSpectralSwordAura;
 extern EInit g_EInitPoltergeist;

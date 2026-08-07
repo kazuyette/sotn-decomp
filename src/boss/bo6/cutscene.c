@@ -2,7 +2,7 @@
 #include "bo6.h"
 #include <cutscene.h>
 
-extern Dialogue OVL_EXPORT(Dialogue);
+extern Dialogue g_Dialogue;
 extern const char* actor_names[];
 
 #define CUTSCENE_UNK1_NEXT_X (DISP_STAGE_W + 2)
@@ -18,10 +18,10 @@ extern const char* actor_names[];
 
 #include "../../st/cutscene_actor_name.h"
 
-#include "../../st/set_cutscene_end.h"
+#include "../../st/set_cutscene_events.h"
 
 #define CUTSCENE_TILEMAP_SCROLL
-#include "../../st/cutscene_run.h"
+#include "../../st/cutscene_events.h"
 
 #include "../../st/cutscene_skip.h"
 

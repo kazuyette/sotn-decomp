@@ -7,10 +7,10 @@
 #include "../stages/overlay.h"
 #include "../boss/bo4/bo4.h"
 
-extern AbbreviatedOverlay2 OVL_EXPORT(Overlay);
-extern PfnEntityUpdate OVL_EXPORT(EntityUpdates)[];
-extern LayoutEntity* OVL_EXPORT(pStObjLayoutHorizontal)[];
-extern LayoutEntity* OVL_EXPORT(pStObjLayoutVertical)[];
+extern AbbreviatedOverlay2 g_BossOverlay;
+extern PfnEntityUpdate EntityUpdates[];
+extern LayoutEntity* entityLayoutHorizontal[];
+extern LayoutEntity* entityLayoutVertical[];
 extern GAME_IMPORT PfnEntityUpdate* PfnEntityUpdates;
 extern GAME_IMPORT LayoutEntity** g_pStObjLayoutHorizontal;
 extern GAME_IMPORT LayoutEntity** g_pStObjLayoutVertical;
@@ -25,8 +25,8 @@ SpriteParts* D_us_801B252C[1] = {0};
 
 OVL_API void InitStage(Overlay* o) {
     LoadReset();
-    memcpy(o, &OVL_EXPORT(Overlay), sizeof(AbbreviatedOverlay2));
-    PfnEntityUpdates = OVL_EXPORT(EntityUpdates);
-    g_pStObjLayoutHorizontal = OVL_EXPORT(pStObjLayoutHorizontal);
-    g_pStObjLayoutVertical = OVL_EXPORT(pStObjLayoutVertical);
+    memcpy(o, &g_BossOverlay, sizeof(AbbreviatedOverlay2));
+    PfnEntityUpdates = EntityUpdates;
+    g_pStObjLayoutHorizontal = entityLayoutHorizontal;
+    g_pStObjLayoutVertical = entityLayoutVertical;
 }

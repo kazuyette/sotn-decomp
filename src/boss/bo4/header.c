@@ -1,30 +1,28 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 #include "bo4.h"
 
-extern RoomHeader OVL_EXPORT(rooms)[];
-extern s16** OVL_EXPORT(spriteBanks)[];
-extern u_long* OVL_EXPORT(cluts)[];
-extern LayoutEntity* OVL_EXPORT(pStObjLayoutHorizontal)[];
-extern RoomDef OVL_EXPORT(rooms_layers)[];
-extern u_long** OVL_EXPORT(gfxBanks)[];
+#include "../../st/pfn_entity_update.h"
 
-extern u8* doppleganger_sprites[0x34C];
-extern u8* bat_form_sprites[6];
+extern RoomHeader rooms[];
+extern SpriteParts* spriteBanks[];
+extern u_long* cluts[];
+extern RoomDef rooms_layers[];
+extern GfxBank* gfxBanks[];
 
-extern s16** OVL_EXPORT(spriteBanks)[];
-extern u_long* OVL_EXPORT(cluts)[];
+extern u8* doppleganger_sprites[];
+extern u8* bat_form_sprites[];
 
-AbbreviatedOverlay2 OVL_EXPORT(Overlay) = {
+AbbreviatedOverlay2 g_BossOverlay = {
     .Update = Update,
     .HitDetection = HitDetection,
     .UpdateRoomPosition = UpdateRoomPosition,
     .InitRoomEntities = InitRoomEntities,
-    .rooms = OVL_EXPORT(rooms),
-    .spriteBanks = OVL_EXPORT(spriteBanks),
-    .cluts = OVL_EXPORT(cluts),
-    .objLayoutHorizontal = OVL_EXPORT(pStObjLayoutHorizontal),
-    .tileLayers = OVL_EXPORT(rooms_layers),
-    .gfxBanks = OVL_EXPORT(gfxBanks),
+    .rooms = rooms,
+    .spriteBanks = spriteBanks,
+    .cluts = cluts,
+    .objLayoutHorizontal = &OBJ_LAYOUT_HORIZONTAL,
+    .tileLayers = rooms_layers,
+    .gfxBanks = gfxBanks,
     .UpdateStageEntities = UpdateStageEntities,
     .unk2C = doppleganger_sprites,
     .unk30 = bat_form_sprites,

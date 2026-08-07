@@ -58,12 +58,16 @@ static void printHelp(void) {
     printf("  --disk <path>      file name of the second track\n");
     printf("  --stage <stage>    stage name or ID (e.g., nz0)\n");
     printf("  --player <name>    player name or ID (e.g. ric)\n");
+    printf("  --demo <number>    play a specific Tactics demo\n");
     printf("  --scale <number>   game internal resolution integer scale "
            "(default 1)\n");
     printf("  --test <mode>      run automated tests\n");
     printf("         sndlib      test sound library\n");
     printf("  --record <path>    record controller input to a file\n");
     printf("  --replay <path>    replay controller input from a file\n");
+    printf("  --replay-and-exit  quit automatically once the replay or demo "
+           "ends\n");
+    printf("  --replay-fast      disable frame limit during replay or demo\n");
     printf("  --help             show this help message\n");
 }
 static void printAllowedParams(const char* allowedValues[], int n) {
@@ -84,7 +88,12 @@ static bool parseArgs(
     outParams->testMode = NO_TEST;
     outParams->stage = -1;
     outParams->player = -1;
+    outParams->demo = -1;
     outParams->scale = 1;
+    outParams->recordPath = NULL;
+    outParams->replayPath = NULL;
+    outParams->exitAfterReplay = false;
+    outParams->replayBoundlessFramerate = false;
 
     for (int i = 1; i < argc; i++) {
         if (strcmp(argv[i], "--help") == 0) {
@@ -107,6 +116,12 @@ static bool parseArgs(
                 printAllowedParams(allowed_players, LEN(allowed_players));
                 return false;
             }
+        } else if (strcmp(argv[i], "--demo") == 0 && i + 1 < argc) {
+            outParams->demo = parseIntParam(argv[++i]);
+            if (outParams->demo < 0) {
+                printf("invalid demo index %s\n", argv[i]);
+                return false;
+            }
         } else if (strcmp(argv[i], "--scale") == 0 && i + 1 < argc) {
             outParams->scale = parseIntParam(argv[++i]);
             if (outParams->scale < 1 || outParams->scale > 8) {
@@ -120,6 +135,14 @@ static bool parseArgs(
                 printAllowedParams(allowed_tests, LEN(allowed_tests));
                 return false;
             }
+        } else if (strcmp(argv[i], "--record") == 0 && i + 1 < argc) {
+            outParams->recordPath = argv[++i];
+        } else if (strcmp(argv[i], "--replay") == 0 && i + 1 < argc) {
+            outParams->replayPath = argv[++i];
+        } else if (strcmp(argv[i], "--replay-and-exit") == 0) {
+            outParams->exitAfterReplay = true;
+        } else if (strcmp(argv[i], "--replay-fast") == 0) {
+            outParams->replayBoundlessFramerate = true;
         } else {
             printf("argument %s not recognized", argv[i]);
             return false;
@@ -140,6 +163,10 @@ int Main(int argc, char* argv[]) {
     }
     MainGame();
     ResetGame();
+    if (params.replayPath && Replay_DidDrift()) {
+        return -1;
+    }
+    return 0;
 }
 
 int main(int argc, char* argv[]) { return Main(argc, argv); }
