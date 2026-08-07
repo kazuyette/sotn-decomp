@@ -992,7 +992,50 @@ void func_us_801B7BAC(Entity* self) {
     self->posY.i.hi = y;
 }
 
-INCLUDE_ASM("boss/bo0/nonmatchings/2D26C", func_us_801B7C44);
+// Walks a singly-linked chain (next pointer at +0x0) starting at "list",
+// looking for a run of exactly "count" consecutive nodes with bit 0x8 set
+// in the u16 at +0x32. Returns the start of that run, or NULL if none is
+// found before the chain ends. Node type is unconfirmed -- no caller found
+// anywhere in this overlay's asm to cross-check the real type/field names
+// against; using raw offsets like the ext8C/ENTITY_EXT80-style helpers
+// elsewhere in this file.
+void* func_us_801B7C44(void* list, u8 count) {
+    void* node;
+    void* start;
+    s32 v1;
+
+    node = list;
+    if (node == NULL) {
+        return NULL;
+    }
+
+    do {
+        if (*(u16*)((u8*)node + 0x32) & 8) {
+            v1 = 1;
+            if (v1 < count) {
+                start = node;
+                do {
+                    node = *(void**)node;
+                    if (node == NULL) {
+                        return NULL;
+                    }
+                    if (!(*(u16*)((u8*)node + 0x32) & 8)) {
+                        break;
+                    }
+                    v1++;
+                } while (v1 < count);
+            } else {
+                start = node;
+            }
+            if (v1 == count) {
+                return start;
+            }
+        }
+        node = *(void**)node;
+    } while (node != NULL);
+
+    return NULL;
+}
 
 INCLUDE_ASM("boss/bo0/nonmatchings/2D26C", func_us_801B7CC8);
 
