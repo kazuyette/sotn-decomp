@@ -517,6 +517,7 @@ typedef struct PACKED {
     s32 _align_anim[2];
 #endif
     /* 0xAC */ u8 anim;
+    /* 0xAD */ u8 unkAD;
     /* 0xAE */ s16 equipId; // was unkAE; see issue #1737
 } ET_HeraldShieldSwirlEffect;
 
