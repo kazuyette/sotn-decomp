@@ -6,6 +6,8 @@
 
 #define OVL_EXPORT(x) RLIB_##x
 #define STAGE_IS_RLIB
+#define EntityRedDoor RLIB_EntityRedDoor
+#define g_RedDoorTiles D_us_80181020
 #define g_EInitObtainable RLIB_EInitObtainable
 
 enum Palettes {
