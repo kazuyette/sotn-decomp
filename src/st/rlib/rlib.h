@@ -6,6 +6,7 @@
 
 #define OVL_EXPORT(x) RLIB_##x
 #define STAGE_IS_RLIB
+#define g_EInitObtainable RLIB_EInitObtainable
 
 enum Palettes {
     PAL_NONE,

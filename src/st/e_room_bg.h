@@ -3,16 +3,22 @@
 extern EInit g_EInitCommon;
 
 #if defined(BG_BLOCK_OBJINIT_PLAIN)
-extern ObjInit OVL_EXPORT(BackgroundBlockInit)[];
+#define BG_BLOCK_EXPORT(x) OVL_EXPORT(x)
 #else
-extern ObjInit2 OVL_EXPORT(BackgroundBlockInit)[];
+#define BG_BLOCK_EXPORT(x) x
 #endif
 
-void OVL_EXPORT(EntityBackgroundBlock)(Entity* self) {
 #if defined(BG_BLOCK_OBJINIT_PLAIN)
-    ObjInit* objInit = &OVL_EXPORT(BackgroundBlockInit)[self->params];
+extern ObjInit BG_BLOCK_EXPORT(BackgroundBlockInit)[];
 #else
-    ObjInit2* objInit = &OVL_EXPORT(BackgroundBlockInit)[self->params];
+extern ObjInit2 BG_BLOCK_EXPORT(BackgroundBlockInit)[];
+#endif
+
+void BG_BLOCK_EXPORT(EntityBackgroundBlock)(Entity* self) {
+#if defined(BG_BLOCK_OBJINIT_PLAIN)
+    ObjInit* objInit = &BG_BLOCK_EXPORT(BackgroundBlockInit)[self->params];
+#else
+    ObjInit2* objInit = &BG_BLOCK_EXPORT(BackgroundBlockInit)[self->params];
 #endif
     if (!self->step) {
         InitializeEntity(g_EInitCommon);
