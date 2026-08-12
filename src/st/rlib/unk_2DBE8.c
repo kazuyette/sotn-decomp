@@ -7,7 +7,25 @@ INCLUDE_ASM("st/rlib/nonmatchings/unk_2DBE8", func_us_80196768_from_rbo0);
 
 INCLUDE_ASM("st/rlib/nonmatchings/unk_2DBE8", func_us_801AE414);
 
-INCLUDE_ASM("st/rlib/nonmatchings/unk_2DBE8", func_us_801AE4B4);
+s32 func_us_801AE4B4(s16* value, s16 target, s16 step) {
+    s16 current = *value;
+    s16 diff = current - target;
+    if (diff < 0) {
+        diff = -diff;
+    }
+    if (diff < step) {
+        *value = target;
+        return 1;
+    }
+    if (target < current) {
+        *value = current - step;
+    }
+    if (*value < target) {
+        *value = step + *value;
+    }
+    return 0;
+}
+
 
 INCLUDE_ASM("st/rlib/nonmatchings/unk_2DBE8", func_us_801AE534);
 
@@ -39,7 +57,25 @@ INCLUDE_ASM("st/rlib/nonmatchings/unk_2DBE8", EntityFishheadFireball);
 
 INCLUDE_ASM("st/rlib/nonmatchings/unk_2DBE8", func_us_801AF11C);
 
-INCLUDE_ASM("st/rlib/nonmatchings/unk_2DBE8", func_us_801AF3C8);
+s32 func_us_801AF3C8(s16* value, s16 target, s16 step) {
+    s16 current = *value;
+    s16 diff = current - target;
+    if (diff < 0) {
+        diff = -diff;
+    }
+    if (diff < step) {
+        *value = target;
+        return 1;
+    }
+    if (target < current) {
+        *value = current - step;
+    }
+    if (*value < target) {
+        *value = step + *value;
+    }
+    return 0;
+}
+
 
 INCLUDE_ASM("st/rlib/nonmatchings/unk_2DBE8", func_us_801AF448);
 
