@@ -45,6 +45,7 @@ static s16 g_SineTable[] = {
     0xFE6F, 0xFED3, 0xFF37, 0xFF9B,
 };
 
+#ifndef ST_COMMON_SKIP_PART1
 #include "../destroy_entity.h"
 
 #ifndef HARD_LINK
@@ -379,7 +380,9 @@ u8 GetAngleBetweenEntitiesShifted(Entity* a, Entity* b) {
     s16 dy = b->posY.i.hi - a->posY.i.hi;
     return Ratan2Shifted(dx, dy);
 }
+#endif // ST_COMMON_SKIP_PART1
 
+#ifndef ST_COMMON_SKIP_PART2
 // original name: search_point
 u8 GetAnglePointToEntityShifted(s16 x, s16 y) {
     s16 dx = x - g_CurrentEntity->posX.i.hi;
@@ -768,3 +771,4 @@ void ReplaceBreakableWithItemDrop(Entity* self) {
     self->unk6D[0] = 0x10;
     self->step = 0;
 }
+#endif // ST_COMMON_SKIP_PART2

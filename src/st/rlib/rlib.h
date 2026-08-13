@@ -6,6 +6,9 @@
 
 #define OVL_EXPORT(x) RLIB_##x
 #define STAGE_IS_RLIB
+#define EntityRedDoor RLIB_EntityRedDoor
+#define g_RedDoorTiles D_us_80181020
+#define g_EInitObtainable RLIB_EInitObtainable
 
 enum Palettes {
     PAL_NONE,
@@ -56,5 +59,13 @@ enum Entities {
     E_CANDLE_TABLE,          // EntityCandleTable
     NUM_ENTITIES,
 };
+
+// RLIB uses overlay-specific symbol names for the shared entity-layout
+// tables (matching the PSP naming convention), unlike other overlays whose
+// OVL_EXPORT is an identity macro. Redirect the generic names used by
+// pfn_entity_update.h / create_entity.h to RLIB's actual symbols.
+#define EntityUpdates OVL_EXPORT(EntityUpdates)
+#define entityLayoutHorizontal OVL_EXPORT(pStObjLayoutHorizontal)
+#define entityLayoutVertical OVL_EXPORT(pStObjLayoutVertical)
 
 #endif // RLIB_H

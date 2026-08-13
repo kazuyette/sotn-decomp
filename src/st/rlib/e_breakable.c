@@ -1,25 +1,18 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 #include "rlib.h"
 
-enum BreakableDebrisSteps {
-    INIT,
-    UPDATE,
-    DEBRIS_NOP = 256,
-};
-
 extern EInit RLIB_EInitBreakable;
 extern EInit g_EInitInteractable;
 extern EInit g_EInitParticle;
-extern u8* D_us_80180874[];
-extern u8 D_us_801808DC[];
-extern u8 D_us_8018089C[];
-extern u16 D_us_801808C8[];
-extern u16 D_us_801808E8[];
-extern u16 D_us_801808B4[];
-extern u16 D_us_801808FC[];
-extern u8 D_us_801808A8[];
-extern u8 D_us_8018082C[];
-extern u8 D_us_80180824[];
+
+extern u8 D_us_801808DC[];  // blendMode per breakableType
+extern u8 D_us_8018089C[];  // hitboxHeight per breakableType
+extern u16 D_us_801808C8[]; // animSet per breakableType
+extern u16 D_us_801808E8[]; // unk5A per breakableType
+extern u16 D_us_801808B4[]; // palette per breakableType
+extern u16 D_us_801808FC[]; // hitboxOffY per breakableType
+extern u8 D_us_801808A8[];  // explosion type per breakableType
+extern AnimateEntityFrame* D_us_80180874[]; // animations per breakableType
 
 void RLIB_EntityBreakable(Entity* self) {
     Entity* entity;
@@ -97,25 +90,28 @@ void RLIB_EntityBreakable(Entity* self) {
     }
 }
 
+extern AnimateEntityFrame D_us_80180824[]; // used when self->params == 0
+extern AnimateEntityFrame D_us_8018082C[]; // used when self->params != 0
+
 void EntityBreakableHelper(Entity* self) {
     Entity* entity;
-    u8* animFrames;
+
     if (!self->step) {
         InitializeEntity(g_EInitInteractable);
-        self->blendMode = BLEND_TRANSP | BLEND_ADD;
-        self->animSet = 0x8002;
+        self->blendMode = 0x30;
+        self->animSet = -0x7FFE;
     }
-    animFrames = D_us_8018082C;
     if (!self->params) {
-        animFrames = D_us_80180824;
+        AnimateEntity(D_us_80180824, self);
+    } else {
+        AnimateEntity(D_us_8018082C, self);
     }
-    AnimateEntity(animFrames, self);
     entity = self - 1;
     if (entity->entityId != E_BREAKABLE) {
-        if (self->params) {
-            self->animCurFrame = 14;
-        } else {
+        if (!self->params) {
             self->animCurFrame = 13;
+        } else {
+            self->animCurFrame = 14;
         }
     }
 }
@@ -123,21 +119,18 @@ void EntityBreakableHelper(Entity* self) {
 void RLIB_EntityBreakableDebris(Entity* self) {
     Collider collider;
     Primitive* prim;
-    switch (self->step) {
-    case INIT:
+
+    if (!self->step) {
         if (self->params & 256) {
             InitializeEntity(g_EInitInteractable);
-            self->animSet = 0x8007;
-            self->unk5A = 0x5B;
+            self->animSet = -0x7FF9;
+            self->unk5A = 91;
             self->palette = 0x213;
             self->animCurFrame = 21;
             self->zPriority = 106;
-            self->step = DEBRIS_NOP;
+            self->step = 256;
         } else {
             InitializeEntity(g_EInitParticle);
         }
-        break;
-    case UPDATE:
-        break;
     }
 }
