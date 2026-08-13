@@ -280,4 +280,115 @@ void func_us_801AF9E8(Entity* self) {
 }
 
 
-INCLUDE_ASM("st/rlib/nonmatchings/unk_2DBE8", func_us_801AFC88);
+extern EInit g_EInitSchmoo;
+extern AnimateEntityFrame D_us_8018198C[];
+extern AnimateEntityFrame D_us_80181998[];
+
+void func_us_801AFC88(Entity* self) {
+    u16 step;
+    s32 rot;
+
+    if (self->flags & 0x100) {
+        Entity* entity;
+
+        PlaySfxPositional(0x655);
+        entity = AllocEntity(&g_Entities[224], &g_Entities[256]);
+        if (entity != NULL) {
+            CreateEntityFromEntity(E_EXPLOSION, self, entity);
+            entity->params = 1;
+        }
+        DestroyEntity(self);
+        return;
+    }
+
+    step = self->step;
+    switch (step) {
+    case 0:
+        InitializeEntity(g_EInitSchmoo);
+        self->drawFlags = 4;
+        self->facingLeft = (GetSideToPlayer() & 1) ^ 1;
+        // fallthrough
+    case 1: {
+        s32 sideFlags;
+        s32 distX;
+        s32 flag;
+
+        AnimateEntity(D_us_8018198C, self);
+        MoveEntity();
+        sideFlags = GetSideToPlayer();
+
+        if (self->facingLeft) {
+            self->velocityX += 0xC00;
+            if (self->velocityX > 0x30000) {
+                self->velocityX = 0x30000;
+            }
+        } else {
+            self->velocityX -= 0xC00;
+            if (self->velocityX < (s32)0xFFFD0000) {
+                self->velocityX = (s32)0xFFFD0000;
+            }
+        }
+
+        if (sideFlags & 2) {
+            self->velocityY -= 0xC00;
+            if (self->velocityY < (s32)0xFFFE8000) {
+                self->velocityY = (s32)0xFFFE8000;
+            }
+        } else {
+            self->velocityY += 0xC00;
+            if (self->velocityY > 0x18000) {
+                self->velocityY = 0x18000;
+            }
+        }
+
+        flag = (sideFlags & 1) ^ 1;
+        distX = GetDistanceToPlayerX();
+        if (flag != self->facingLeft) {
+            if (distX < 0x59) {
+                SetStep(2);
+            }
+        }
+        break;
+    }
+    case 2:
+        MoveEntity();
+        switch (self->step_s) {
+        case 0: {
+            s32 absVelX;
+
+            self->velocityX -= self->velocityX >> 4;
+            self->velocityY -= self->velocityY >> 4;
+            absVelX = self->velocityX;
+            if (absVelX < 0) {
+                absVelX = -absVelX;
+            }
+            if (absVelX < 0x4000) {
+                self->step_s += 1;
+            }
+            break;
+        }
+        case 1: {
+            s32 animResult;
+
+            self->velocityX -= self->velocityX >> 8;
+            self->velocityY -= self->velocityY >> 8;
+            animResult = AnimateEntity(D_us_80181998, self);
+            if (!animResult) {
+                SetStep(1);
+            }
+            if (self->pose == step) {
+                self->facingLeft ^= 1;
+            }
+            break;
+        }
+        }
+        break;
+    }
+
+    rot = self->velocityX >> 8;
+    if (rot < 0) {
+        rot = -rot;
+    }
+    self->rotate = -rot;
+}
+
