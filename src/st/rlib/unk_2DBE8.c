@@ -204,7 +204,188 @@ s32 func_us_801AF3C8(s16* value, s16 target, s16 step) {
 }
 
 
-INCLUDE_ASM("st/rlib/nonmatchings/unk_2DBE8", func_us_801AF448);
+extern EInit g_EInitScarecrow;
+extern s16 D_us_80181984[];
+const char D_us_801A084C[] = "charal %x\n";
+extern u16 g_pads_1_pressed;
+
+void func_us_801AF448(Entity* self) {
+    if ((self->flags & 0x100) && self->step != 3) {
+        SetStep(3);
+    }
+
+    switch (self->step) {
+    case 0:
+        InitializeEntity(g_EInitScarecrow);
+        self->drawFlags = 4;
+        self->animCurFrame = 2;
+        self->hitboxWidth = 0xC;
+        self->hitboxHeight = 8;
+        self->hitboxOffY = -6;
+        if ((Random() & 0xF) == 0) {
+            self->params |= 1;
+        }
+        if (self->params != 0) {
+            self->animCurFrame = 7;
+            self->hitboxWidth = 9;
+            self->hitboxHeight = 0xC;
+            self->hitboxOffY = -6;
+            self->palette -= 1;
+            return;
+        }
+        {
+            s32 i;
+
+            for (i = 0; i < 4; i++) {
+                Entity* child = &self[i + 1];
+
+                CreateEntityFromEntity(0x25, self, child);
+                child->params = i;
+                child->nextPart = &self[i];
+                child->parent = self;
+            }
+            self->nextPart = &self[4];
+        }
+        // fallthrough
+    case 1: {
+        s32 collisionBuf[16];
+        s32 collided;
+
+        switch (self->step_s) {
+        case 0:
+            self->velocityY = (s32)0xFFFD8000;
+            self->velocityX = self->facingLeft ? 0x18000 : (s32)0xFFFE8000;
+            self->step_s += 1;
+            // fallthrough
+        case 1:
+            MoveEntity();
+            self->velocityY += 0x2000;
+            if (self->velocityY > 0) {
+                func_us_801AF3C8((s16*)&self->rotate, 0x100, 8);
+            } else {
+                func_us_801AF3C8((s16*)&self->rotate, -0x100, 0x10);
+            }
+
+            g_api.CheckCollision(*(s16*)((u8*)self + 0x2), *(s16*)((u8*)self + 0x6) + 0x30, collisionBuf, 0);
+            collided = collisionBuf[0];
+            if (collided & 1) {
+                s32 offset = collisionBuf[6];
+
+                PlaySfxPositional(0x649);
+                self->step_s = 0;
+
+                g_api.CheckCollision(*(s16*)((u8*)self + 0x2), *(s16*)((u8*)self + 0x6) + 0x28, collisionBuf, 0);
+                collided = collisionBuf[0];
+                if (collided & 1) {
+                    self->facingLeft ^= 1;
+                    return;
+                }
+
+                *(s16*)((u8*)self + 0x6) += offset;
+
+                {
+                    s32 sideFlags = GetSideToPlayer();
+                    s32 flag = (sideFlags & 1) ^ 1;
+                    s32 distX = GetDistanceToPlayerX();
+
+                    if (flag != self->facingLeft && distX >= 0x41) {
+                        self->facingLeft ^= 1;
+                        if ((Random() & 3) == 0) {
+                            SetStep(2);
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        break;
+    }
+    case 2: {
+        s32 side;
+
+        if (self->step_s == 0) {
+            self->velocityX = 0;
+            self->velocityY = 0;
+            (*(u16*)((u8*)self + 0x80)) = (Random() & 0x1F) + 0x20;
+            self->step_s += 1;
+        }
+
+        side = UnkCollisionFunc2(D_us_80181984);
+        if (self->facingLeft) {
+            self->velocityX += 0x1000;
+        } else {
+            self->velocityX -= 0x1000;
+        }
+        if (side == 0xFF) {
+            (*(u16*)((u8*)self + 0x80)) = 1;
+        }
+
+        if (--(*(u16*)((u8*)self + 0x80)) == 0) {
+            self->facingLeft = GetSideToPlayer() & 1;
+            SetStep(1);
+        }
+        break;
+    }
+    case 3: {
+        Entity* entity;
+        s32 angle;
+        s32 amplitude;
+        s32 dx, dy;
+        s32 i;
+
+        entity = AllocEntity(&g_Entities[224], &g_Entities[256]);
+        if (entity != NULL) {
+            CreateEntityFromEntity(E_EXPLOSION, self, entity);
+            entity->params = 3;
+        }
+
+        angle = self->rotate + 0x400;
+        if (self->facingLeft) {
+            angle = 0x800 - angle;
+        }
+        angle = (s16)angle;
+
+        amplitude = 0x30;
+        for (i = 0; i < 8; i++) {
+            dx = (amplitude * rcos(angle)) >> 12;
+            dy = (amplitude * rsin(angle)) >> 12;
+            entity = AllocEntity(&g_Entities[224], &g_Entities[256]);
+            amplitude -= 8;
+            if (entity != NULL) {
+                CreateEntityFromEntity(E_EXPLOSION_PUFF_OPAQUE, self, entity);
+                entity->params = 3;
+                entity->rotate = self->rotate;
+                *(s16*)((u8*)entity + 0x6) = *(s16*)((u8*)entity + 0x6) + dy;
+                *(s16*)((u8*)entity + 0x2) = *(s16*)((u8*)self + 0x2) + dx;
+            }
+        }
+
+        PlaySfxPositional(0x62C);
+        DestroyEntity(self);
+        break;
+    }
+    case 0xFF:
+        FntPrint(D_us_801A084C, self->animCurFrame);
+        if (g_pads_1_pressed & 0x80) {
+            if (self->params == 0) {
+                self->animCurFrame += 1;
+                self->params |= 1;
+            }
+        } else {
+            self->params = 0;
+        }
+        if (g_pads_1_pressed & 0x20) {
+            if (self->step_s == 0) {
+                self->animCurFrame -= 1;
+                self->step_s |= 1;
+            }
+        } else {
+            self->step_s = 0;
+        }
+        break;
+    }
+}
+
 
 extern EInit D_us_801806A0;
 
@@ -234,8 +415,8 @@ void func_us_801AF9E8(Entity* self) {
         self->drawFlags |= 4;
         self->animCurFrame = D_us_80181954[self->params].unk0;
         self->zPriority = parent->zPriority + D_us_80181954[self->params].unk2;
-        self->unk84 = parent->velocityX;
-        self->unk88 = parent->velocityY;
+        (*(s32*)((u8*)self + 0x84)) = parent->velocityX;
+        (*(s32*)((u8*)self + 0x88)) = parent->velocityY;
         // fallthrough
     case 1:
         parent = self - (self->params + 1);
@@ -254,8 +435,8 @@ void func_us_801AF9E8(Entity* self) {
         *pUnk6 += dy;
 
         {
-            s32 velDiffX = parent->velocityX - self->unk84;
-            s32 velDiffY = self->unk88 - parent->velocityY;
+            s32 velDiffX = parent->velocityX - (*(s32*)((u8*)self + 0x84));
+            s32 velDiffY = (*(s32*)((u8*)self + 0x88)) - parent->velocityY;
             if (self->facingLeft) {
                 velDiffX = -velDiffX;
             }
@@ -270,8 +451,8 @@ void func_us_801AF9E8(Entity* self) {
             self->rotate = s5->unk8;
         }
 
-        self->unk84 = parent->velocityX;
-        self->unk88 = parent->velocityY;
+        (*(s32*)((u8*)self + 0x84)) = parent->velocityX;
+        (*(s32*)((u8*)self + 0x88)) = parent->velocityY;
         if (parent->entityId != 0x24) {
             DestroyEntity(self);
         }
