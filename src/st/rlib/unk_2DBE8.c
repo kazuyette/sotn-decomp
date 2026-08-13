@@ -87,7 +87,97 @@ s32 func_us_801AE4B4(s16* value, s16 target, s16 step) {
 
 INCLUDE_ASM("st/rlib/nonmatchings/unk_2DBE8", func_us_801AE534);
 
-INCLUDE_ASM("st/rlib/nonmatchings/unk_2DBE8", func_us_801AED4C);
+extern EInit D_us_80180670;
+
+void func_us_801AED4C(Entity* self) {
+    Entity* parent = self - 1;
+
+    self->posX = parent->posX;
+    self->facingLeft = parent->facingLeft;
+    self->posY = parent->posY;
+
+    switch (self->step) {
+    case 0:
+        InitializeEntity(D_us_80180670);
+        self->drawFlags = 4;
+        // fallthrough
+    case 1: {
+        u8 flag = *(u8*)((u8*)parent + 0x84);
+
+        if (flag == 1) {
+            self->hitboxState = 0;
+            self->animCurFrame = 0;
+        } else {
+            s32 angle;
+            s32 c, sn;
+
+            self->rotate = *(u16*)((u8*)parent + 0x82);
+            self->animCurFrame = 5;
+            angle = self->rotate;
+            self->hitboxState = 1;
+            angle += 0x200;
+            angle = (s16)angle;
+
+            c = rcos(angle);
+            self->hitboxOffX = (u32)((c << 3) - c) >> 10;
+            sn = rsin(angle);
+            self->hitboxOffY = (u32)((sn << 3) - sn) >> 10;
+
+            if (self->rotate < 0xF00) {
+                PlaySfxPositional(0x6C7);
+            }
+        }
+
+        if (*((u8*)parent + 0x85) != 0 || (parent->flags & 0x100)) {
+            self->hitboxState = 0;
+            self->step += 1;
+        }
+        break;
+    }
+    case 2: {
+        Entity* entity;
+        s32 i;
+
+        entity = AllocEntity(&g_Entities[224], &g_Entities[256]);
+        if (entity != NULL) {
+            CreateEntityFromEntity(0x23, self, entity);
+            entity->facingLeft = self->facingLeft;
+            entity->rotate = self->rotate;
+            entity->params = 5;
+            entity->zPriority = self->zPriority;
+        }
+
+        for (i = 0; i < 8; i++) {
+            entity = AllocEntity(&g_Entities[224], &g_Entities[256]);
+            if (entity != NULL) {
+                CreateEntityFromEntity(0x23, self, entity);
+                entity->params = 0;
+                entity->zPriority = self->zPriority;
+            }
+        }
+
+        PlaySfxPositional(0x645);
+
+        self->hitboxWidth = 0xF;
+        self->hitboxHeight = 0xB;
+        self->hitboxOffX = 0x17;
+        self->hitboxOffY = -5;
+        self->parent = parent;
+        self->animCurFrame = 0;
+        self->hitboxState = parent->hitboxState;
+        self->attackElement = parent->attackElement;
+        self->attack = parent->attack;
+        self->step += 1;
+        break;
+    }
+    case 3:
+        if (parent->entityId != 0x1F || (parent->flags & 0x100)) {
+            DestroyEntity(self);
+        }
+        break;
+    }
+}
+
 
 extern EInit D_us_80180688;
 extern u8 D_us_80181888[];
