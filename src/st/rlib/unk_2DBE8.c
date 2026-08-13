@@ -320,7 +320,254 @@ s32 func_us_801AE4B4(s16* value, s16 target, s16 step) {
 }
 
 
-INCLUDE_ASM("st/rlib/nonmatchings/unk_2DBE8", func_us_801AE534);
+extern EInit g_EInitTinman;
+extern s16 D_us_80181820[];
+extern s16 D_us_80181830[];
+extern AnimateEntityFrame D_us_80181838[];
+extern AnimateEntityFrame D_us_801818B8[];
+extern AnimateEntityFrame D_us_80181844[];
+extern AnimateEntityFrame D_us_80181880[];
+const char D_us_801A0840[] = "charal %x\n";
+
+void func_us_801AE534(Entity* self) {
+    if (self->step != 0) {
+        s16 val = *(s16*)((u8*)g_api.enemyDefs + 0x2944);
+        if (val < 0) {
+            val += 3;
+        }
+        val >>= 2;
+        if (self->hitPoints < val && self->step < 5) {
+            SetStep(5);
+        }
+    }
+
+    if (self->hitFlags & 3) {
+        PlaySfxPositional(0x73D);
+    }
+    if (self->flags & 0x100) {
+        if (self->step != 7) {
+            SetStep(7);
+        }
+    }
+
+    switch (self->step) {
+    case 0:
+        InitializeEntity(g_EInitTinman);
+        self->hitboxOffY = 9;
+        CreateEntityFromCurrentEntity(0x20, self + 1);
+        (self + 1)->zPriority = self->zPriority + 1;
+        // fallthrough
+    case 1:
+        if (UnkCollisionFunc3(D_us_80181820) & 1) {
+            SetStep(2);
+        }
+        break;
+    case 2:
+        if (GetDistanceToPlayerX() < 0x60) {
+            SetStep(3);
+        }
+        break;
+    case 3: {
+        s32 exceeded;
+        s32 clamped = 0;
+        s32 spawnFlag;
+
+        AnimateEntity(D_us_80181838, self);
+
+        *(u8*)((u8*)self + 0x84) = 0;
+        if (self->facingLeft) {
+            self->velocityX += 0x800;
+            exceeded = (0x18000 < self->velocityX);
+        } else {
+            self->velocityX -= 0x800;
+            exceeded = (self->velocityX < (s32)0xFFFE8000);
+        }
+
+        if (exceeded) {
+            self->velocityX = self->facingLeft ? 0x18000 : (s32)0xFFFE8000;
+            clamped = 1;
+        }
+
+        if (clamped) {
+            spawnFlag = (Random() & 0x1F) < 1;
+            if (self->poseTimer != 0) {
+                self->poseTimer -= 1;
+            }
+        } else {
+            spawnFlag = (g_Timer & 0xF) < 1;
+        }
+
+        if (spawnFlag) {
+            Entity* entity = AllocEntity(&g_Entities[224], &g_Entities[256]);
+            if (entity != NULL) {
+                CreateEntityFromEntity(0x22, self, entity);
+                *(Entity**)((u8*)entity + 0x9C) = self;
+                entity->facingLeft = self->facingLeft;
+                entity->zPriority = self->zPriority + 1;
+            }
+        }
+
+        if (UnkCollisionFunc2(D_us_80181830) & 0x60) {
+            self->posX -= self->velocityX;
+            self->velocityX = -self->velocityX;
+        }
+
+        if (GetDistanceToPlayerX() < 0x50) {
+            *(u16*)((u8*)self + 0x82) = (*(u16*)((u8*)self + 0x82) - 0x100) & 0xFFF;
+        } else {
+            func_us_801AE4B4((s16*)((u8*)self + 0x82), 0, 0x80);
+        }
+
+        if ((GetSideToPlayer() & 1) != self->facingLeft) {
+            break;
+        }
+        if (GetDistanceToPlayerX() < 0x31) {
+            break;
+        }
+        SetStep(4);
+        break;
+    }
+    case 4: {
+        s32 collision;
+
+        self->velocityX -= self->velocityX / 32;
+
+        collision = UnkCollisionFunc2(D_us_80181830);
+        if (collision & 0x60) {
+            self->posX -= self->velocityX;
+            self->velocityX = -self->velocityX;
+        }
+
+        switch (self->step_s) {
+        case 0:
+            *(u8*)((u8*)self + 0x84) = 0;
+            if (func_us_801AE4B4((s16*)((u8*)self + 0x82), 0, 0x80)) {
+                self->step_s += 1;
+            }
+            break;
+        case 1:
+            *(u8*)((u8*)self + 0x84) = 1;
+            if (!AnimateEntity(D_us_801818B8, self)) {
+                *(u8*)((u8*)self + 0x84) = 0;
+                self->animCurFrame = 1;
+                self->facingLeft ^= 1;
+                SetStep(3);
+            }
+            break;
+        }
+        break;
+    }
+    case 5:
+        switch (self->step_s) {
+        case 0:
+            self->velocityX = (GetSideToPlayer() & 1) ? 0x10000 : (s32)0xFFFF0000;
+            self->velocityY = (s32)0xFFFE0000;
+            self->drawFlags = 4;
+            self->step_s += 1;
+            // fallthrough
+        case 1:
+            func_us_801AE4B4((s16*)&self->rotate, 0x80, 0x10);
+            if (UnkCollisionFunc3(D_us_80181820) & 1) {
+                self->step_s += 1;
+            }
+            break;
+        case 2:
+            if (func_us_801AE4B4((s16*)&self->rotate, 0, 0x10)) {
+                *(u8*)((u8*)self + 0x85) = 1;
+                self->drawFlags = 0;
+                self->rotate = 0;
+                self->step_s += 1;
+            }
+            break;
+        case 3:
+            if (!AnimateEntity(D_us_80181844, self)) {
+                self->hitboxWidth = 0xF;
+                self->hitboxHeight = 0x11;
+                self->hitboxOffX = 2;
+                self->hitboxOffY = 0xF;
+                *(u16*)((u8*)self + 0x80) = Random() & 0xF;
+                SetStep(6);
+            }
+            break;
+        }
+        break;
+    case 6: {
+        AnimateEntity(D_us_80181880, self);
+        if ((*(u16*)((u8*)self + 0x80) & 7) == 0) {
+            PlaySfxPositional(0x658);
+        }
+        *(u16*)((u8*)self + 0x80) += 1;
+        if ((*(u16*)((u8*)self + 0x80) & 3) == 0) {
+            Entity* entity = AllocEntity(&g_Entities[160], &g_Entities[192]);
+            if (entity != NULL) {
+                CreateEntityFromEntity(0x21, self, entity);
+                entity->facingLeft = self->facingLeft;
+                *(s16*)((u8*)entity + 0x6) = *(s16*)((u8*)entity + 0x6) - 7 - ((*(u16*)((u8*)self + 0x80) & 7) >> 1);
+                if (self->facingLeft) {
+                    *(s16*)((u8*)entity + 0x2) -= 2;
+                } else {
+                    *(s16*)((u8*)entity + 0x2) += 2;
+                }
+            }
+        }
+        break;
+    }
+    case 7:
+        UnkCollisionFunc3(D_us_80181820);
+        func_us_801AE4B4((s16*)&self->rotate, 0, 0x20);
+        switch (self->step_s) {
+        case 0:
+            if (*(u8*)((u8*)self + 0x85)) {
+                self->hitboxState = 0;
+                self->step_s = 2;
+            } else {
+                self->step_s = 1;
+            }
+            break;
+        case 1:
+            if (!AnimateEntity(D_us_80181844, self)) {
+                self->step_s += 1;
+            }
+            break;
+        case 2: {
+            s32 i;
+
+            for (i = 0; i < 0xB; i++) {
+                Entity* entity = AllocEntity(&g_Entities[224], &g_Entities[256]);
+                if (entity != NULL) {
+                    CreateEntityFromEntity(0x23, self, entity);
+                    entity->params = i + 0x3B;
+                    entity->facingLeft = self->facingLeft;
+                }
+            }
+            PlaySfxPositional(0x6CA);
+            DestroyEntity(self);
+            break;
+        }
+        }
+        break;
+    case 0xFF:
+        FntPrint(D_us_801A0840, self->animCurFrame);
+        if (g_pads_1_pressed & 0x80) {
+            if (self->params == 0) {
+                self->animCurFrame += 1;
+                self->params |= 1;
+            }
+        } else {
+            self->params = 0;
+        }
+        if (g_pads_1_pressed & 0x20) {
+            if (self->step_s == 0) {
+                self->animCurFrame -= 1;
+                self->step_s |= 1;
+            }
+        } else {
+            self->step_s = 0;
+        }
+        break;
+    }
+}
+
 
 extern EInit D_us_80180670;
 
