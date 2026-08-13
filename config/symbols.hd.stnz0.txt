@@ -1,3 +1,8 @@
+g_EInitObtainable = 0x80180BD4;
+g_EInitInteractable = 0x80180BF8;
+g_EInitCommon = 0x80180C1C;
+g_EInitBloodSkeleton = 0x80180C40;
+g_EInitSubwpnClochePieces = 0x80180CF4;
 func_801A7D64 = 0x801B03F4; // source=duplicate
 func_801A7E2C = 0x801B04BC; // source=duplicate
 func_801B0AA4 = 0x801B0540; // source=duplicate

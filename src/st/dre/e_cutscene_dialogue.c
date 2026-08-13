@@ -41,7 +41,7 @@ enum DialogueSubsteps {
 #define NUM_CUTSCENE_PRIM 7
 #endif
 
-#ifdef VERSION_PSP
+#if defined(VERSION_PSP) || defined(VERSION_HD)
 extern u8* OVL_EXPORT(cutscene_script); // Defined by st_init
 extern u8* D_pspeu_092600B8;            // Defined by st_init
 extern u8* D_pspeu_092600B0;            // Defined by st_init
@@ -181,10 +181,20 @@ static bool dialogue_started;
 #include "../cutscene_script_box.h"
 #include "../cutscene_script_text.h"
 #else
+#if !defined(VERSION_HD)
 // This array is in Data, but the strings within it are rodata. That rodata
 // lives between the jump tables in this file, so we have to import the rodata,
 // and also the data.
 static const char* actor_names[] = {_S("Alucard"), _S("Lisa"), _S("Succubus")};
+#else
+// TODO: placeholder values, NOT byte-exact. Real packed glyph-code content
+// (see src/st/cen/cutscene.c for the format: two-char-per-u16 packing when
+// the 0xF000 bit is set) needs to be extracted from the real HD dre.bin via
+// Ghidra -- unblocking compilation only for now.
+static u16 actor_names[] = {0x0000, 0x0000, 0x0000};
+static u8 actor_prims[] = {1, 1, 1};
+static u8 actor_name_len[] = {1, 1, 1};
+#endif
 
 // bss
 s32 g_SkipCutscene; // used by e_cutscene_actors and e_succubus

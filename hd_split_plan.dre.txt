@@ -1,0 +1,119 @@
+0x80191684	e_room_fg	func_80192E54	EntityRoomForeground	stwrp
+0x80191764	e_lock_camera	func_801870B0	WRP_EntityLockCamera	stwrp
+0x80191920	e_breakable	func_8018726C	EntityBreakable	stwrp
+0x80191A54	e_background_clouds	func_80191E34	EntityBackgroundClouds	stdre
+0x80191D24	e_succubus	func_80192104	EntitySuccubus	stdre
+0x80193754	e_succubus	func_80193B3C	EntitySuccubusPetal	stdre
+0x80193994	e_succubus	func_80193D7C	EntitySuccubusWingOverlay	stdre
+0x80193A30	e_succubus	func_80193E18	EntitySuccubusClone	stdre
+0x80193E2C	e_succubus	func_80194214	EntityPinkBallProjectile	stdre
+0x801940A0	e_succubus	func_80194488	EntitySuccubusWingSpike	stdre
+0x801942DC	e_succubus	func_801946C4	EntitySuccubusWingSpikeTip	stdre
+0x801943DC	hd	func_801A89D8		
+0x80194850	cutscene	func_801A8E34	SetCutsceneEnd	stst0
+0x8019487C	hd	func_801A8E60		
+0x80194B40	e_cutscene_dialogue	func_80194F14	CutsceneSkip	stdre
+0x80194C20	e_cutscene_dialogue	func_801950F8	DRE_EntityCutsceneDialogue	stdre
+0x80195D8C	hd	func_801961DC		
+0x80195DE8	e_cutscene_actors	func_80196238	EntityCSMoveAlucard	stdre
+0x801961F8	e_cutscene_actors	func_80196678	EntityUnkId23	stdre
+0x801964FC	e_cutscene_actors	func_8019697C	EntityFadeToWhite1	stdre
+0x80196848	e_cutscene_actors	func_80196CC8	EntityFadeToWhite2	stdre
+0x80196B10	st_update	func_801881E8	Random	stwrp
+0x80196B40	st_update	func_80188218	Update	stwrp
+0x80196E3C	st_update	func_80188514	UpdateStageEntities	stwrp
+0x80196F44	collision	func_8018861C	HitDetection	stwrp
+0x8019805C	collision	func_80189734	EntityDamageDisplay	stwrp
+0x80198700	create_entity	func_80189DD8	CreateEntityFromLayout	stwrp
+0x801987C4	create_entity	func_80189FB4	CreateEntityWhenInHorizontalRange	stwrp
+0x801989F4	hd	func_8018A380		
+0x80198A40	hd	func_8018A3CC		
+0x80198A98	hd	func_8018A424		
+0x80198B94	hd	func_8018A520		
+0x80198F5C	create_entity	func_8018A634	InitRoomEntities	stwrp
+0x801990D4	create_entity	func_8018A7AC	UpdateRoomPosition	stwrp
+0x80199188	create_entity	func_8018A860	CreateEntityFromCurrentEntity	stwrp
+0x801991FC	create_entity	func_8018A8D4	CreateEntityFromEntity	stwrp
+0x80199278	hd	func_8018A950		
+0x801992F0	e_red_door	func_8018A9C8	WRP_EntityRedDoor	stwrp
+0x80199F28	st_common	func_8018B600	DestroyEntity	stwrp
+0x80199F94	st_common	func_8018B66C	DestroyEntitiesFromIndex	stwrp
+0x8019A010	st_common	func_8018B6E8	PreventEntityFromRespawning	stwrp
+0x8019A058	st_common	func_8018B730	AnimateEntity	stwrp
+0x8019A110	st_common	func_8018B7E8	UnkAnimFunc	stwrp
+0x8019A228	st_common	func_8018B900	GetDistanceToPlayerX	stwrp
+0x8019A264	st_common	func_8018B93C	GetDistanceToPlayerY	stwrp
+0x8019A298	st_common	func_8018B970	GetSideToPlayer	stwrp
+0x8019A2DC	st_common	func_8018B9B4	MoveEntity	stwrp
+0x8019A30C	st_common	func_8018B9E4	FallEntity	stwrp
+0x8019A338	st_common	func_8018BA10	UnkCollisionFunc3	stwrp
+0x8019A5B0	st_common	func_8018BC88	UnkCollisionFunc2	stwrp
+0x8019A798	st_common	func_8018BE70	AllocEntity	stwrp
+0x8019A7F8	st_common	func_8018BED0	GetSineScaled	stwrp
+0x8019A824	st_common	func_8018BEFC	GetSine	stwrp
+0x8019A840	st_common	func_8018BF18	SetEntityVelocityFromAngle	stwrp
+0x8019A8AC	st_common	func_8018BF84	Ratan2Shifted	stwrp
+0x8019A8E4	st_common	func_8018BFBC	GetAngleBetweenEntitiesShifted	stwrp
+0x8019A92C	st_common	func_8018C198	GetAnglePointToEntity	stwrp
+0x8019A974	st_common	func_8018C04C	AdjustValueWithinThreshold	stwrp
+0x8019A9CC	st_common	func_8018C0A4	UnkEntityFunc0	stwrp
+0x8019AA58	st_common	func_8018C130	Ratan2	stwrp
+0x8019AA88	st_common	func_8018C160	GetAngleBetweenEntities	stwrp
+0x8019AB08	st_common	func_8018C1E0	LimitAngleChange	stwrp
+0x8019AB68	st_common	func_8018C240	SetStep	stwrp
+0x8019AB88	st_common	func_8018C260	SetSubStep	stwrp
+0x8019ABA4	st_common	func_8018C27C	EntityExplosionSpawn	stwrp
+0x8019AC38	st_common	func_8018C310	InitializeEntity	stwrp
+0x8019AD34	st_common	func_8018C40C	EntityDummy	stwrp
+0x8019AD5C	st_common	func_8018C434	UnkCollisionFunc	stwrp
+0x8019AE84	st_common	func_8018C55C	CheckFieldCollision	stwrp
+0x8019AFDC	st_common	func_8018C6B4	GetPlayerCollisionWith	stwrp
+0x8019B320	st_common	func_8018C9F8	ReplaceBreakableWithItemDrop	stwrp
+0x8019B3D8	hd	func_8018CAB0		
+0x8019B45C	hd	func_8018CB34		
+0x8019B5B8	hd	func_8018CC90		
+0x8019B638	e_collect	func_8018CD10	CollectGold	stwrp
+0x8019B714	hd	func_8018CDEC		
+0x8019B82C	e_collect	func_8018CF04	CollectHeartVessel	stwrp
+0x8019B8D0	hd	func_8018CFA8		
+0x8019B920	hd	func_8018CFF8		
+0x8019B948	e_collect	func_8018D020	EntityPrizeDrop	stwrp
+0x8019C1BC	e_collect	func_8018D894	EntityExplosion	stwrp
+0x8019C2B8	hd	func_8018D990		
+0x8019C35C	e_collect	func_8018DA34	EntityEquipItemDrop	stwrp
+0x8019C948	e_collect	func_8018E2CC	EntityRelicOrb	stwrp
+0x8019D46C	e_collect	func_8018ED9C	EntityHeartDrop	stwrp
+0x8019DB14	e_misc	func_8018F420	CheckColliderOffsets	stwrp
+0x8019DC04	e_misc	func_8018F510	EntityUnkId13	stwrp
+0x8019DD14	e_misc	func_8018F620	EntityExplosionVariantsSpawner	stwrp
+0x8019DE44	e_misc	func_8018F750	EntityGreyPuffSpawner	stwrp
+0x8019DF2C	e_misc	func_8018F838	EntityExplosionVariants	stwrp
+0x8019E01C	e_misc	func_8018F928	EntityGreyPuff	stwrp
+0x8019E110	e_misc	func_8018FA1C	EntityOlroxDrool	stwrp
+0x8019E340	e_misc	func_8018FC4C	UnkCollisionFunc5	stwrp
+0x8019E43C	e_misc	func_8018FD48	UnkCollisionFunc4	stwrp
+0x8019E9BC	e_misc	func_801902C8	EntityIntenseExplosion	stwrp
+0x8019EABC	e_misc	func_801903C8	InitializeUnkEntity	stwrp
+0x8019EB88	e_misc	func_80190494	MakeEntityFromId	stwrp
+0x8019EC50	e_misc	func_8019055C	MakeExplosions	stwrp
+0x8019ED08	e_misc	func_80190614	EntityBigRedFireball	stwrp
+0x8019EEE0	e_misc	func_801907EC	UnkRecursivePrimFunc1	stwrp
+0x8019F4C0	e_misc	func_80190DCC	UnkRecursivePrimFunc2	stwrp
+0x8019FBC0	e_misc	func_801914CC	ClutLerp	stwrp
+0x8019FDB8	e_misc	func_801916C4	PlaySfxPositional	stwrp
+0x801A05D8	e_particles	func_80192610	EntitySoulStealOrb	stwrp
+0x801A096C	e_particles	func_801929A4	EntityEnemyBlood	stwrp
+0x801A12E0	prim_helpers	func_80193270	UnkPrimHelper	stwrp
+0x801A16C8	prim_helpers	func_80193658	UpdateAnimation	stwrp
+0x801A1818	prim_helpers	func_801937A8	FindFirstUnkPrim	stwrp
+0x801A1848	prim_helpers	func_801937D8	FindFirstUnkPrim2	stwrp
+0x801A18C4	prim_helpers	func_80193854	PrimToggleVisibility	stwrp
+0x801A194C	prim_helpers	func_801938DC	PrimResetNext	stwrp
+0x801A1A2C	prim_helpers	func_801939BC	UnkPolyFunc2	stwrp
+0x801A1A80	prim_helpers	func_80193A10	UnkPolyFunc0	stwrp
+0x801A1AAC	prim_helpers	func_80193A3C	PrimDecreaseBrightness	stwrp
+0x801A1B10	hd	func_801A2848		
+0x801A1D20	hd	func_801A2A58		
+0x801A1F64	hd	func_801A2C9C		
+0x801A20E8	e_background_house	func_801A2E20	Entity3DHouseSpawner	stdre
+0x801A21D8	e_background_house	func_801A2F10	Entity3DBackgroundHouse	stdre

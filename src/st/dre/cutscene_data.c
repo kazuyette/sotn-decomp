@@ -2,7 +2,7 @@
 #include "dre.h"
 #include <cutscene.h>
 
-#ifdef VERSION_PSP
+#if defined(VERSION_PSP) || defined(VERSION_HD)
 u8 cutscene_script_pre_fight_it[] = {
 #include "gen/cutscene_script_pre_fight_it.h"
 #include "gen/cutscene_data_pre_fight_it.h"

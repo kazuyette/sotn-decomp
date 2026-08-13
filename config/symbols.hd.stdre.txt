@@ -1,3 +1,27 @@
+CreateEntityWhenInHorizontalRange = 0x801988DC;
+func_hd_8019B430 = 0x8019B430;
+func_hd_8019B470 = 0x8019B470;
+gfx_stage_name_jp_sm = 0x80181CFC; // size:0x94BC
+D_hd_80188218 = 0x80188218; // size:0x4
+D_hd_8018861C = 0x8018861C; // size:0x4
+D_hd_80188514 = 0x80188514; // size:0x4
+D_hd_8018A634 = 0x8018A634; // size:0x4
+D_hd_8018A7AC = 0x8018A7AC; // size:0x4
+dre_tilemap_0 = 0x8018B1B8; // size:0x4820
+rooms = 0x801814B0; // size:0x14
+entityLayoutHorizontal = 0x80180220; // size:0xD4
+entityLayoutVertical = 0x801802F4; // size:0xD4
+D_hd_80191594 = 0x80191594;
+D_hd_8019159C = 0x8019159C;
+D_hd_801915A4 = 0x801915A4;
+D_hd_801915AC = 0x801915AC;
+D_hd_801915B4 = 0x801915B4;
+D_hd_801915BC = 0x801915BC;
+D_hd_801915C4 = 0x801915C4;
+D_hd_801915CC = 0x801915CC;
+D_hd_801915D4 = 0x801915D4;
+D_hd_801915DC = 0x801915DC;
+D_hd_8019161C = 0x8019161C;
 func_80192E54 = 0x80191684; // source=duplicate
 func_801870B0 = 0x80191764; // source=duplicate
 func_8018726C = 0x80191920; // source=duplicate
@@ -25,7 +49,7 @@ func_80188514 = 0x80196E3C; // source=duplicate
 func_8018861C = 0x80196F44; // source=duplicate
 func_80189734 = 0x8019805C; // source=duplicate
 func_80189DD8 = 0x80198700; // source=duplicate
-func_80189FB4 = 0x801987C4; // source=duplicate
+CreateEntityWhenInVerticalRange = 0x801987C4; // source=duplicate, real name resolved
 func_8018A380 = 0x801989F4; // source=duplicate
 func_8018A3CC = 0x80198A40; // source=duplicate
 func_8018A424 = 0x80198A98; // source=duplicate
@@ -36,7 +60,7 @@ func_8018A860 = 0x80199188; // source=duplicate
 func_8018A8D4 = 0x801991FC; // source=duplicate
 func_8018A950 = 0x80199278; // source=duplicate
 func_8018A9C8 = 0x801992F0; // source=duplicate
-func_8018B600 = 0x80199F28; // source=duplicate
+DestroyEntity = 0x80199F28; // source=duplicate, real name resolved
 func_8018B66C = 0x80199F94; // source=duplicate
 func_8018B6E8 = 0x8019A010; // source=duplicate
 func_8018B730 = 0x8019A058; // source=duplicate
@@ -44,8 +68,8 @@ func_8018B7E8 = 0x8019A110; // source=duplicate
 func_8018B900 = 0x8019A228; // source=duplicate
 func_8018B93C = 0x8019A264; // source=duplicate
 func_8018B970 = 0x8019A298; // source=duplicate
-func_8018B9B4 = 0x8019A2DC; // source=duplicate
-func_8018B9E4 = 0x8019A30C; // source=duplicate
+MoveEntity = 0x8019A2DC; // source=duplicate, real name resolved
+FallEntity = 0x8019A30C; // source=duplicate, real name resolved
 func_8018BA10 = 0x8019A338; // source=duplicate
 func_8018BC88 = 0x8019A5B0; // source=duplicate
 func_8018BE70 = 0x8019A798; // source=duplicate
@@ -60,7 +84,7 @@ func_8018C0A4 = 0x8019A9CC; // source=duplicate
 func_8018C130 = 0x8019AA58; // source=duplicate
 func_8018C160 = 0x8019AA88; // source=duplicate
 func_8018C1E0 = 0x8019AB08; // source=duplicate
-func_8018C240 = 0x8019AB68; // source=duplicate
+SetStep = 0x8019AB68; // source=duplicate, real name resolved
 func_8018C260 = 0x8019AB88; // source=duplicate
 func_8018C27C = 0x8019ABA4; // source=duplicate
 func_8018C310 = 0x8019AC38; // source=duplicate

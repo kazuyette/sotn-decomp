@@ -1,3 +1,4 @@
+MoveImage = 0x80012BEC;
 g_CastleFlags = 0x8003BDEC;
 g_api = 0x8003C774;
 g_Settings = 0x8003C9F8;

@@ -28,6 +28,7 @@ options:
   ld_bss_is_noload: false
   disasm_unknown: true
   disassemble_all: true
+  ld_generate_symbol_per_data_segment: true
   global_vram_start: 0x80010000
 sha1: 60a233f9945023443904c66e68a64932f8726ba6
 segments:
@@ -38,8 +39,49 @@ segments:
     align: 4
     subalign: 4
     subsegments:
-      - [0x0, data]
+      - [0x0, data, hd_a]
+      - [0x220, .data, gen/e_laydef]
+      - [0x3C8, .data, e_init]
+      - [0x516, data, hd_b]
+      - [0x518, .data, background_block_init]
+      - [0x550, .data, e_red_door_tiles]
+      - [0x580, .data, d_prize_drops]
+      - [0x580, data, hd_c]
+      - [0x14B0, .data, gen/rooms]
+      - [0x14C4, data, hd_d]
+      - [0x1620, .data, gen/e_layout]
+      - [0x16D8, data, hd_e]
+      - [0x1CFC, .data, gfx_data]
+      - [0xB1B8, .data, tilemaps]
+      - [0xF9D8, data, hd_f]
       - [0x113C8, .rodata, hd]
-      - [0x11684, c, hd]
+      - [0x11684, c, e_room_bg]
+      - [0x11764, c, e_lock_camera]
+      - [0x11920, c, e_breakable]
+      - [0x11A54, c, e_background_clouds]
+      - [0x11D24, c, e_succubus]
+      - [0x143DC, c, hd_g]
+      - [0x14850, c, cutscene]
+      - [0x1487C, c, hd_h]
+      - [0x14B40, c, e_cutscene_dialogue]
+      - [0x15D8C, c, hd]
+      - [0x15DE8, c, e_cutscene_actors]
+      - [0x16B10, c, st_update]
+      - [0x16F44, c, collision]
+      - [0x18700, c, create_entity]
+      - [0x19278, c, hd_k]
+      - [0x192F0, c, e_red_door]
+      - [0x19F28, c, st_common]
+      - [0x1B3D8, c, e_collect]
+      - [0x1DB14, c, e_misc]
+      - [0x1FEB0, c, e_stage_name]
+      - [0x205D8, c, e_particles]
+      - [0x20E1C, c, e_room_fg]
+      - [0x20F08, c, popup]
+      - [0x212E0, c, prim_helpers]
+      - [0x21B10, c, hd_p]
+      - [0x220E8, c, e_background_house]
+      - [0x2252C, .bss, bss]
+      - [0x2252C, .bss, st_init_psp]
       - [0x2252C, sbss]
   - [0x23290]

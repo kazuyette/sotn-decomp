@@ -189,9 +189,13 @@ static s32 D_80180664;
 static s32 multiple_count = 0; // clones counter
 #endif
 
-#ifndef VERSION_PSP
+#if !defined(VERSION_PSP) && !defined(VERSION_HD)
 // defined in cutscene_data
 extern u8 D_801816C4[]; // Succubus facing assigned to it
+#endif
+
+#ifdef VERSION_HD
+extern u8* D_801816C4; // defined in st_init_psp
 #endif
 
 // bss
@@ -1432,3 +1436,5 @@ void EntitySuccubusWingSpikeTip(Entity* self) {
         }
     }
 }
+
+INCLUDE_ASM("st/dre/nonmatchings/e_succubus", func_hd_8019438C);

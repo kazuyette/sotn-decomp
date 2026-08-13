@@ -17,7 +17,17 @@ static s16 D_801813DC[] = {
     0x001D, 0x000A, 0x0035, 0x0010, 0x001B, 0x003D, 0x0017, 0x002E, 0x000B,
     0x0049, 0x0042, 0x003D, 0x002A, 0x0001, 0x000C, 0x001B, 0x0034, 0x0041,
     0x0035, 0x0008, 0x000E, 0x004D, 0x0011, 0x0034, 0x0041, 0x0029, 0x0048};
+#if !defined(VERSION_HD)
 static const char* actor_names[] = {_S("Alucard"), _S("Maria")};
+#else
+// TODO: placeholder values, NOT byte-exact. Real packed glyph-code content
+// (see src/st/cen/cutscene.c for the format: two-char-per-u16 packing when
+// the 0xF000 bit is set) needs to be extracted from the real HD nz0.bin via
+// Ghidra -- unblocking compilation only for now.
+static u16 actor_names[] = {0x0000, 0x0000};
+static u8 actor_prims[] = {1, 1};
+static u8 actor_name_len[] = {1, 1};
+#endif
 
 extern u32 g_SkipCutscene;
 extern Dialogue g_Dialogue;

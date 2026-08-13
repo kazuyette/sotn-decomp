@@ -9,3 +9,9 @@
 #endif
 
 #include "gen/dre_tiledef_0.h"
+
+
+__asm__(
+    ".global D_hd_8018B5B8\n"
+    "D_hd_8018B5B8 = dre_tilemap_0 + 0x400\n"
+);

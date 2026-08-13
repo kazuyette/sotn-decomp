@@ -13,3 +13,4 @@ s16 D_801CB738[4]; // protect OOB for EntityMovableBox and BoxPuzzleSpikes
 s16 D_801CB738[2];
 #endif
 s32 g_IsCutsceneDone;
+u16 msgBoxTpage[0x600];

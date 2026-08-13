@@ -27,3 +27,7 @@ static u8 stage_name_fr[] = {
 #define STAGE_NAME_LOAD_GFX
 #include "../e_stage_name_jp.h"
 #endif
+
+#ifdef VERSION_HD
+#include "../e_stage_name_jp.h"
+#endif

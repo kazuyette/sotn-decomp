@@ -6,7 +6,7 @@ extern EInit D_8018047C;
 extern s32 g_CutsceneFlags;
 extern s32 g_SkipCutscene;
 
-#ifdef VERSION_PSP
+#if defined(VERSION_PSP) || defined(VERSION_HD)
 extern u8* D_801816C0; // defined in st_init_psp
 #else
 extern u8 D_801816C0; // defined in cutscene_data
@@ -210,7 +210,7 @@ void EntityUnkId23(Entity* self) {
             delta = player->posX.i.hi - entity->posX.i.hi;
             if (delta < -0x50) {
                 g_Player.padSim = PAD_RIGHT;
-#ifdef VERSION_PSP
+#if defined(VERSION_PSP) || defined(VERSION_HD)
                 *D_801816C0 = 0;
 #else
                 D_801816C0 = 0;
@@ -218,7 +218,7 @@ void EntityUnkId23(Entity* self) {
                 self->step += 3;
             } else if (delta > 0x50) {
                 g_Player.padSim = PAD_LEFT;
-#ifdef VERSION_PSP
+#if defined(VERSION_PSP) || defined(VERSION_HD)
                 *D_801816C0 = 1;
 #else
                 D_801816C0 = 1;
@@ -240,7 +240,7 @@ void EntityUnkId23(Entity* self) {
         delta = player->posX.i.hi - entity->posX.i.hi;
         if (delta > 64) {
             g_Player.padSim = PAD_LEFT;
-#ifdef VERSION_PSP
+#if defined(VERSION_PSP) || defined(VERSION_HD)
             *D_801816C0 = 1;
 #else
             D_801816C0 = 1;
@@ -255,7 +255,7 @@ void EntityUnkId23(Entity* self) {
         delta = player->posX.i.hi - entity->posX.i.hi;
         if (delta < -64) {
             g_Player.padSim = PAD_RIGHT;
-#ifdef VERSION_PSP
+#if defined(VERSION_PSP) || defined(VERSION_HD)
             *D_801816C0 = 0;
 #else
             D_801816C0 = 0;
