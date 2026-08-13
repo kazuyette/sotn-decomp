@@ -3,7 +3,44 @@
 
 INCLUDE_ASM("st/rlib/nonmatchings/unk_2DBE8", func_us_801ADBE8);
 
-INCLUDE_ASM("st/rlib/nonmatchings/unk_2DBE8", func_us_80196768_from_rbo0);
+extern EInit D_us_8018064C;
+extern u8 D_us_80181804[];
+
+typedef struct {
+    /* 0x0 */ s8 offX;
+    /* 0x1 */ s8 offY;
+    /* 0x2 */ u8 width;
+    /* 0x3 */ u8 height;
+} UnkStruct_801817E4;
+
+extern UnkStruct_801817E4 D_us_801817E4[];
+
+void func_us_80196768_from_rbo0(Entity* self) {
+    Entity* parent = self - 1;
+    UnkStruct_801817E4* s;
+
+    switch (self->step) {
+    case 0:
+        InitializeEntity(D_us_8018064C);
+        // fallthrough
+    case 1:
+        self->facingLeft = parent->facingLeft;
+        self->posX = parent->posX;
+        self->posY = parent->posY;
+
+        s = &D_us_801817E4[D_us_80181804[parent->animCurFrame]];
+        self->hitboxOffX = s->offX;
+        self->hitboxOffY = s->offY;
+        self->hitboxWidth = s->width;
+        self->hitboxHeight = s->height;
+
+        if (parent->entityId != 0x1C) {
+            DestroyEntity(self);
+        }
+        break;
+    }
+}
+
 
 extern EInit D_us_80180658;
 extern s32 D_us_801817CC[];
