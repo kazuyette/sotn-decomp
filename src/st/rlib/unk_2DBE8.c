@@ -9,7 +9,7 @@ extern s16 D_us_80181760[];
 extern AnimateEntityFrame D_us_801817A8[];
 extern AnimateEntityFrame D_us_80181778[];
 extern u16 PLAYER_facingLeft;
-extern s32 g_Timer;
+extern u16 g_pads_1_pressed;
 const char D_us_801A0834[] = "charal %x\n";
 
 void func_us_801ADBE8(Entity* self) {
