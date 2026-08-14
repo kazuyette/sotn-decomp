@@ -46,7 +46,7 @@ void func_us_801ADBE8(Entity* self) {
         AnimateEntity(D_us_80181768, self);
         collision = UnkCollisionFunc2(D_us_80181760);
         if (collision & 0x60) {
-            self->posX -= self->velocityX;
+            *(s32*)&self->posX -= self->velocityX;
         }
 
         flagByte = *(u8*)((u8*)self + 0x84);
@@ -110,7 +110,7 @@ void func_us_801ADBE8(Entity* self) {
         AnimateEntity(D_us_80181768, self);
         collision = UnkCollisionFunc2(D_us_80181760);
         if (collision & 0x60) {
-            self->posX -= self->velocityX;
+            *(s32*)&self->posX -= self->velocityX;
         }
 
         self->facingLeft = GetSideToPlayer() & 1;
@@ -408,7 +408,7 @@ void func_us_801AE534(Entity* self) {
         }
 
         if (UnkCollisionFunc2(D_us_80181830) & 0x60) {
-            self->posX -= self->velocityX;
+            *(s32*)&self->posX -= self->velocityX;
             self->velocityX = -self->velocityX;
         }
 
@@ -434,7 +434,7 @@ void func_us_801AE534(Entity* self) {
 
         collision = UnkCollisionFunc2(D_us_80181830);
         if (collision & 0x60) {
-            self->posX -= self->velocityX;
+            *(s32*)&self->posX -= self->velocityX;
             self->velocityX = -self->velocityX;
         }
 
