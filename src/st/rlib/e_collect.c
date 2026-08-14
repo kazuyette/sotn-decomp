@@ -15,7 +15,10 @@ INCLUDE_ASM("st/rlib/nonmatchings/e_collect", CollectHeartVessel);
 
 INCLUDE_ASM("st/rlib/nonmatchings/e_collect", CollectLifeVessel);
 
-INCLUDE_ASM("st/rlib/nonmatchings/e_collect", CollectDummy);
+void CollectDummy(u16 id) {
+    DestroyEntity(g_CurrentEntity);
+}
+
 
 INCLUDE_RODATA("st/rlib/nonmatchings/e_collect", D_us_801A072C);
 
